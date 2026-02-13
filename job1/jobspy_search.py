@@ -5,84 +5,199 @@ from pathlib import Path
 import pandas as pd
 from jobspy import scrape_jobs
 
-# Queries pensadas para tu perfil
+# Queries optimizadas - enfocadas en tu stack real
 SEARCH_QUERIES = [
-    # Core
+    # Core stack JavaScript/TypeScript
     "fullstack developer typescript",
-    "react next.js developer",
-    "node.js nestjs backend developer",
+    "react developer",
+    "nextjs developer",
+    "frontend developer typescript",
+    "backend developer nodejs",
+    "nodejs developer",
+
+    # Core stack Python - REFORZADO
+    "python developer",
+    "django developer",
+    "fastapi developer",
+    "backend python developer",
+    "django python developer",
+
+    # Mobile - SOLO FLUTTER (sin React Native)
     "flutter developer",
-    "frontend developer react typescript",
-    "web scraping puppeteer developer",
+    "flutter mobile developer",
+    "mobile developer flutter",
 
-    # Batch 1: LATAM remoto / Next.js
-    "full stack developer remote latam",
-    "fullstack developer 100% remote chile",
-    "nextjs developer latam",
-    "react developer latam",
-    "next.js developer senior",
-    "react typescript developer mid-level",
-    "nextjs backend developer",
+    # Remote LATAM - alta demanda
+    "remote developer latam",
+    "fullstack remote chile",
+    "react remote latam",
 
-    # Batch 2: Flutter, Python junior, AI/automation
-    "flutter clean architecture developer",
-    "flutter bloc pattern",
-    "flutter bloc developer",
-    "flutter remote latam",
-    "python developer junior",
-    "python backend junior",
-    "python junior latam",
-    "automation engineer puppeteer",
-    "whatsapp business api developer",
-    "openai developer",
-    "ai engineer javascript",
-    "typescript ai automation",
-    "strapi graphql developer",
-    "supabase developer",
+    # Seniority levels (incluye todos los niveles)
+    "senior fullstack developer",
+    "fullstack developer mid level",
+
+    # Especializaciones con demanda real
+    "graphql developer",
+    "backend developer",
+    "frontend developer",
+
+    # AI/Automation - en crecimiento
+    "ai engineer",
+
+    # Búsquedas en ESPAÑOL (Chile/LATAM)
+    "ingeniero backend",
+    "ingeniero fullstack",
+    "desarrollador backend",
+    "desarrollador fullstack",
+    "desarrollador python",
+    "desarrollador react",
+
+    # Freelance (empresas pequeñas/startups)
+    "freelance developer",
+    "fullstack freelance",
+    "python freelance developer",
+    "desarrollador freelance",
+    "freelance react developer",
 ]
 
 # Sitios soportados por jobspy
 SITE_NAMES = ["indeed", "linkedin", "google", "zip_recruiter"]
 
-# Palabras clave sacadas de tu CV
-KEYWORDS = [
-    "typescript",
-    "react",
-    "next.js",
-    "nextjs",
-    "node",
-    "node.js",
-    "nestjs",
-    "express",
-    "flutter",
-    "scraping",
-    "puppeteer",
-    "graphql",
-    "strapi",
-    "whatsapp",
-    "supabase",
+# Tecnologías principales (peso positivo) - tu stack CORE
+CORE_TECH = {
+    "typescript": 3,
+    "react": 3,
+    "next.js": 3,
+    "nextjs": 3,
+    "node.js": 3,
+    "nodejs": 3,
+    "nestjs": 3,
+    "express": 3,
+    "python": 3,
+    "django": 3,
+    "fastapi": 3,
+    "graphql": 2,
+    "flutter": 2,
+}
+
+# Tecnologías secundarias (peso menor) - complementarias
+SECONDARY_TECH = {
+    "puppeteer": 1,
+    "scraping": 1,
+    "strapi": 1,
+    "supabase": 1,
+    "prisma": 1,
+    "postgresql": 1,
+    "postgres": 1,
+    "websocket": 1,
+    "socket.io": 1,
+    "api": 1,
+    "rest": 1,
+    "openai": 2,
+    # "react native" removido - no es tu especialidad (Flutter sí)
+}
+
+# Tecnologías incompatibles (penalizan el score)
+INCOMPATIBLE_TECH = [
+    "elixir",
+    "ruby",
+    "rails",
+    "php",
+    "laravel",
+    "java",
+    "c#",
+    ".net",
+    "swift",
+    "kotlin",
+    "golang",
+    "go developer",
+    "rust",
+    "react native",  # No es tu especialidad (Flutter sí)
+    "dynamics 365",
+    "power apps",
+    "powerbi",
 ]
 
-# Cargos que no te interesen (ajusta a gusto)
+# Cargos que no te interesen (solo extremos)
 EXCLUDE_TITLE_KEYWORDS = [
-    "principal",
-    "staff",
-    "architect",
+    "principal engineer",
+    "staff engineer",
+    "director",
+    "head of",
+    "vp of",
     "cto",
     "intern",
+    "internship",
     "práctica",
     "practicante",
+    # Tecnologías incompatibles en títulos
+    "elixir",
+    "golang",
+    "go developer",
+    "dynamics 365",
+    "power apps",
+    ".net developer",
+    "c# developer",
+    "java developer",
+    "react native",  # No es tu especialidad
+]
+
+# Empresas excluidas (mala reputación o no contratan)
+EXCLUDE_COMPANIES = [
+    "bairesdev",
 ]
 
 
 def matches_excluded(title: str) -> bool:
+    """Excluye roles muy senior/junior o con tecnologías incompatibles"""
     t = (title or "").lower()
     return any(word.lower() in t for word in EXCLUDE_TITLE_KEYWORDS)
 
 
+def matches_excluded_company(company: str) -> bool:
+    """Excluye empresas con mala reputación o que no contratan"""
+    c = str(company or "").lower()
+    return any(excluded in c for excluded in EXCLUDE_COMPANIES)
+
+
+def has_incompatible_tech(text: str) -> bool:
+    """Detecta si el trabajo requiere tecnologías incompatibles como stack principal"""
+    text_lower = str(text or "").lower()
+    # Solo penalizamos si aparece en el título (tech principal)
+    incompatible_count = sum(1 for tech in INCOMPATIBLE_TECH if tech in text_lower)
+    return incompatible_count >= 2  # Si hay 2+ techs incompatibles, probablemente no es tu perfil
+
+
 def score_job(row) -> int:
-    text = f"{row.get('title', '')} {row.get('description', '')}".lower()
-    return sum(1 for kw in KEYWORDS if kw.lower() in text)
+    """
+    Score positivo basado en match de tecnologías.
+    Mayor score = más relevante para tu perfil.
+    """
+    # Manejo seguro de NaN/None
+    title = str(row.get("title", "") or "").lower()
+    description = str(row.get("description", "") or "").lower()
+
+    score = 0
+
+    # Bonus por tecnologías core en título (muy importante)
+    for tech, weight in CORE_TECH.items():
+        if tech in title:
+            score += weight * 2  # Doble peso si está en el título
+        elif tech in description:
+            score += weight
+
+    # Bonus por tecnologías secundarias
+    for tech, weight in SECONDARY_TECH.items():
+        if tech in title:
+            score += weight * 2
+        elif tech in description:
+            score += weight
+
+    # Penalización por tecnologías incompatibles en título
+    if has_incompatible_tech(title):
+        score = max(0, score - 5)  # Penaliza pero no elimina completamente
+
+    return score
 
 
 def main() -> None:
@@ -95,9 +210,9 @@ def main() -> None:
                 site_name=SITE_NAMES,
                 search_term=query,
                 location="Chile",
-                is_remote=True,
-                results_wanted=40,
-                hours_old=168,  # última semana
+                # is_remote=True,  # DESHABILITADO: conflicto con hours_old en Indeed
+                results_wanted=50,
+                hours_old=168,  # Última semana (prioridad)
                 country_indeed="Chile",
                 description_format="markdown",
                 verbose=1,
@@ -117,11 +232,29 @@ def main() -> None:
     combined = pd.concat(all_jobs, ignore_index=True)
     print(f"\n[debug] Registros combinados (bruto): {len(combined)}")
 
-    # Quedarse solo con trabajos remotos (según flag detectado por JobSpy)
-    if "is_remote" in combined.columns:
-        before_remote = len(combined)
-        combined = combined[combined["is_remote"] == True]
-        print(f"[debug] Tras filtro is_remote=True: {len(combined)} (descartados: {before_remote - len(combined)})")
+    # Filtro inteligente de remote: por flag O por keywords en título/descripción
+    before_remote = len(combined)
+
+    # Palabras clave que indican trabajo remoto
+    remote_keywords = ["remote", "remoto", "trabajo remoto", "100% remoto", "full remote", "teletrabajo"]
+
+    def is_likely_remote(row) -> bool:
+        """Detecta si el trabajo es probablemente remoto"""
+        # 1. Si tiene flag is_remote=True, es remoto
+        if "is_remote" in row and row.get("is_remote") == True:
+            return True
+
+        # 2. Buscar keywords en título y descripción
+        # Manejo seguro de NaN/None
+        title = str(row.get("title", "") or "").lower()
+        description = str(row.get("description", "") or "").lower()
+        location = str(row.get("location", "") or "").lower()
+
+        text = f"{title} {description} {location}"
+        return any(kw in text for kw in remote_keywords)
+
+    combined = combined[combined.apply(is_likely_remote, axis=1)]
+    print(f"[debug] Tras filtro remote: {len(combined)} (descartados: {before_remote - len(combined)})")
 
     # Eliminar duplicados por URL si existe esa columna
     before_dedup = len(combined)
@@ -138,6 +271,13 @@ def main() -> None:
         combined = combined[~mask_exclude]
         print(f"[debug] Tras excluir títulos: {len(combined)} (descartados: {before_exclude - len(combined)})")
 
+    # Excluir empresas no deseadas (BairesDev, etc.)
+    if "company" in combined.columns:
+        before_company_exclude = len(combined)
+        mask_company_exclude = combined["company"].astype(str).apply(matches_excluded_company)
+        combined = combined[~mask_company_exclude]
+        print(f"[debug] Tras excluir empresas: {len(combined)} (descartados: {before_company_exclude - len(combined)})")
+
     # Calcular score de match con tu perfil
     combined["match_score"] = combined.apply(score_job, axis=1)
 
@@ -150,10 +290,19 @@ def main() -> None:
 
     combined = combined.sort_values(by=sort_cols, ascending=ascending)
 
-    # Quedarse solo con ofertas que al menos matchean 1 keyword
+    # Filtrar trabajos con score muy bajo O con tecnologías incompatibles
     before_match = len(combined)
-    combined = combined[combined["match_score"] > 0]
-    print(f"[debug] Tras filtro match_score>0: {len(combined)} (descartados: {before_match - len(combined)})")
+
+    # Más inclusivo: mantener trabajos con al menos alguna tecnología relevante
+    # O que sean de desarrollo fullstack/frontend/backend genéricos
+    combined_filtered = combined[
+        (combined["match_score"] >= 2) |  # Al menos 2 puntos de match
+        (combined["title"].str.contains("fullstack|frontend|backend|developer", case=False, na=False))
+    ]
+
+    descartados = before_match - len(combined_filtered)
+    combined = combined_filtered
+    print(f"[debug] Tras filtro de relevancia: {len(combined)} (descartados: {descartados})")
 
     print(f"\n{'=' * 80}")
     print(f"TOTAL trabajos únicos encontrados (relevantes): {len(combined)}")
@@ -174,8 +323,8 @@ def main() -> None:
     ]
     existing_cols = [c for c in columns_to_show if c in combined.columns]
 
-    # Muestra los 40 más relevantes
-    print(combined[existing_cols].head(40).to_string(index=False))
+    # Muestra los 100 más relevantes (más opciones para revisar)
+    print(combined[existing_cols].head(100).to_string(index=False))
 
     # Guardar con timestamp (para tener histórico)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")
