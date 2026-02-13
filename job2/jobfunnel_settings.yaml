@@ -1,0 +1,45 @@
+master_csv_file: job2_results/master_list.csv
+cache_folder: job2_results/cache
+block_list_file: job2_results/block_list.json
+duplicates_list_file: job2_results/duplicates_list.json
+log_file: job2_results/log.log
+
+search:
+  # Locale soportados por JobFunnel: USA_ENGLISH, CANADA_ENGLISH, UK_ENGLISH, FRANCE_FRENCH, GERMANY_GERMAN
+  # Cámbialo si quieres otro país dentro de los soportados.
+  locale: USA_ENGLISH
+
+  # Proveedores soportados actualmente: INDEED, MONSTER (Glassdoor está comentado en el demo oficial)
+  providers:
+    # OJO: el scraper de INDEED está fallando con la web actual,
+    # por eso dejamos sólo MONSTER para evitar errores.
+    - MONSTER
+
+  # Región base para la búsqueda (aunque pongamos FULLY_REMOTE, JobFunnel igual requiere ciudad y estado)
+  province_or_state: "CA"
+  city: "San Francisco"
+  radius: 50
+
+  # Palabras clave del buscador (adáptalas a tu perfil)
+  keywords:
+    - "typescript"
+    - "react"
+    - "next.js"
+    - "node"
+
+  # Máxima antigüedad en días (similar a nuestra última semana en JobSpy)
+  max_listing_days: 7
+
+  company_block_list: []
+
+  # Nivel de remoteness: IN_PERSON, FULLY_REMOTE, ANY, TEMPORARILY_REMOTE, PARTIALLY_REMOTE
+  remoteness: FULLY_REMOTE
+
+log_level: INFO
+
+delay:
+  algorithm: LINEAR
+  max_duration: 5.0
+  min_duration: 1.0
+  random: false
+  converging: false

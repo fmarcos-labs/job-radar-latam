@@ -1,0 +1,16 @@
+[2026-02-11 14:15:01,154] [INFO] JobFunnel: Scraping local providers with: ['IndeedScraperUSAEng', 'MonsterScraperUSAEng']
+[2026-02-11 14:16:14,431] [INFO] JobFunnel: Scraping local providers with: ['MonsterScraperUSAEng']
+[2026-02-11 14:16:14,431] [INFO] MonsterScraperUSAEng: No get() or set() will be done for Job attrs: ['REMOTENESS']
+[2026-02-11 14:16:14,443] [WARNING] MonsterScraperUSAEng: Monster does not support remoteness in query.
+[2026-02-11 14:17:21,428] [INFO] JobFunnel: Scraping local providers with: ['MonsterScraperUSAEng']
+[2026-02-11 14:17:21,429] [INFO] MonsterScraperUSAEng: No get() or set() will be done for Job attrs: ['REMOTENESS']
+[2026-02-11 14:17:21,439] [WARNING] MonsterScraperUSAEng: Monster does not support remoteness in query.
+[2026-02-11 14:20:55,020] [INFO] JobFunnel: Scraping local providers with: ['MonsterScraperUSAEng']
+[2026-02-11 14:20:55,020] [INFO] MonsterScraperUSAEng: No get() or set() will be done for Job attrs: ['REMOTENESS']
+[2026-02-11 14:20:55,032] [WARNING] MonsterScraperUSAEng: Monster does not support remoteness in query.
+[2026-02-11 14:22:02,067] [INFO] JobFunnel: Scraping local providers with: ['MonsterScraperUSAEng']
+[2026-02-11 14:22:02,067] [INFO] MonsterScraperUSAEng: No get() or set() will be done for Job attrs: ['REMOTENESS']
+[2026-02-11 14:22:02,078] [WARNING] MonsterScraperUSAEng: Monster does not support remoteness in query.
+[2026-02-11 14:26:15,284] [INFO] JobFunnel: Scraping local providers with: ['MonsterScraperUSAEng']
+[2026-02-11 14:26:15,284] [INFO] MonsterScraperUSAEng: No get() or set() will be done for Job attrs: ['REMOTENESS']
+[2026-02-11 14:26:15,296] [WARNING] MonsterScraperUSAEng: Monster does not support remoteness in query.

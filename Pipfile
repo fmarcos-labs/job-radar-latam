@@ -1,0 +1,11 @@
+[requires]
+python_version = "3.10"
+
+[packages]
+python-jobspy = "*"
+pandas = "*"
+
+[scripts]
+job1 = "python job1/jobspy_search.py"
+job2 = "python job2/jobfunnel_run.py"
+job3 = "python job3/jobspy_search.py"

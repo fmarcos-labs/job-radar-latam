@@ -1,0 +1,129 @@
+"id","site","job_url","job_url_direct","title","company","location","date_posted","job_type","salary_source","interval","min_amount","max_amount","currency","is_remote","job_level","job_function","listing_type","emails","description","company_industry","company_url","company_logo","company_url_direct","company_addresses","company_num_employees","company_revenue","company_description","skills","experience_range","company_rating","company_reviews_count","vacancy_count","work_from_home_type","search_query","match_score"
+"in-169f9e404e867485","indeed","https://cl.indeed.com/viewjob?jk=169f9e404e867485","https://grnh.se/qb4ammxb3us","DevOps Engineer II (LATAM)","Sezzle","Santiago de Chile, RM, CL","2026-02-04","","","","","","",True,"","","","","**The salary range for this role is $2,700 \\- $6,000 per month (Gross in USD)**
+
+
+**About Sezzle:**
+
+
+
+With a mission to financially empower the next generation, Sezzle is revolutionizing the shopping experience beyond payments, blending cutting\\-edge tech with seamless, interest\\-free installment plans that make shopping smarter and more accessible. We're not just transforming payments; we're redefining how people discover, interact with, and purchase the things they love while driving real impact on merchant sales through increased conversions and higher order values. As we continue to shape the future of fintech and retail, we're building an innovative, dynamic team passionate about creating more than just a transaction but a truly unique shopping journey. If you're excited about pushing boundaries in tech and delivering a game\\-changing experience for consumers and merchants alike, come join us at Sezzle and help create the future of shopping!
+
+
+**Compensation**:
+
+
+
+For this DevOps engineer role, with 3\\+ years of experience, the compensation range is **$2,700 \\- $6,000** USD per month.
+
+
+**About the Role:**
+
+
+
+We are seeking a talented and motivated DevOps Engineer to join a small team supporting a much larger engineering organization. This role presents an exciting opportunity to thrive in a dynamic, fast\\-paced environment with a high sense of ownership, and abundant prospects for career advancement.  
+
+  
+
+You will serve as a core member of our Platform Engineering team, building the systems, tooling, and automation that keep a 150\\-person engineering organization shipping high\\-quality software at high velocity. This role blends DevOps, CI/CD, developer experience, and platform ownership with a manufacturing\\-inspired focus on quality, reliability, waste reduction, and continuous improvement.
+
+
+
+You'll expand and maintain our CI/CD pipelines, container build environments, Kubernetes deployment workflows, internal developer platforms, and automation systems. Your day\\-to\\-day work will alternate between **supporting developers and unblocking them quickly**, and **executing longer\\-term platform improvements**. As you grow, you will have opportunities to influence platform architecture, contribute to internal Golang tooling, shape our internal package ecosystem, and participate in ML/AI infrastructure initiatives.
+
+
+**What You'll Do:**
+
+
+**Developer Support \\& Cross\\-Team Collaboration****Act as a technical partner to developers—debugging pipelines, build failures, and deployment/configuration issues.**
+
+
+* Diagnose CI/CD failures across GitLab, Helm, Kubernetes, and container build systems.
+* Work closely with engineers across the company to understand pain points and opportunities for tooling enhancements.
+
+
+**Continuous Improvement****Leverage AI tooling to help yourself and other teams be more productive in pipeline development and troubleshooting.**
+
+
+* Continue building new AI tooling into the pipelines and deployments, partnering with the infrastructure, security, and developer teams to automate as much as we can and find problems early.
+
+
+**Promote best practices in DevOps, CI/CD, deployment reliability, and platform operations.**
+
+
+* Measure and optimize the performance, reliability, and maintainability of CI/CD pipelines and platform services.
+* Drive initiatives to reduce waste in the development lifecycle:
+* Implement guardrails and automation that improve quality without slowing velocity.
+
+
+**Platform Tooling \\& Infrastructure Engineering****Build, maintain, and scale CI/CD tooling.**
+
+
+* Design and evolve Kubernetes\\-based deployment workflows using GitLab, Helm, and best\\-practice DevOps patterns.
+* Own platform and infrastructure components that accelerate development—observing bottlenecks, reducing friction, and eliminating repetitive work.
+* Participate in planning for capacity, scaling, and modernization of shared platform components.
+
+
+**What We Look For:**
+
+
+* At least 3 years of DevOps, platform, or full\\-stack software engineering experience.
+* Practical experience with Kubernetes, Helm, and containerized deployment workflows.
+* Comfort with shell scripting and automation in Linux\\-based environments.
+* Familiarity with AI\\-based dev tooling, such as Claude Code, Codex, Gemini CLI, Cursor.
+* BS in Computer Science or similar degree, or equivalent work experience.
+
+
+**Preferred Qualifications:**
+
+
+* Experience with Sezzle's Technology Stack (see below):
+* + Golang (for internal tooling, CLIs, or operators)
+	+ Gitlab CI/CD
+	+ ArgoCD
+	+ or quality metrics systems
+	+ Infrastructure\\-as\\-code (Terraform)
+	+ Security\\-focused tooling (image scanning, SBOMs, policy enforcement)
+* Manufacturing/lean mindset—continuous improvement, eliminating waste, systemizing processes.
+
+
+**About You:**
+
+
+* **You have relentlessly high standards** \\- many people may think your standards are unreasonably high. You are continually raising the bar and driving those around you to deliver great results. You make sure that defects do not get sent down the line and that problems are fixed so they stay fixed.
+* **You're not bound by convention** \\- your success—and much of the fun—lies in developing new ways to do things
+* **You need action** \\- speed matters in business. Many decisions and actions are reversible and do not need extensive study. We value calculated risk\\-taking.
+* **You earn trust** \\- you listen attentively, speak candidly, and treat others respectfully.
+* **You have backbone; disagree, then commit** \\- you can respectfully challenge decisions when you disagree, even when doing so is uncomfortable or exhausting. You have conviction and are tenacious. You do not compromise for the sake of social cohesion. Once a decision is determined, you commit wholly.
+* **You deliver results** \\- you focus on the key inputs and deliver them with the right quality and in a timely fashion. Despite setbacks, you rise to the occasion and never settle.
+
+
+**Sezzle's Technology Stack:**
+
+
+* **Languages:** Shell/Bash**,** Golang, Python, Typescript
+* **Frontend:** Typescript \\- React and React Native  
+
+**Backend:** Golang
+* **CI/Deployments:** Gitlab, Bash, Helm, Kubernetes
+* **Platform Infra**: ArgoCd, Terraform, AWS
+* **Observability**: Grafana, Prometheus, Loki
+* **Databases:** MySQL, Postgres, Elasticsearch
+* **Version Control:** Git
+* **Testing:** Developer\\-driven, focus on automated unit, integration, and end\\-to\\-end tests
+* **Sezzle** is focused on using open source, and we build what we can before buying!
+
+
+**What Makes Working at Sezzle Awesome?**
+
+
+
+At Sezzle, we are more than just brilliant engineers, passionate data enthusiasts, out\\-of\\-the\\-box thinkers, and determined innovators; we are skilled musicians, yogis, cyclists, chefs, golfers, dog\\-lovers, and rock\\-climbers. We believe in surrounding ourselves with not only the best and the brightest individuals, but those that are unique and purpose\\-driven in all that they do. Our culture is not defined by a certain set of perks designed to give the illusion of the traditional startup culture, but rather, it is the visible example living in every employee that we hire.
+
+
+
+\\#Li\\-remote \\#Full\\-time","","https://cl.indeed.com/cmp/Sezzle","https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/79b41d12c8d0bdfaede192c8060ae7fb","","","","","","","","","","","","frontend developer react typescript",2
+"li-4370688169","linkedin","https://www.linkedin.com/jobs/view/4370688169","","Semi Senior React Native Developer - Remote Work","BairesDev","","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bairesdev","","","","","","","","","","","","","fullstack developer typescript",1
+"li-4362711569","linkedin","https://www.linkedin.com/jobs/view/4362711569","","Senior Flutter Developer - Remote - Latin America","FullStack","Valparaíso, Valparaiso Region, Chile","2026-02-06","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","flutter developer",1
+"li-4362326383","linkedin","https://www.linkedin.com/jobs/view/4362326383","","Senior Flutter Developer - Remote - Latin America","FullStack","","2026-02-05","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","flutter developer",1
+"li-4362711570","linkedin","https://www.linkedin.com/jobs/view/4362711570","","Senior Flutter Developer - Remote - Latin America","FullStack","","2026-02-05","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","flutter developer",1
+"li-4361687024","linkedin","https://www.linkedin.com/jobs/view/4361687024","","Senior Flutter Developer - Remote - Latin America","FullStack","Concepcion, Biobío Region, Chile","2026-02-05","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","flutter developer",1
