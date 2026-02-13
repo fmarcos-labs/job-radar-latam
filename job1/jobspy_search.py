@@ -115,21 +115,28 @@ def main() -> None:
         return
 
     combined = pd.concat(all_jobs, ignore_index=True)
+    print(f"\n[debug] Registros combinados (bruto): {len(combined)}")
 
     # Quedarse solo con trabajos remotos (según flag detectado por JobSpy)
     if "is_remote" in combined.columns:
+        before_remote = len(combined)
         combined = combined[combined["is_remote"] == True]
+        print(f"[debug] Tras filtro is_remote=True: {len(combined)} (descartados: {before_remote - len(combined)})")
 
     # Eliminar duplicados por URL si existe esa columna
+    before_dedup = len(combined)
     if "job_url" in combined.columns:
         combined = combined.drop_duplicates(subset=["job_url"], keep="first")
     else:
         combined = combined.drop_duplicates()
+    print(f"[debug] Tras dedupe: {len(combined)} (descartados: {before_dedup - len(combined)})")
 
     # Excluir títulos que no interesan
     if "title" in combined.columns:
+        before_exclude = len(combined)
         mask_exclude = combined["title"].astype(str).apply(matches_excluded)
         combined = combined[~mask_exclude]
+        print(f"[debug] Tras excluir títulos: {len(combined)} (descartados: {before_exclude - len(combined)})")
 
     # Calcular score de match con tu perfil
     combined["match_score"] = combined.apply(score_job, axis=1)
@@ -144,7 +151,9 @@ def main() -> None:
     combined = combined.sort_values(by=sort_cols, ascending=ascending)
 
     # Quedarse solo con ofertas que al menos matchean 1 keyword
+    before_match = len(combined)
     combined = combined[combined["match_score"] > 0]
+    print(f"[debug] Tras filtro match_score>0: {len(combined)} (descartados: {before_match - len(combined)})")
 
     print(f"\n{'=' * 80}")
     print(f"TOTAL trabajos únicos encontrados (relevantes): {len(combined)}")
