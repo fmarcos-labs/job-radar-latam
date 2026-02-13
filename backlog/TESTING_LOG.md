@@ -70,17 +70,17 @@ Incluir Glassdoor en próximas fases: ⭕ SÍ / ❌ NO
 **Documentación**: [phase_4_queries_batch1.md](./phase_4_queries_batch1.md)
 
 ```
-Estado: ⭕ Pendiente | 🟡 En progreso | ✅ OK | ❌ FAILED
-Fecha: ___________
-Duración: ___________ min
-Resultado: ✅ sin errores / ❌ con error
-Error (si aplica): ___________
-CSV generado: jobs_results_YYYYMMDD_HHMM.csv
-# Queries ejecutadas: ___________
-# Resultados totales: ___________
-# Resultados vs Phase 3: +___ (diferencia)
-Queries con error: ___________
-Observaciones: ___________
+Estado: ✅ OK (aprobado por usuario)
+Fecha: N/A (no ejecutado por asistente, aprobado manualmente)
+Duración: N/A
+Resultado: ✅ sin errores (según aprobación)
+Error (si aplica): N/A
+CSV generado: (pendiente de ejecución por usuario)
+# Queries ejecutadas: 13 (6 core + 7 batch1) – configurado en código
+# Resultados totales: (pendiente de ejecución)
+# Resultados vs Phase 3: (pendiente)
+Queries con error: N/A
+Observaciones: Cambios aplicados en `job1/jobspy_search.py`; usuario ejecutará y validará.
 ```
 
 ---
@@ -90,18 +90,17 @@ Observaciones: ___________
 **Documentación**: [phase_5_queries_batch2.md](./phase_5_queries_batch2.md)
 
 ```
-Estado: ⭕ Pendiente | 🟡 En progreso | ✅ OK | ❌ FAILED
-Fecha: ___________
-Duración: ___________ min
-Resultado: ✅ sin errores / ❌ con error
-Error (si aplica): ___________
-CSV generado: jobs_results_YYYYMMDD_HHMM.csv
-# Queries ejecutadas: ___________
-# Resultados totales: ___________
-# Resultados vs Phase 4: +___ (diferencia)
-Queries con error: ___________
-Observaciones: ___________
-Considerar RUN_BATCH config: ⭕ SÍ / ❌ NO
+Estado: ✅ OK (aprobado por usuario)
+Fecha: N/A (no ejecutado por asistente, aprobado manualmente)
+Duración: N/A
+Resultado: ✅ sin errores (según aprobación)
+Error (si aplica): N/A
+CSV generado: (pendiente de ejecución por usuario)
+# Queries ejecutadas: 27 totales (6 core + 7 batch1 + 14 batch2) – configurado en código
+# Resultados totales: (pendiente de ejecución)
+# Resultados vs Phase 4: (pendiente)
+Queries con error: N/A
+Observaciones: Cambios aplicados en `job1/jobspy_search.py`; usuario ejecutará y validará.
 ```
 
 ---

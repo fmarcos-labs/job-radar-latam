@@ -7,12 +7,38 @@ from jobspy import scrape_jobs
 
 # Queries pensadas para tu perfil
 SEARCH_QUERIES = [
+    # Core
     "fullstack developer typescript",
     "react next.js developer",
     "node.js nestjs backend developer",
     "flutter developer",
     "frontend developer react typescript",
     "web scraping puppeteer developer",
+
+    # Batch 1: LATAM remoto / Next.js
+    "full stack developer remote latam",
+    "fullstack developer 100% remote chile",
+    "nextjs developer latam",
+    "react developer latam",
+    "next.js developer senior",
+    "react typescript developer mid-level",
+    "nextjs backend developer",
+
+    # Batch 2: Flutter, Python junior, AI/automation
+    "flutter clean architecture developer",
+    "flutter bloc pattern",
+    "flutter bloc developer",
+    "flutter remote latam",
+    "python developer junior",
+    "python backend junior",
+    "python junior latam",
+    "automation engineer puppeteer",
+    "whatsapp business api developer",
+    "openai developer",
+    "ai engineer javascript",
+    "typescript ai automation",
+    "strapi graphql developer",
+    "supabase developer",
 ]
 
 # Sitios soportados por jobspy

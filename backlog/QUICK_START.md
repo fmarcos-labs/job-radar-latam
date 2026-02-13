@@ -62,8 +62,8 @@ Phase 7: MIN_MATCH config (0/1/2)
 [ ] Phase 1 - ✅ OK
 [ ] Phase 2 - ⭕ Pendiente
 [ ] Phase 3 - ⭕ Pendiente
-[ ] Phase 4 - ⭕ Pendiente
-[ ] Phase 5 - ⭕ Pendiente
+[x] Phase 4 - ✅ Completado (aprobado)
+[x] Phase 5 - ✅ Completado (aprobado)
 [ ] Phase 6 - ⭕ Pendiente
 [ ] Phase 7 - ⭕ Pendiente
 

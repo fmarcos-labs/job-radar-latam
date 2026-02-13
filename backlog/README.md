@@ -44,7 +44,7 @@ Extender `SITE_NAMES` para incluir "glassdoor" de forma opcional.
 ---
 
 ### 📋 Phase 4: Queries ampliadas (batch 1)
-**Estado**: 🟡 Pendiente
+**Estado**: ✅ Completado (aprobado por usuario)
 **Riesgo**: 🟡 Medio (más búsquedas = más resultados)
 
 Agregar queries nuevas sin eliminar las existentes (LATAM remoto, Next.js/React senior/junior).
@@ -54,7 +54,7 @@ Agregar queries nuevas sin eliminar las existentes (LATAM remoto, Next.js/React 
 ---
 
 ### 📋 Phase 5: Queries ampliadas (batch 2)
-**Estado**: 🟡 Pendiente
+**Estado**: ✅ Completado (aprobado por usuario)
 **Riesgo**: 🟡 Medio (más búsquedas)
 
 Agregar queries para Flutter BLoC/Clean Architecture, Python junior, AI/automation.
