@@ -1,0 +1,315 @@
+"id","site","job_url","job_url_direct","title","company","location","date_posted","job_type","salary_source","interval","min_amount","max_amount","currency","is_remote","job_level","job_function","listing_type","emails","description","company_industry","company_url","company_logo","company_url_direct","company_addresses","company_num_employees","company_revenue","company_description","skills","experience_range","company_rating","company_reviews_count","vacancy_count","work_from_home_type","search_query","match_score"
+"in-27cf016a94ae072b","indeed","https://cl.indeed.com/viewjob?jk=27cf016a94ae072b","https://jobs.ashbyhq.com/frontcareers/23443d8b-701c-4393-b291-e5034aaaf8d8","Senior Full-Stack Engineer, Integrations","Frontapp","Argentina, TA, CL","2026-02-13","fulltime","","","","","",True,"","","","","Location
+
+
+Remote, Argentina, Santiago, Chile
+Employment Type
+
+
+Full time
+Location Type
+
+
+Remote
+Department
+
+
+EPD  
+
+Front is the leading AI\\-powered customer service platform built for collaboration. Front brings core support channels into a modern, intuitive workspace where teams can collaborate on requests, automate manual processes, and delight customers across their entire lifecycle. Front’s flexible workflows, AI features, and customer intelligence provide the efficiency and insights to keep entire organizations customer\\-first, every day. More than 9,000 of the most innovative companies worldwide including CultureAmp, HootSuite, and Y Combinator use Front to deliver five\\-star service at scale.
+Backed by Sequoia Capital and Salesforce Ventures, Front has raised $204M from leading venture capital firms and independent investors including top executives at Atlassian, Okta, Qualtrics, Zoom, and PagerDuty. Front has received numerous Great Place to Work accolades, including **Built In's 100 Best Midsize Places to Work in SF 2025**, **Top Places to Work by USA Today 2025****,** **Y Combinator's list of Top Companies in 2023**, **\\#4 on Fortune’s Best Workplaces in the Bay Area™** ,**Inc. Magazine's 2022 Best Workplaces list**, and **Forbes Best Startup Employers 2022 List**.
+
+
+We’re looking for a strong and trusted Senior Software Engineer who operates independently and takes full ownership of technical components and initiatives. This role is ideal for someone who combines deep technical expertise with a strong sense of responsibility, collaboration, and mentorship.
+
+
+You will play a key role in delivering complex projects, shaping technical direction within your domain, and raising the bar for engineering quality across the team.
+
+**What will you be doing?**
+
+* Take full ownership of significant components or services, driving them from design to production with minimal direction.
+* Be a go\\-to expert in one area of the codebase while maintaining awareness of system\\-wide architecture.
+* Apply technical expertise and domain knowledge to solve complex problems requiring creativity and sound engineering judgment.
+* Plan and execute major assignments or multiple concurrent projects, balancing pace, quality, and long\\-term maintainability.
+* Serve as a technical contact on cross\\-functional projects, coordinating with product, design, and other teams.
+* Mentor and uplift the team through code reviews, documentation, guidance, and technical leadership on project delivery.
+* Make others better by offering thoughtful technical feedback, contributing to standards, and championing best practices.
+
+**What skills \\& experience do you need?**
+
+* **Advanced expertise in JavaScript / TypeScript**, with strong experience building scalable backend services using **Node.js**.
+* Strong proficiency with **frontend frameworks** such as **React** and modern web development patterns.
+* Experience with scalable **cloud infrastructure** and AWS services (e.g., Lambda, S3, RDS), CI/CD pipelines, and production deployments.
+* Familiarity with RESTful APIs, modern database systems (SQL or NoSQL), and distributed system challenges.
+* **Ability to make thoughtful tradeoffs between performance, reliability, and speed of delivery.**
+* **Strong collaboration skills to work with cross\\-functional partners.**
+* Demonstrated ability to mentor and guide others technically.
+* Experience with **GraphQL**, API integrations, feature flagging systems, or server\\-side rendering frameworks.
+
+**What we offer**
+
+* Competitive salary in USD
+
+*Front provides equal employment opportunities (EEO) to all employees and applicants for employment without regard to race, color, religion, sex, sexual orientation, gender identity, national origin, age or disability. By applying, you acknowledge and agree that you have read and understand the* *California Recruiting Privacy Notice* *\\&* *EU Privacy Notice*","","https://cl.indeed.com/cmp/Frontapp","","","","","","","","","","","","","ai engineer",13
+"in-b8e312d7805c1078","indeed","https://cl.indeed.com/viewjob?jk=b8e312d7805c1078","https://jobs.bechtel.com/job/Santiago-Desarrolladora-Web-Administradora-SIG-8320000/1364352000/?feedId=4&utm_source=Indeed","Desarrollador/a Web / Administrador/a SIG","Bechtel","Santiago de Chile, RM, CL","2026-02-12","","","","","","",False,"","","","acesstmt@bechtel.com","**Requisition ID: 292037**
+
+* **Relocation Authorized: None**
+* **Telework Type: Part\\-Time Telework**
+* **Work Location: Santiago**
+
+**Equipos construyendo proyectos inspiradores:**
+------------------------------------------------
+
+
+Desde 1898, hemos ayudado a clientes a completar más de 25,000 proyectos en 160 países en los siete continentes que han creado empleos, hecho crecer economías, mejorado la resiliencia de la infraestructura mundial, aumentado el acceso a la energía, recursos y servicios vitales, y hecho del mundo un lugar más seguro y limpio.
+
+
+Diferenciados por la calidad de nuestra gente y nuestro incansable impulso para ofrecer los resultados más exitosos, alineamos nuestras capacidades con los objetivos de nuestros clientes para crear un impacto positivo duradero. Atendemos los mercados de Infraestructura; Nuclear, Seguridad y Medioambiente; Energía; Minería y Metales; y Manufactura y Tecnología. Nuestros Servicios abarcan desde la planificación e inversión inicial, hasta la puesta en marcha y operaciones.
+
+
+El núcleo de Bechtel es nuestra Visión, Valores y Compromisos. Son lo que creemos, lo que los clientes pueden esperar y cómo cumplimos. Más información sobre nuestros equipos extraordinarios que crean proyectos inspiradores en nuestro Impact Report.
+
+**Minería y Metales:**
+----------------------
+
+
+El aumento de la producción de minerales críticos proporciona componentes clave de tecnologías de energía limpia, desde tuberías eólicas hasta baterías. Este cambio hacia la energía limpia—y la necesidad de productos básicos—es fundamental para sustentar la transición energética. En Bechtel, nuestros equipos extraen estos recursos vitales para respaldar cero emisiones de una manera más sostenible que nunca.
+
+**Resumen del Puesto:**
+-----------------------
+
+
+Este rol será responsable de brindar soporte SIG en todas las áreas de los proyectos de M\\&M. El/la Desarrollador/a \\- Administrador/a de SIG WEB implementa la funcionalidad SIG del proyecto Bechtel a través de la web y requiere una comprensión firme de los impactos y las implicaciones de seguridad de mantener y operar una implementación de ArcGIS. Deberá ejercer autonomía y juicio al realizar las tareas asignadas y/o supervisar a otros/as integrantes del equipo en la definición del problema, el alcance, la selección de la metodología y la adopción de técnicas SIG apropiadas en apoyo de los entregables del proyecto, según sea necesario, para garantizar resultados de alto valor.
+
+ *""Este puesto está definido como de teletrabajo a tiempo parcial según nuestra política global de teletrabajo y puede requerir al menos tres días de asistencia presencial por semana en la oficina o proyecto asignado. Los horarios semanales presenciales serán determinados por el/la empleador/a y su supervisor/a, previa aprobación de su líder funcional o de proyecto”.*
+
+**Principales Responsabilidades:**
+----------------------------------
+
+* Diseñar, desarrollar, configurar e implementar aplicaciones de mapeo web y sitios web asociados utilizando lenguajes web para modificar la funcionalidad existente.
+* Realizar funciones de administración de sistemas para aplicaciones de mapas web y otras tecnologías que pueden incluir servicios SIG para garantizar que los sistemas compatibles se mantengan de manera eficiente y estén disponibles para satisfacer las necesidades del proyecto de Bechtel.
+* Automatizar tareas SIG utilizando lenguajes de programación SIG.
+* Administrar de manera eficiente bases de datos geoespaciales para datos vectoriales, modelos digitales de elevación, nubes de puntos, imágenes, modelos 3D y otros.
+* Crear y dar mantenimiento de servicios web SIG para múltiples proyectos en varias ubicaciones.
+* Realizar ajustes continuos del rendimiento, actualizaciones de hardware y optimización de recursos según sea necesario y realizar actividades de consulta, análisis e informes.
+* Realizar funciones de administración de sistemas para Servidores ArcGIS, Servicios Web que incluyen cuentas de usuario, permisos de aplicaciones de mapeo web y determinación de requisitos técnicos, procesos comerciales, pruebas, depuraciones y coordina la implementación de soluciones de software moderadamente complejas.
+* Solucionar problemas revisando registros, realizando consultas de datos, recreando pasos e interactuando con los/as usuarios/as.
+* Desarrollar secuencias de comandos de herramientas basadas en SIG para plataformas de escritorio y basadas en la web, trabajando con el equipo de SIG y clientes de Bechtel para garantizar la calidad y la integridad de los datos.
+* Mantener la documentación geoespacial actualizada y precisa con fines de referencia y manteniéndose actualizado/a o al tanto de los últimos desarrollos en el campo de los SIG además de participar activamente en actividades de excelencia técnica.
+**Educación y Experiencia:**
+----------------------------
+
+* Requiere título en Ciencias de la Computación, Ingeniería, Geociencias o campos relacionados.
+* Requiere experiencia en Sistemas de Información Geográfica (SIG) con 7\\-9 años de experiencia como Desarrollador/a de SIG, Administrador/a Web de SIG, Ingeniero de SIG o un campo relacionado con capacidades demostradas en SIG.
+**Conocimientos y habilidades requeridas:**
+-------------------------------------------
+
+* Experiencia en el uso del conjunto de productos de Esri, incluidos ArcGIS Server Advanced o ArcGIS Enterprise, ArcGIS Online, ArcGIS Pro y secuencias de comandos de Python.
+* Experiencia profesional en TI en administración de Windows y Servidores Web.
+* Experiencia en el desarrollo de aplicaciones SIG basadas en la web.
+* Experiencia obligatoria en lenguaje de programación (HTML, JavaScript VB.Net, etc.)
+* Experiencia en gestión de bases de datos.
+* Experiencia en integración con herramientas CAD como AutoCAD, Civil 3D y SP3D.
+* Experiencia con modelado de datos, conversión de datos y software ETL como FME. (Deseable)
+* Experiencia trabajando con una variedad de conjuntos de datos vectoriales y ráster de fuentes públicas y privadas.
+* Competencia para trabajar con todos los formatos de datos geoespaciales.
+* Conocimiento de normas, procedimientos y prácticas cartográficas.
+* Conocimiento de las tendencias y estándares de la industria de los SIG, y las regulaciones locales, estatales y nacionales relevantes.
+* Fuerte capacidad para crear soluciones innovadoras para la industria AEC (Arquitectura, Ingeniería y Construcción).
+* Capaz de comunicarse con fluidez en inglés y en español, tanto verbalmente como en comunicaciones escritas (alto dominio). **Las entrevistas se realizarán en inglés.**
+**Beneficios:**
+---------------
+
+
+Por décadas, Bechtel ha trabajado para inspirar a la próxima generación de Ingenieros/as ¡y más allá! Porque nuestros equipos enfrentan uno de los desafíos más difíciles del mundo, ofrecemos beneficios sólidos para garantizar que nuestra gente prospere. Ya sea para avanzar en sus carreras, ofrecer programas para mejorar nuestra cultura o brindar tiempo para recargar energías, Bechtel tiene los beneficios para construir un legado de crecimiento sostenible. Obtenga más información en bechtel.com/total\\-rewards.
+
+**Equipos diversos construyen lo extraordinario:**
+--------------------------------------------------
+
+Como empresa global, Bechtel ha sido durante mucho tiempo el hogar de una vibrante multitud de nacionalidades, culturas, etnias y experiencias de vida. Esta diversidad nos ha convertido en un socio más confiable, solucionadores de problemas e innovadores más eficientes, y un destino más atractivo para el talento líder.
+
+
+Estamos comprometidos a ser una empresa donde cada colega sienta que pertenece—donde colegas se sientan parte de “Un Equipo”, respetados y compensados por lo que aportan, apoyados en perseguir sus metas, comprometidos con nuestros valores y propósitos, y tratados equitativamente.
+
+ ***Bechtel is an Equal Opportunity Employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, sexual orientation, gender identity and expression, age, national origin, disability, citizenship status (except as authorized by law), protected veteran status, genetic information, and any other characteristic protected by federal, state or local law.***
+
+***Applicants with a disability, who require a reasonable accommodation for any part of the application or hiring process, may e\\-mail their request to*** ***acesstmt@bechtel.com******.***","","https://cl.indeed.com/cmp/Bechtel","https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/abfeaf5cdbab5e3ee32aee3051121bd4","http://www.bechtel.com","Reston, VA","10,000+","more than $10B (USD)","Bechtel is one of the world’s most respected global engineering, construction, and project management organizations.","","","","","","","desarrollador python",6
+"li-4371034195","linkedin","https://www.linkedin.com/jobs/view/4371034195","","Senior Python Developer - Remote","INDI Staffing Services","","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/indi-staffing-services","","","","","","","","","","","","","python developer",6
+"in-ca4c04274c804771","indeed","https://cl.indeed.com/viewjob?jk=ca4c04274c804771","https://jobs.i2btech.com/jobs/desarrollador-a-senior-outsystems-remoto-latam-afe5aba6-1c2c-4ee1-b858-566d261bcb83","Desarrollador/a Senior OutSystems (Remoto - Latam)","I2B","Santiago de Chile, RM, CL","2026-02-10","","","","","","",False,"","","","","Publicada el 10 de febrero de 2026
+Ubicación**Santiago**
+Categoría**Informática y telecomunicaciones**
+Subcategoría**Programación**
+Sector**Servicios y tecnología de la información**
+Jornada laboral**Completa**
+Modalidad de trabajo**Teletrabajo/Remoto**
+Nivel profesional**Algo de responsabilidad**
+Departamento**Informática**
+  
+### **Descripción**
+
+
+En **I2B Technologies** somos cercanos, nos encanta brindar el apoyo a nuestros clientes para su mejora, nos preocupamos de la eficiencia y la calidad de vida de sus usuarios. Si buscas un lugar de trabajo donde puedas aprender, trabajar en equipo y mostrar tus ideas y llevarlas a cabo sin dejar de lado tu espacio personal
+
+
+¡Este es tu momento!
+
+  
+
+A pesar de ser freelance tendrás:
+
+
+Vacaciones anuales pagas por la empresa.
+
+
+4 medios días libres administrativos al año.
+
+
+Medio día libre por tu cumpleaños y el de tus hijos.
+
+
+Bonificación \\+ días libres por matrimonio y nacimiento de hijos.
+
+
+Financiamiento mensual de actividad física, FitnessDoer.
+
+
+Biblioteca digital para que puedas tener acceso a mucho conocimiento interesante.
+
+
+Premiamos la antigüedad de nuestros Doers con el financiamiento en la compra de equipos (Laptop/PC). Así como en la compra de cursos, certificaciones, diplomado e incluso posgrado (Siempre que estén relacionados con la actividad que realizas dentro de I2B Tech).
+
+
+Equipo cercano, con cero burocracia, sin código de vestimenta.
+
+
+Podrás trabajar 100% de forma remota.
+
+  
+
+¡Únete a nuestro equipo y sé parte de una empresa en constante crecimiento!
+
+
+### **Requisitos mínimos**
+
+* Buscamos un/a Desarrollador/a OutSystems Senior con experiencia comprobada en la plataforma y trayectoria liderando equipos técnicos. Este rol combina desarrollo hands\\-on, liderazgo técnico y acompañamiento al equipo, asegurando soluciones de calidad, escalables y alineadas a buenas prácticas.
+
+ **Experiencia requerida**
+
+* \\+5 años de experiencia comprobable desarrollando en OutSystems
+* Experiencia liderando equipos técnicos o actuando como Tech Lead
+* Participación en proyectos productivos de mediana y alta complejidad
+* Experiencia trabajando con equipos remotos en entornos ágiles
+* Capacidad para tomar decisiones técnicas y guiar al equipo
+
+* **️ Se validará experiencia real y demostrable en OutSystems (no solo conocimiento teórico).**
+
+ **Funciones y responsabilidades**
+
+* Liderar técnicamente proyectos desarrollados en OutSystems
+* Diseñar y desarrollar aplicaciones escalables y mantenibles
+* Definir estándares técnicos y buenas prácticas del equipo
+* Acompañar y mentorizar a desarrolladores junior y semi senior
+* Participar en decisiones de arquitectura y diseño de soluciones
+* Realizar revisiones de código y asegurar calidad técnica
+* Colaborar con equipos de negocio, UX y QA
+* Resolver incidencias técnicas y proponer mejoras continuas
+
+ **️ Stack tecnológico**
+
+* OutSystems (Web \\& Mobile)
+* Integration Studio
+* APIs REST / SOAP
+* SQL Server / Oracle / PostgreSQL
+* Arquitectura de aplicaciones low\\-code
+* Control de versiones (Git)
+* Metodologías ágiles (Scrum / Kanban)
+* Gestión de ambientes y deployments en OutSystems
+
+ **Deseable:**
+
+
+Experiencia en performance tuning y troubleshooting
+
+
+
+Conocimiento en arquitecturas escalables
+
+
+Certificaciones OutSystems (no excluyente)
+
+ **Beneficios**
+
+✨ Pago en USD
+
+
+
+✨ Contrato freelance a término indefinido
+
+
+
+✨ Vacaciones anuales pagadas
+
+
+
+✨ 4 medios días administrativos \\+ medio día libre por tu cumpleaños y el de tus hijos 
+
+
+
+✨ Bonificación y días especiales por matrimonio o nacimiento de hijos 
+
+
+
+✨ Aporte mensual para actividad física (FitnessDoer) ‍ ️
+
+
+
+✨ Acceso a biblioteca digital y formación continua 
+
+
+
+✨ Certificaciones en OutSystems (Partners Oficiales) 
+
+
+
+✨ Cultura sin burocracia ni código de vestimenta 
+
+ **Habilidades clave**
+
+
+Liderazgo técnico con enfoque humano
+
+
+
+Comunicación clara y cercana
+
+
+
+Capacidad de mentoría y acompañamiento
+
+
+
+Autonomía, responsabilidad y criterio técnico
+
+ **Características**:
+
+
+* Modalidad: 100% remoto, desde cualquier lugar del mundo
+* Zona horaria: Horario laboral chileno
+* Jornada: Full time
+
+
+¡Queremos conocerte! ¡Únete a I2B Tech y construyamos juntos algo increíble! 
+
+### **Competencias**
+
+* Buenas habilidades comunicacionales
+* Resolución de problemas
+* Administración del tiempo
+* Trabajo colaborarivo","","https://cl.indeed.com/cmp/I2b","","","","","","","","","","","","","desarrollador freelance",4
+"li-4370657762","linkedin","https://www.linkedin.com/jobs/view/4370657762","","Front End Developer CL (Remote)","Core Code io","Santiago, Santiago Metropolitan Region, Chile","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/core-code-io","","","","","","","","","","","","","react developer",0
+"li-4370675190","linkedin","https://www.linkedin.com/jobs/view/4370675190","","Fullstack Developer CL (Remote)","Core Code io","Santiago, Santiago Metropolitan Region, Chile","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/core-code-io","","","","","","","","","","","","","react developer",0
+"li-4370657760","linkedin","https://www.linkedin.com/jobs/view/4370657760","","Web Developer CL (Remote)","Core Code io","Santiago, Santiago Metropolitan Region, Chile","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/core-code-io","","","","","","","","","","","","","react developer",0
+"li-4370678066","linkedin","https://www.linkedin.com/jobs/view/4370678066","","Back End Developer CL (Remote)","Core Code io","Santiago, Santiago Metropolitan Region, Chile","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/core-code-io","","","","","","","","","","","","","backend developer nodejs",0
+"li-4370673345","linkedin","https://www.linkedin.com/jobs/view/4370673345","","Android Developer CL (Remote)","Core Code io","Santiago, Santiago Metropolitan Region, Chile","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/core-code-io","","","","","","","","","","","","","flutter mobile developer",0
+"li-4370665484","linkedin","https://www.linkedin.com/jobs/view/4370665484","","IOS Developer CL (Remote)","Core Code io","Santiago, Santiago Metropolitan Region, Chile","2026-02-10","","","","","","",True,"","","","","","","https://www.linkedin.com/company/core-code-io","","","","","","","","","","","","","flutter mobile developer",0
+"li-4373840649","linkedin","https://www.linkedin.com/jobs/view/4373840649","","Remote Full-Stack PHP/Angular Developer","Jobgether","","","","","","","","",True,"","","","","","","https://be.linkedin.com/company/jobgether","","","","","","","","","","","","","frontend developer typescript",0

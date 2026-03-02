@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.env
+
+# Sentry
+.sentry-native/
+
+# OS
+.DS_Store
