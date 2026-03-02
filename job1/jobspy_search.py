@@ -505,7 +505,7 @@ def send_email_report(run_id: str, results_md_path: Path, total: int) -> None:
     msg = MIMEMultipart()
     msg["From"] = gmail_user
     msg["To"] = gmail_user
-    msg["Subject"] = f"[JobSpy] {total} trabajos encontrados — {run_id}"
+    msg["Subject"] = f"[CRON] job-radar-latam — {total} resultados — {run_id}"
     msg.attach(MIMEText(body, "plain"))
 
     try:
