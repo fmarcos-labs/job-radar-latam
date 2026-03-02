@@ -186,6 +186,7 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 | v7.4    | Excluir "senior" absoluto via _is_absolute_senior(). Conserva "semi senior" y "semi-senior". Regex: \bsenior\b con guard semi[\s-]+senior |
 | v7.5    | "qa engineer" → "qa" (matchea "QA Manual Analyst" etc). Añadidos: engineering manager, drupal, hana |
 | v7.6    | `_is_absolute_senior()` ahora captura `Sr` (abreviatura). Excluir `remote from` en título (trabajo restringido a otro país). Excluir `iot`. |
+| v7.7    | Envío de email al terminar el run. `send_email_report()` usa `GMAIL_USER` + `GMAIL_APP_PASSWORD` (env vars). `railway.toml` para deploy en Railway como cron job (lunes y jueves 9am UTC-3). Railway usa Nixpacks para auto-detectar Python + Pipfile, sin Dockerfile. |
 
 ---
 
@@ -194,7 +195,7 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 > ⚠️ Antes de modificar el script, consultar siempre la documentación oficial.
 > No inventar parámetros ni comportamientos — verificar contra la fuente real.
 
-- **JobSpy (librería usada)**: https://github.com/speedyapply/JobSpy
+- **JobSpy (librería usada)**: https://github.com/cullenwatson/JobSpy
   - Parámetros de `scrape_jobs()`, sitios soportados, restricciones por sitio
   - Importante: restricciones de Indeed (`is_remote` + `hours_old` son incompatibles)
 

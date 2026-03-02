@@ -1,8 +1,12 @@
 import csv
 from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import os
 from pathlib import Path
 import random
 import re
+import smtplib
 import time
 
 import pandas as pd
@@ -12,7 +16,7 @@ from jobspy import scrape_jobs
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v7.6",
+    "version": "v7.7",
     "paises": ["Chile", "Argentina", "Colombia"],
     "sites_con_remote_flag": ["linkedin"],       # usan is_remote=True
     "sites_con_hours_old": ["indeed"],            # usan hours_old (incompatible con is_remote)
@@ -484,6 +488,33 @@ def main() -> None:
     print(f"  → discarded.md  (descartados para revisión)")
     print(f"Resumen legible en: {md_path}")
     print(f"Tiempo total: {mins}m {secs}s")
+
+    send_email_report(timestamp, md_path, len(df_final))
+
+
+def send_email_report(run_id: str, results_md_path: Path, total: int) -> None:
+    gmail_user = os.environ.get("GMAIL_USER")
+    gmail_password = os.environ.get("GMAIL_APP_PASSWORD")
+    if not gmail_user or not gmail_password:
+        print("[email] Variables GMAIL_USER / GMAIL_APP_PASSWORD no configuradas, saltando.")
+        return
+
+    with open(results_md_path) as f:
+        body = f.read()
+
+    msg = MIMEMultipart()
+    msg["From"] = gmail_user
+    msg["To"] = gmail_user
+    msg["Subject"] = f"[JobSpy] {total} trabajos encontrados — {run_id}"
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(gmail_user, gmail_password)
+            server.send_message(msg)
+        print(f"[email] Enviado a {gmail_user}")
+    except Exception as e:
+        print(f"[email] Error al enviar: {e}")
 
 
 if __name__ == "__main__":

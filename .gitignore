@@ -4,6 +4,12 @@ __pycache__/
 *.pyo
 .venv/
 .env
+Pipfile.lock
+
+# Run output folders
+job1/20*/
+job1/jobs_results_*
+job2/job2_results/
 
 # Sentry
 .sentry-native/

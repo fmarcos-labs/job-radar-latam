@@ -1,0 +1,3 @@
+[deploy]
+cronSchedule = "0 12 * * 1,4"   # Lunes y jueves a las 9am UTC-3 (12pm UTC)
+restartPolicyType = "NEVER"
