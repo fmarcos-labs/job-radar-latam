@@ -21,8 +21,7 @@
 - ✅ Output dual: `results.csv` + `results.md` + `discarded.md`
 - ✅ Anti-ban LinkedIn: sleep aleatorio entre calls
 - ✅ Envío de email al terminar (`send_email_report()`)
-- ✅ Dockerfile listo
-- ✅ `railway.toml` con cron configurado
+- ✅ `railway.toml` con cron configurado (Nixpacks auto-detecta Python)
 - ⏸️ Deploy en Railway: pendiente de ejecutar
 
 ---
