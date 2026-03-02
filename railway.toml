@@ -1,3 +1,2 @@
 [deploy]
-cronSchedule = "30 13 * * *"   # 10:30 UTC-3 (13:30 UTC), todos los dias
 restartPolicyType = "NEVER"
