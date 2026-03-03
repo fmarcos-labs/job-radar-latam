@@ -42,12 +42,16 @@ Idioma preferido en ofertas: **español**, aunque inglés también es aceptable.
 ## Estructura de archivos
 
 ```
-CURIOSIDADES/
+job-radar-latam/
 ├── CLAUDE.md                            ← este archivo (contexto para IA)
 ├── Pipfile                              ← dependencias (pipenv run job1)
 ├── README.md                            ← instrucciones de uso
+├── railway.toml                         ← config Railway (Nixpacks, restart policy)
+├── backlog/                             ← fases pendientes del proyecto
 └── job1/
-    ├── jobspy_search.py                 ← script principal (versión activa)
+    ├── jobspy_search.py                 ← entry point: main() orquesta el flujo (~70 líneas)
+    ├── config.py                        ← configuración: queries, pesos, filtros, empresas excluidas
+    ├── helpers.py                       ← funciones: scraping, filtros, scoring, export, email
     ├── manual_sources.json              ← URLs manuales de portales no soportados
     └── YYYYMMDD_HHMM/                  ← carpeta por run
         ├── results.csv                  ← datos completos para análisis por IA
