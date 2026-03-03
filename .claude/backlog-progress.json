@@ -1,9 +1,0 @@
-{
-  "project": "CURIOSIDADES",
-  "tech": "Python + JobSpy + Railway",
-  "current_phase": "FASE_0",
-  "phases": {
-    "FASE_0": { "status": "pending", "tasks": 0, "total": 5 },
-    "FASE_1": { "status": "pending", "tasks": 0, "total": 4 }
-  }
-}

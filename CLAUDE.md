@@ -45,9 +45,9 @@ Idioma preferido en ofertas: **español**, aunque inglés también es aceptable.
 job-radar-latam/
 ├── CLAUDE.md                            ← este archivo (contexto para IA)
 ├── Pipfile                              ← dependencias (pipenv run job1)
+├── Pipfile.lock                         ← lock file (trackeado, Railway lo necesita)
 ├── README.md                            ← instrucciones de uso
 ├── railway.toml                         ← config Railway (Nixpacks, restart policy)
-├── backlog/                             ← fases pendientes del proyecto
 └── job1/
     ├── jobspy_search.py                 ← entry point: main() orquesta el flujo (~70 líneas)
     ├── config.py                        ← configuración: queries, pesos, filtros, empresas excluidas

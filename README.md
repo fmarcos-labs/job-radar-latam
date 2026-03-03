@@ -1,31 +1,51 @@
-# CURIOSIDADES — Buscador de Empleo (job1)
+# job-radar-latam
 
-Script Python que busca ofertas de trabajo remotas en LATAM usando **python-jobspy**.
+Script Python que automatiza la búsqueda de ofertas de trabajo remotas en LATAM
+usando [python-jobspy](https://github.com/cullenwatson/JobSpy). Se ejecuta como
+cron job en Railway (lunes y jueves 9am CLT) y envía los resultados por email vía Resend.
 
 ---
 
 ## Requisitos
 
 - Python 3.10+
-- `pipenv` (instalar una vez: `pip install pipenv`)
+- `pipenv`
 
 ---
 
 ## Instalación
 
 ```bash
-cd ~/Volumes/Extended/github/CURIOSIDADES
 pipenv install
 ```
 
 ---
 
-## Uso
+## Uso local
 
 ```bash
 pipenv run job1
 ```
 
-Genera un CSV con los resultados en `job1/jobs_results_YYYYMMDD_HHMM.csv`.
+Genera una carpeta `job1/YYYYMMDD_HHMM/` con:
+- `results.csv` — datos completos
+- `results.md` — resumen legible con links
+- `discarded.md` — descartados para revisión manual
 
-> ⚠️ Esperar al menos 12-24h entre ejecuciones para evitar soft-ban de LinkedIn.
+---
+
+## Variables de entorno
+
+| Variable | Descripción |
+|----------|-------------|
+| `RESEND_API_KEY` | API key de Resend (envío de email) |
+| `RESEND_TO_EMAIL` | Email destino del reporte |
+
+---
+
+## Deploy (Railway)
+
+El proyecto se despliega automáticamente desde GitHub.
+Railway detecta Python + Pipfile vía Nixpacks, sin Dockerfile.
+
+El cron está configurado en el dashboard de Railway (no en `railway.toml`).
