@@ -28,85 +28,8 @@ from config import (
 
 
 # =============================================================================
-# FILTROS
-# =============================================================================
-
-def _is_absolute_senior(t: str) -> bool:
-    """Excluye 'senior' y 'Sr' absolutos pero conserva 'semi senior' y 'semi-senior'."""
-    if re.search(r"semi[\s-]+(senior|sr\.?)", t):
-        return False
-    if re.search(r"\bsenior\b", t):
-        return True
-    # "Sr Backend", "Sr. Developer", etc. (abreviatura de Senior)
-    if re.search(r"\bsr\.?\s", t):
-        return True
-    return False
-
-
-def matches_excluded(title: str) -> bool:
-    t = str(title or "").lower()
-    if any(word in t for word in EXCLUDE_TITLE_KEYWORDS):
-        return True
-    # "java" se excluye pero sin atrapar "javascript"
-    if re.search(r"\bjava\b(?!script)", t):
-        return True
-    # "senior" / "Sr" se excluye pero NO "semi senior" ni "semi-senior"
-    if _is_absolute_senior(t):
-        return True
-    # "Remote from Brazil / Mexico / etc." → puesto restringido a otro país
-    if re.search(r"\bremote from\b", t):
-        return True
-    return False
-
-
-def matches_excluded_company(company: str) -> bool:
-    c = str(company or "").lower()
-    return any(excluded in c for excluded in EXCLUDE_COMPANIES)
-
-
-def has_incompatible_tech(text: str) -> bool:
-    text_lower = str(text or "").lower()
-    incompatible_count = sum(1 for tech in INCOMPATIBLE_TECH if tech in text_lower)
-    return incompatible_count >= 2
-
-
-# =============================================================================
-# SCORING
-# =============================================================================
-
-def score_job(row) -> int:
-    title = str(row.get("title", "") or "").lower()
-    description = str(row.get("description", "") or "").lower()
-    score = 0
-    for tech, weight in CORE_TECH.items():
-        if tech in title:
-            score += weight * 2
-        elif tech in description:
-            score += weight
-    for tech, weight in SECONDARY_TECH.items():
-        if tech in title:
-            score += weight * 2
-        elif tech in description:
-            score += weight
-    if has_incompatible_tech(title):
-        score = max(0, score - 5)
-    return score
-
-
-# =============================================================================
 # SCRAPING
 # =============================================================================
-
-def _log_call(call_num: int, query: str, country: str, site: str) -> float:
-    label = f"[{call_num}/{TOTAL_CALLS}] {query} — {country} ({site})"
-    print(f"  {label}...", end="", flush=True)
-    return time.time()
-
-
-def _log_result(t_start: float, count: int) -> None:
-    elapsed = time.time() - t_start
-    print(f" {count} resultados ({elapsed:.1f}s)")
-
 
 def scrape_for_country(country: str, country_indeed: str, queries_linkedin: list, call_counter: list) -> list:
     """Scraping separado por sitio para respetar restricciones de cada API."""
@@ -115,7 +38,9 @@ def scrape_for_country(country: str, country_indeed: str, queries_linkedin: list
     # --- LinkedIn: queries específicas por país, con sleep anti-ban ---
     for query in queries_linkedin:
         call_counter[0] += 1
-        t = _log_call(call_counter[0], query, country, "LinkedIn")
+        label = f"[{call_counter[0]}/{TOTAL_CALLS}] {query} — {country} (LinkedIn)"
+        print(f"  {label}...", end="", flush=True)
+        t = time.time()
         try:
             jobs_linkedin = scrape_jobs(
                 site_name=SITES_REMOTE,
@@ -129,7 +54,8 @@ def scrape_for_country(country: str, country_indeed: str, queries_linkedin: list
             jobs_linkedin["search_query"] = query
             jobs_linkedin["pais"] = country
             results.append(jobs_linkedin)
-            _log_result(t, len(jobs_linkedin))
+            elapsed = time.time() - t
+            print(f" {len(jobs_linkedin)} resultados ({elapsed:.1f}s)")
         except Exception as e:
             print(f" ERROR: {e}")
         sleep_secs = random.choice([2, 4, 6, 9])
@@ -139,7 +65,9 @@ def scrape_for_country(country: str, country_indeed: str, queries_linkedin: list
     # --- Indeed: todas las queries (rápido, sin riesgo de ban) ---
     for query in QUERIES_INDEED:
         call_counter[0] += 1
-        t = _log_call(call_counter[0], query, country, "Indeed")
+        label = f"[{call_counter[0]}/{TOTAL_CALLS}] {query} — {country} (Indeed)"
+        print(f"  {label}...", end="", flush=True)
+        t = time.time()
         try:
             jobs_indeed = scrape_jobs(
                 site_name=SITES_HOURS,
@@ -154,7 +82,8 @@ def scrape_for_country(country: str, country_indeed: str, queries_linkedin: list
             jobs_indeed["search_query"] = query
             jobs_indeed["pais"] = country
             results.append(jobs_indeed)
-            _log_result(t, len(jobs_indeed))
+            elapsed = time.time() - t
+            print(f" {len(jobs_indeed)} resultados ({elapsed:.1f}s)")
         except Exception as e:
             print(f" ERROR: {e}")
 
@@ -184,8 +113,78 @@ def scrape_all_countries() -> list:
 
 
 # =============================================================================
-# FILTROS PIPELINE
+# PIPELINE: FILTROS + SCORING
+#
+# Flujo: dedupe → remote → títulos → empresas → score → relevancia
+# Las funciones con _ son helpers internos usados por apply_filters().
 # =============================================================================
+
+def _is_absolute_senior(t: str) -> bool:
+    """Excluye 'senior' y 'Sr' absolutos pero conserva 'semi senior' y 'semi-senior'."""
+    if re.search(r"semi[\s-]+(senior|sr\.?)", t):
+        return False
+    if re.search(r"\bsenior\b", t):
+        return True
+    # "Sr Backend", "Sr. Developer", etc. (abreviatura de Senior)
+    if re.search(r"\bsr\.?\s", t):
+        return True
+    return False
+
+
+def _matches_excluded_title(title: str) -> bool:
+    """Retorna True si el título contiene keywords excluidas."""
+    t = str(title or "").lower()
+    if any(word in t for word in EXCLUDE_TITLE_KEYWORDS):
+        return True
+    # "java" se excluye pero sin atrapar "javascript"
+    if re.search(r"\bjava\b(?!script)", t):
+        return True
+    # "senior" / "Sr" se excluye pero NO "semi senior" ni "semi-senior"
+    if _is_absolute_senior(t):
+        return True
+    # "Remote from Brazil / Mexico / etc." → puesto restringido a otro país
+    if re.search(r"\bremote from\b", t):
+        return True
+    return False
+
+
+def _matches_excluded_company(company: str) -> bool:
+    """Retorna True si la empresa está en la lista de excluidas."""
+    c = str(company or "").lower()
+    return any(excluded in c for excluded in EXCLUDE_COMPANIES)
+
+
+def _has_incompatible_tech(text: str) -> bool:
+    """Retorna True si el texto tiene 2+ tecnologías incompatibles."""
+    text_lower = str(text or "").lower()
+    incompatible_count = sum(1 for tech in INCOMPATIBLE_TECH if tech in text_lower)
+    return incompatible_count >= 2
+
+
+def _calculate_match_score(row) -> int:
+    """Puntaje basado en tecnologías encontradas en título y descripción.
+
+    Título contiene tech  → peso × 2 (más específico).
+    Descripción contiene  → peso × 1.
+    2+ techs incompatibles en título → penalización -5.
+    """
+    title = str(row.get("title", "") or "").lower()
+    description = str(row.get("description", "") or "").lower()
+    score = 0
+    for tech, weight in CORE_TECH.items():
+        if tech in title:
+            score += weight * 2
+        elif tech in description:
+            score += weight
+    for tech, weight in SECONDARY_TECH.items():
+        if tech in title:
+            score += weight * 2
+        elif tech in description:
+            score += weight
+    if _has_incompatible_tech(title):
+        score = max(0, score - 5)
+    return score
+
 
 def apply_filters(combined: pd.DataFrame) -> tuple:
     """Aplica todos los filtros en orden. Retorna (combined_filtrado, discard_groups)."""
@@ -216,19 +215,19 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
     print(f"[debug] Tras filtro remote: {len(combined)} (descartados: {len(discarded_remote)})")
 
     # Excluir títulos incompatibles
-    mask_title = combined["title"].astype(str).apply(matches_excluded)
+    mask_title = combined["title"].astype(str).apply(_matches_excluded_title)
     discarded_titles = combined[mask_title]
     combined = combined[~mask_title]
     print(f"[debug] Tras excluir títulos: {len(combined)} (descartados: {len(discarded_titles)})")
 
     # Excluir empresas
-    mask_company = combined["company"].astype(str).apply(matches_excluded_company)
+    mask_company = combined["company"].astype(str).apply(_matches_excluded_company)
     discarded_companies = combined[mask_company]
     combined = combined[~mask_company]
     print(f"[debug] Tras excluir empresas: {len(combined)} (descartados: {len(discarded_companies)})")
 
     # Score
-    combined["match_score"] = combined.apply(score_job, axis=1)
+    combined["match_score"] = combined.apply(_calculate_match_score, axis=1)
 
     sort_cols = ["site", "match_score"]
     ascending = [True, False]
@@ -260,10 +259,14 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
 # EXPORTACIÓN
 # =============================================================================
 
-def export_csv(combined: pd.DataFrame, run_dir: Path, timestamp: str) -> Path:
-    """Exporta CSV con metadata de configuración en el header."""
-    out_path = run_dir / "results.csv"
-    with open(out_path, "w", newline="", encoding="utf-8") as f:
+def export_results(combined: pd.DataFrame, discard_groups: list, run_dir: Path, timestamp: str) -> Path:
+    """Exporta los 3 archivos del run: results.csv, results.md, discarded.md.
+    Retorna la ruta al archivo results.md (usado para el email).
+    """
+
+    # --- results.csv (datos completos con metadata de configuración) ---
+    csv_path = run_dir / "results.csv"
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
         f.write(f"# CONFIG_VERSION={CONFIG['version']}\n")
         f.write(f"# TIMESTAMP={timestamp}\n")
         f.write(f"# PAISES={','.join(CONFIG['paises'])}\n")
@@ -280,17 +283,14 @@ def export_csv(combined: pd.DataFrame, run_dir: Path, timestamp: str) -> Path:
         f.write("#\n")
 
     combined.to_csv(
-        out_path,
+        csv_path,
         mode="a",
         quoting=csv.QUOTE_NONNUMERIC,
         escapechar="\\",
         index=False,
     )
-    return out_path
 
-
-def export_markdown(combined: pd.DataFrame, run_dir: Path, timestamp: str) -> Path:
-    """Exporta resumen legible en Markdown."""
+    # --- results.md (resumen legible con links) ---
     md_path = run_dir / "results.md"
     with open(md_path, "w", encoding="utf-8") as f:
         f.write(f"# Resultados de busqueda — {timestamp}\n\n")
@@ -313,11 +313,8 @@ def export_markdown(combined: pd.DataFrame, run_dir: Path, timestamp: str) -> Pa
                 title_cell = f"[{title}]({url})" if url else title
                 f.write(f"| {score} | {title_cell} | {company} | {pais} | {date} |\n")
             f.write("\n")
-    return md_path
 
-
-def export_discarded(discard_groups: list, run_dir: Path, timestamp: str) -> Path:
-    """Exporta descartados para revisión manual."""
+    # --- discarded.md (descartados para revisión manual) ---
     discarded_path = run_dir / "discarded.md"
     with open(discarded_path, "w", encoding="utf-8") as f:
         total_discarded = sum(len(df) for _, df in discard_groups)
@@ -337,7 +334,8 @@ def export_discarded(discard_groups: list, run_dir: Path, timestamp: str) -> Pat
                 title_cell = f"[{title}]({url})" if url else title
                 f.write(f"| {title_cell} | {company} | {pais} |\n")
             f.write("\n")
-    return discarded_path
+
+    return md_path
 
 
 # =============================================================================

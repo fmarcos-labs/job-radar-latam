@@ -7,9 +7,7 @@ import pandas as pd
 from helpers import (
     scrape_all_countries,
     apply_filters,
-    export_csv,
-    export_markdown,
-    export_discarded,
+    export_results,
     send_email_report,
 )
 
@@ -48,9 +46,7 @@ def main() -> None:
     run_dir = Path(__file__).parent / timestamp
     run_dir.mkdir(exist_ok=True)
 
-    export_csv(combined, run_dir, timestamp)
-    md_path = export_markdown(combined, run_dir, timestamp)
-    export_discarded(discard_groups, run_dir, timestamp)
+    md_path = export_results(combined, discard_groups, run_dir, timestamp)
 
     elapsed_total = time.time() - t_start_total
     mins, secs = divmod(int(elapsed_total), 60)
