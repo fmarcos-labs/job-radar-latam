@@ -337,7 +337,6 @@ def main() -> None:
 
     # Filtro remote: LinkedIn ya viene filtrado con is_remote=True.
     # Indeed puede traer presenciales, filtramos por flag o keywords.
-    before_remote = len(combined)
     remote_keywords = ["remote", "remoto", "teletrabajo", "100% remoto", "full remote"]
 
     def is_likely_remote(row) -> bool:
@@ -354,14 +353,12 @@ def main() -> None:
     print(f"[debug] Tras filtro remote: {len(combined)} (descartados: {len(discarded_remote)})")
 
     # Excluir títulos incompatibles
-    before_exclude = len(combined)
     mask_title = combined["title"].astype(str).apply(matches_excluded)
     discarded_titles = combined[mask_title]
     combined = combined[~mask_title]
     print(f"[debug] Tras excluir títulos: {len(combined)} (descartados: {len(discarded_titles)})")
 
     # Excluir empresas
-    before_company = len(combined)
     mask_company = combined["company"].astype(str).apply(matches_excluded_company)
     discarded_companies = combined[mask_company]
     combined = combined[~mask_company]
@@ -378,7 +375,6 @@ def main() -> None:
     combined = combined.sort_values(by=sort_cols, ascending=ascending)
 
     # Filtro de relevancia
-    before_match = len(combined)
     mask_relevance = (
         (combined["match_score"] >= CONFIG["score_minimo"]) |
         (combined["title"].str.contains("fullstack|frontend|backend|developer|ingeniero|desarrollador", case=False, na=False))
@@ -489,7 +485,7 @@ def main() -> None:
     print(f"Resumen legible en: {md_path}")
     print(f"Tiempo total: {mins}m {secs}s")
 
-    send_email_report(timestamp, md_path, len(df_final))
+    send_email_report(timestamp, md_path, len(combined))
 
 
 def send_email_report(run_id: str, results_md_path: Path, total: int) -> None:
