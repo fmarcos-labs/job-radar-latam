@@ -46,7 +46,7 @@ def main() -> None:
     run_dir = Path(__file__).parent / timestamp
     run_dir.mkdir(exist_ok=True)
 
-    md_path = export_results(combined, discard_groups, run_dir, timestamp)
+    results_md_path = export_results(combined, discard_groups, run_dir, timestamp)
 
     elapsed_total = time.time() - t_start_total
     mins, secs = divmod(int(elapsed_total), 60)
@@ -54,11 +54,11 @@ def main() -> None:
     print(f"  → results.csv   (datos completos)")
     print(f"  → results.md    (resumen legible)")
     print(f"  → discarded.md  (descartados para revisión)")
-    print(f"Resumen legible en: {md_path}")
+    print(f"Resumen legible en: {results_md_path}")
     print(f"Tiempo total: {mins}m {secs}s")
 
-    # 5. Email con resultados
-    send_email_report(timestamp, md_path, len(combined))
+    # 5. Email con results.md
+    send_email_report(timestamp, results_md_path, len(combined))
 
 
 if __name__ == "__main__":

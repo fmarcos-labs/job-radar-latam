@@ -1,15 +1,13 @@
 import csv
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 import os
 from pathlib import Path
 import random
 import re
-import smtplib
 import time
 
 import pandas as pd
 from jobspy import scrape_jobs
+import resend
 
 from config import (
     CONFIG,
@@ -343,25 +341,24 @@ def export_results(combined: pd.DataFrame, discard_groups: list, run_dir: Path, 
 # =============================================================================
 
 def send_email_report(run_id: str, results_md_path: Path, total: int) -> None:
-    gmail_user = os.environ.get("GMAIL_USER")
-    gmail_password = os.environ.get("GMAIL_APP_PASSWORD")
-    if not gmail_user or not gmail_password:
-        print("[email] Variables GMAIL_USER / GMAIL_APP_PASSWORD no configuradas, saltando.")
+    api_key = os.environ.get("RESEND_API_KEY")
+    to_email = os.environ.get("RESEND_TO_EMAIL")
+    if not api_key or not to_email:
+        print("[email] Variables RESEND_API_KEY / RESEND_TO_EMAIL no configuradas, saltando.")
         return
 
     with open(results_md_path) as f:
         body = f.read()
 
-    msg = MIMEMultipart()
-    msg["From"] = gmail_user
-    msg["To"] = gmail_user
-    msg["Subject"] = f"[CRON] job-radar-latam — {total} resultados — {run_id}"
-    msg.attach(MIMEText(body, "plain"))
+    resend.api_key = api_key
 
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(gmail_user, gmail_password)
-            server.send_message(msg)
-        print(f"[email] Enviado a {gmail_user}")
+        resend.Emails.send({
+            "from": "job-radar@resend.dev",
+            "to": to_email,
+            "subject": f"[CRON] job-radar-latam — {total} resultados — {run_id}",
+            "text": body,
+        })
+        print(f"[email] Enviado a {to_email}")
     except Exception as e:
         print(f"[email] Error al enviar: {e}")
