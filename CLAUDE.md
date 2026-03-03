@@ -191,7 +191,7 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 | v7.5    | "qa engineer" → "qa" (matchea "QA Manual Analyst" etc). Añadidos: engineering manager, drupal, hana |
 | v7.6    | `_is_absolute_senior()` ahora captura `Sr` (abreviatura). Excluir `remote from` en título (trabajo restringido a otro país). Excluir `iot`. |
 | v7.7    | Envío de email al terminar el run. `send_email_report()` usa `GMAIL_USER` + `GMAIL_APP_PASSWORD` (env vars). `railway.toml` para deploy en Railway como cron job (lunes y jueves 9am UTC-3). Railway usa Nixpacks para auto-detectar Python + Pipfile, sin Dockerfile. |
-| v7.8    | Fix email en Railway: cambio de `SMTP_SSL` puerto 465 a `SMTP` puerto 587 con `starttls()`. Railway bloquea el puerto 465 (SMTP SSL). |
+| v7.8    | Fix email en Railway: reemplazado SMTP (bloqueado en Hobby plan) por Resend HTTP API. Variables: `RESEND_API_KEY` + `RESEND_TO_EMAIL`. Dependencia `resend` agregada al Pipfile. |
 
 ---
 
