@@ -69,6 +69,7 @@ job-radar-latam/
 |-------------|----------------------|--------------------------------------------|
 | LinkedIn    | `is_remote=True`     | Filtra remoto a nivel API nativo            |
 | Indeed      | `hours_old=168`      | API prohíbe usar is_remote + hours_old juntos |
+| Glassdoor   | `hours_old=168`      | Mismos parámetros que Indeed. Llamado junto a Indeed en el mismo `scrape_jobs()`. |
 | Google      | ❌ eliminado          | Retorna 0 resultados para LATAM            |
 | ZipRecruiter| ❌ eliminado          | Solo funciona en US/Canada                 |
 
@@ -77,13 +78,15 @@ job-radar-latam/
 LinkedIn es lento (~20s/call) y hace soft-ban. Indeed es rápido (~1s/call) y sin riesgo.
 Por eso se usan **tres listas de queries independientes**:
 
-| Lista                    | Cantidad | Usado en          | Razón                                      |
-|--------------------------|----------|-------------------|--------------------------------------------|
-| `QUERIES_LINKEDIN_FULL`  | 12       | Chile             | Queries curadas, sin redundancia            |
-| `QUERIES_LINKEDIN_LIGHT` | 6        | Argentina, Colombia| Solo queries genéricas de amplio espectro   |
-| `QUERIES_INDEED`         | 27       | Los 3 países      | Todas las queries (Indeed es rápido y gratis)|
+| Lista                    | Cantidad | Usado en                              | Razón                                      |
+|--------------------------|----------|---------------------------------------|--------------------------------------------|
+| `QUERIES_LINKEDIN_FULL`  | 12       | Chile                                 | Queries curadas, sin redundancia            |
+| `QUERIES_LINKEDIN_LIGHT` | 6        | Argentina                             | Solo queries genéricas de amplio espectro   |
+| `QUERIES_INDEED`         | 27       | Los 4 países (Indeed + Glassdoor)     | Todas las queries. Each call scrapes both. |
 
-**Total calls:** 12 + 6×2 + 27×3 = 105 (vs 162 en v6).
+**Anti-ban LinkedIn:** sleep aleatorio `[2, 4, 6, 9]` segundos entre cada call LinkedIn.
+
+**Total calls:** 12 + 6 + 27×4 = 126 (vs 105 en v7.7).
 
 **Anti-ban LinkedIn:** sleep aleatorio `[2, 4, 6, 9]` segundos entre cada call LinkedIn.
 
@@ -96,18 +99,20 @@ Estas queries retornaban los mismos jobs que las queries genéricas (57% duplica
 
 ### Países buscados
 
-- 🇨🇱 Chile — mercado local (LinkedIn FULL: 12 queries)
-- 🇦🇷 Argentina — mismo horario UTC-3, gran volumen tech (LinkedIn LIGHT: 6 queries)
-- 🇨🇴 Colombia — 2h diferencia, buen mercado tech remoto (LinkedIn LIGHT: 6 queries)
+- 🇨🇱 Chile — mercado local, UTC-3/-4 (LinkedIn FULL: 12 queries)
+- 🇦🇷 Argentina — UTC-3 fijo, 0-1h diff, mayor volumen tech LATAM hispano (LinkedIn LIGHT: 6 queries)
+- 🇺🇾 Uruguay — UTC-3 fijo, 0-1h diff, bajo volumen pero remoto-friendly (solo Indeed+Glassdoor)
+- 🇵🇪 Peru — UTC-5 fijo, 1-2h diff, mercado creciente (solo Indeed+Glassdoor)
 
 ### Pipeline de filtros (en orden)
 
 1. **Dedupe por URL** → elimina duplicados entre búsquedas
-2. **Filtro remote** → LinkedIn ya viene filtrado; Indeed se filtra por keywords
+2. **Filtro remote** → LinkedIn ya viene filtrado; Indeed/Glassdoor se filtra por keywords
 3. **Excluir títulos** → elimina tech incompatible (PHP, Angular, .NET, C#, Java, Kotlin, Ruby, Rails, OutSystems, Shiny, Shopify, Odoo, Moodle, Elixir, Golang, React Native) y roles fuera de alcance (Lead, Staff, Principal, Director, Trainee, Práctica). Java usa regex `\bjava\b(?!script)` para no atrapar "javascript".
 4. **Excluir empresas** → ver lista EXCLUDE_COMPANIES
-5. **Score de match** → puntaje basado en tecnologías encontradas en título y descripción
-6. **Filtro de relevancia** → solo pasan trabajos con score ≥ 2 O que sean roles de dev genéricos
+5. **Filtro LATAM** → jobs de países no-chilenos solo pasan si mencionan apertura regional (LATAM_KEYWORDS)
+6. **Score de match** → puntaje basado en tecnologías encontradas en título y descripción
+7. **Filtro de relevancia** → solo pasan trabajos con score ≥ 2 O que sean roles de dev genéricos
 
 ### Sistema de scoring
 
@@ -143,17 +148,17 @@ Pesos actuales:
 Cada archivo de resultados incluye cabecera de configuración:
 
 ```
-# CONFIG_VERSION=v7
+# CONFIG_VERSION=v7.9
 # TIMESTAMP=20260217_1200
-# PAISES=Chile,Argentina,Colombia
+# PAISES=Chile,Argentina,Uruguay,Peru
 # SITES_REMOTE=linkedin
-# SITES_HOURS=indeed
+# SITES_HOURS=indeed,glassdoor
 # HOURS_OLD=168
 # SCORE_MINIMO=2
 # QUERIES_LINKEDIN_FULL=12
 # QUERIES_LINKEDIN_LIGHT=6
 # QUERIES_INDEED=27
-# TOTAL_CALLS=105
+# TOTAL_CALLS=126
 # TOTAL_RESULTADOS=XX
 ```
 
@@ -192,6 +197,8 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 | v7.6    | `_is_absolute_senior()` ahora captura `Sr` (abreviatura). Excluir `remote from` en título (trabajo restringido a otro país). Excluir `iot`. |
 | v7.7    | Envío de email al terminar el run. `send_email_report()` usa `GMAIL_USER` + `GMAIL_APP_PASSWORD` (env vars). `railway.toml` para deploy en Railway como cron job (lunes y jueves 9am UTC-3). Railway usa Nixpacks para auto-detectar Python + Pipfile, sin Dockerfile. |
 | v7.8    | Fix email en Railway: reemplazado SMTP (bloqueado en Hobby plan) por Resend HTTP API. Variables: `RESEND_API_KEY` + `RESEND_TO_EMAIL`. Dependencia `resend` agregada al Pipfile. |
+| v7.9    | Colombia reemplazada por Uruguay (UTC-3). Agregado Peru (UTC-5). Solo Chile usa FULL (12q), resto LIGHT (6q). Glassdoor descartado: no soporta LATAM excepto Brazil/Mexico. 138 calls totales (vs 105 en v7). URL repo JobSpy actualizada a speedyapply/JobSpy. |
+| v8.0    | Glassdoor integrado junto a Indeed (mismo `scrape_jobs()` call). LinkedIn reducido: solo Chile FULL + Argentina LIGHT (Uruguay/Peru solo Indeed+Glassdoor). Nuevo filtro LATAM en pipeline: jobs no-chilenos solo pasan si descripción menciona apertura regional. 126 calls totales. |
 
 ---
 
@@ -220,6 +227,10 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 - **`Sr` no es capturado por `\bsenior\b`**. Se maneja por separado con regex `\bsr\.?\s` en `_is_absolute_senior()`.
 - **"Remote from [país]"** indica puesto restringido a ese país específico, no LATAM general. Se excluye con regex `\bremote from\b` en `matches_excluded()`.
 - **"java" no se puede excluir con substring** porque `"java" in "javascript"` es True. Se usa regex `\bjava\b(?!script)`.
+- **Indeed y Glassdoor deben llamarse por separado**: Si se combinan en `site_name=["indeed", "glassdoor"]` y Glassdoor lanza un error 403, el `except` captura el fallo de todo el call y Indeed queda en 0 resultados. Solución: iterar sobre `SITES_HOURS` haciendo un `scrape_jobs()` por sitio. Verificado en run 20260305: Indeed devolvió 0 porque Glassdoor fallaba en la llamada combinada.
+- **"home office" es el término LATAM para remoto**: En Chile/LATAM las ofertas usan "home office" en vez de "remoto". Si no está en `remote_keywords`, cientos de jobs legítimos caen en el filtro remote. Verificado en run 20260305: 432 jobs de Chile descartados incorrectamente por esta causa.
+- **`is_remote` en pandas no siempre es Python `True`**: JobSpy puede retornar `1`, `"True"` u otros valores. Usar `in (True, 1, "True", "true")` en vez de `is True`.
+- **Glassdoor y el asterisco (*)**: El * en la lista de países de JobSpy indica "oficialmente verificado", NO "el único que funciona". Issue #277 confirma que Malaysia (sin *) devuelve resultados. El asterisco era un falso bloqueante. Glassdoor funciona globalmente; el error de 0 resultados fue por user-agent desactualizado, no por el país.
 - **El CSV ordena por site → score DESC**. Primero Indeed, luego LinkedIn, cada grupo por score. El .md es más fácil de leer que el .csv (cada fila del CSV ocupa ~35 líneas por la descripción larga).
 - **"principal engineer" no matchea "Principal Full Stack Engineer"** porque la substring incluye "engineer" con palabras en el medio. Usar `"principal"` solo.
 - **Roles no-dev contaminan resultados**: QA, Designer, Data Analyst, DevOps, Salesforce, Support Engineer pasan el filtro si no están explícitamente excluidos.

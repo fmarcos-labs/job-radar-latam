@@ -21,6 +21,7 @@ from config import (
     INCOMPATIBLE_TECH,
     EXCLUDE_TITLE_KEYWORDS,
     EXCLUDE_COMPANIES,
+    LATAM_KEYWORDS,
     TOTAL_CALLS,
 )
 
@@ -60,30 +61,32 @@ def scrape_for_country(country: str, country_indeed: str, queries_linkedin: list
         print(f"    [sleep {sleep_secs}s anti-ban LinkedIn]")
         time.sleep(sleep_secs)
 
-    # --- Indeed: todas las queries (rápido, sin riesgo de ban) ---
+    # --- Indeed + Glassdoor: llamadas independientes para que un fallo de Glassdoor
+    # no afecte a Indeed (ambos usan hours_old, incompatible con is_remote) ---
     for query in QUERIES_INDEED:
-        call_counter[0] += 1
-        label = f"[{call_counter[0]}/{TOTAL_CALLS}] {query} — {country} (Indeed)"
-        print(f"  {label}...", end="", flush=True)
-        t = time.time()
-        try:
-            jobs_indeed = scrape_jobs(
-                site_name=SITES_HOURS,
-                search_term=query,
-                location=country,
-                results_wanted=CONFIG["results_wanted"],
-                hours_old=CONFIG["hours_old"],
-                country_indeed=country_indeed,
-                description_format="markdown",
-                verbose=0,
-            )
-            jobs_indeed["search_query"] = query
-            jobs_indeed["pais"] = country
-            results.append(jobs_indeed)
-            elapsed = time.time() - t
-            print(f" {len(jobs_indeed)} resultados ({elapsed:.1f}s)")
-        except Exception as e:
-            print(f" ERROR: {e}")
+        for site in SITES_HOURS:
+            call_counter[0] += 1
+            label = f"[{call_counter[0]}/{TOTAL_CALLS}] {query} — {country} ({site.capitalize()})"
+            print(f"  {label}...", end="", flush=True)
+            t = time.time()
+            try:
+                jobs_site = scrape_jobs(
+                    site_name=[site],
+                    search_term=query,
+                    location=country,
+                    results_wanted=CONFIG["results_wanted"],
+                    hours_old=CONFIG["hours_old"],
+                    country_indeed=country_indeed,
+                    description_format="markdown",
+                    verbose=0,
+                )
+                jobs_site["search_query"] = query
+                jobs_site["pais"] = country
+                results.append(jobs_site)
+                elapsed = time.time() - t
+                print(f" {len(jobs_site)} resultados ({elapsed:.1f}s)")
+            except Exception as e:
+                print(f" ERROR: {e}")
 
     return results
 
@@ -93,10 +96,12 @@ def scrape_all_countries() -> list:
     all_jobs = []
     call_counter = [0]  # lista para mutabilidad por referencia
 
+    # queries_linkedin=[] → skip LinkedIn para ese país (solo Indeed+Glassdoor)
     paises = [
-        ("Chile",     "Chile",     QUERIES_LINKEDIN_FULL),
-        ("Argentina", "Argentina", QUERIES_LINKEDIN_LIGHT),
-        ("Colombia",  "Colombia",  QUERIES_LINKEDIN_LIGHT),
+        ("Chile",     "Chile",     QUERIES_LINKEDIN_FULL),   # LinkedIn + Indeed + Glassdoor
+        ("Argentina", "Argentina", QUERIES_LINKEDIN_LIGHT),  # LinkedIn + Indeed + Glassdoor
+        ("Uruguay",   "Uruguay",   []),                       # Solo Indeed + Glassdoor
+        ("Peru",      "Peru",      []),                       # Solo Indeed + Glassdoor
     ]
 
     for pais_nombre, pais_indeed, queries_linkedin in paises:
@@ -184,6 +189,15 @@ def _calculate_match_score(row) -> int:
     return score
 
 
+def _is_latam_open(row) -> bool:
+    """Jobs de Chile siempre pasan. Jobs de otros países solo pasan si el título
+    o descripción menciona apertura a LATAM, la región, o Chile explícitamente."""
+    if str(row.get("pais", "")).lower() == "chile":
+        return True
+    text = (str(row.get("title", "") or "") + " " + str(row.get("description", "") or "")).lower()
+    return any(kw in text for kw in LATAM_KEYWORDS)
+
+
 def apply_filters(combined: pd.DataFrame) -> tuple:
     """Aplica todos los filtros en orden. Retorna (combined_filtrado, discard_groups)."""
 
@@ -197,10 +211,15 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
 
     # Filtro remote: LinkedIn ya viene filtrado con is_remote=True.
     # Indeed puede traer presenciales, filtramos por flag o keywords.
-    remote_keywords = ["remote", "remoto", "teletrabajo", "100% remoto", "full remote"]
+    # "home office" es el término más común en Chile/LATAM para trabajo remoto.
+    remote_keywords = [
+        "remote", "remoto", "teletrabajo", "full remote",
+        "home office", "trabajo remoto", "desde casa", "desde tu casa",
+        "trabajo en casa", "100% remoto", "100% remote",
+    ]
 
     def is_likely_remote(row) -> bool:
-        if row.get("is_remote") is True:
+        if row.get("is_remote") in (True, 1, "True", "true"):
             return True
         title    = str(row.get("title", "") or "").lower()
         desc     = str(row.get("description", "") or "").lower()
@@ -223,6 +242,12 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
     discarded_companies = combined[mask_company]
     combined = combined[~mask_company]
     print(f"[debug] Tras excluir empresas: {len(combined)} (descartados: {len(discarded_companies)})")
+
+    # Filtro LATAM: jobs no-chilenos solo pasan si mencionan apertura regional
+    mask_latam = combined.apply(_is_latam_open, axis=1)
+    discarded_latam = combined[~mask_latam]
+    combined = combined[mask_latam]
+    print(f"[debug] Tras filtro LATAM: {len(combined)} (descartados: {len(discarded_latam)})")
 
     # Score
     combined["match_score"] = combined.apply(_calculate_match_score, axis=1)
@@ -247,6 +272,7 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
         ("Filtro remote (no parece remoto)", discarded_remote),
         ("Filtro título (keyword excluida)", discarded_titles),
         ("Filtro empresa (empresa excluida)", discarded_companies),
+        ("Filtro LATAM (job no-chileno sin apertura regional)", discarded_latam),
         ("Filtro relevancia (score bajo + título genérico)", discarded_relevance),
     ]
 
