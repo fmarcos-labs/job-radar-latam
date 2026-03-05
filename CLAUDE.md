@@ -200,7 +200,7 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 > ⚠️ Antes de modificar el script, consultar siempre la documentación oficial.
 > No inventar parámetros ni comportamientos — verificar contra la fuente real.
 
-- **JobSpy (librería usada)**: https://github.com/cullenwatson/JobSpy
+- **JobSpy (librería usada)**: https://github.com/speedyapply/JobSpy
   - Parámetros de `scrape_jobs()`, sitios soportados, restricciones por sitio
   - Importante: restricciones de Indeed (`is_remote` + `hours_old` son incompatibles)
 
