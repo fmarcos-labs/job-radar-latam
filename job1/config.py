@@ -2,15 +2,15 @@
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v8.0",
+    "version": "v9.0",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
-    "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
-    "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
+    "sites_con_remote_flag": ["linkedin"],               # ya no usamos is_remote — buscamos presencial/híbrido
+    "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old
     "sites_eliminados": ["google", "zip_recruiter"],     # no funcionan para LATAM
     "hours_old": 168,
     "results_wanted": 50,
     "score_minimo": 2,
-    "nota": "v8.0: Indeed y Glassdoor separados (un fallo de Glassdoor no mata Indeed). LinkedIn solo Chile+AR. Uruguay/Peru solo Indeed+Glassdoor. Filtro LATAM para jobs no-chilenos.",
+    "nota": "v9.0: Búsqueda presencial/híbrido (sin is_remote). Indeed y Glassdoor separados. LinkedIn Chile+AR. Uruguay/Peru solo Indeed+Glassdoor. Filtro LATAM para jobs no-chilenos.",
 }
 
 # LinkedIn Chile: 18 queries (stack completo + español + AI)
@@ -20,13 +20,11 @@ QUERIES_LINKEDIN_FULL = [
     "nodejs developer",
     "python developer",
     "flutter developer",
-    "remote developer latam",
     "backend developer",
     "frontend developer",
     "ingeniero fullstack",
     "desarrollador fullstack",
     "desarrollador react",
-    "desarrollador freelance",
     "ai developer",
     "nextjs developer",
     "nestjs developer",
@@ -50,7 +48,6 @@ QUERIES_LINKEDIN_LIGHT = [
     "fullstack developer typescript",
     "react developer",
     "backend developer",
-    "remote developer latam",
     "desarrollador fullstack",
     "ingeniero fullstack",
 ]
@@ -67,9 +64,6 @@ QUERIES_INDEED = [
     "fastapi developer",
     "backend python developer",
     "flutter developer",
-    "remote developer latam",
-    "fullstack remote latam",
-    "react remote latam",
     "senior fullstack developer",
     "graphql developer",
     "backend developer",
@@ -82,9 +76,6 @@ QUERIES_INDEED = [
     "desarrollador fullstack",
     "desarrollador python",
     "desarrollador react",
-    "freelance developer",
-    "fullstack freelance",
-    "desarrollador freelance",
 ]
 
 # Solo Indeed y LinkedIn (Google y ZipRecruiter no funcionan para LATAM)
@@ -187,8 +178,8 @@ TOTAL_CALLS = (
 LATAM_KEYWORDS = [
     "latam", "latin america", "latinoamérica", "latinoamerica",
     "latin-america", "south america", "sudamérica", "sudamerica",
-    "remote latam", "latam remote", "toda latinoamérica",
-    "toda latinoamerica", "cualquier país", "cualquier pais",
-    "open to all", "anywhere in latam", "worldwide", "global remote",
+    "toda latinoamérica", "toda latinoamerica",
+    "cualquier país", "cualquier pais",
+    "open to all", "anywhere in latam",
     "chile",  # el job menciona chile explícitamente
 ]

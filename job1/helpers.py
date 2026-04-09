@@ -45,7 +45,6 @@ def scrape_for_country(country: str, country_indeed: str, queries_linkedin: list
                 site_name=SITES_REMOTE,
                 search_term=query,
                 location=country,
-                is_remote=True,
                 results_wanted=CONFIG["results_wanted"],
                 description_format="markdown",
                 verbose=0,
@@ -209,27 +208,44 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
         combined = combined.drop_duplicates()
     print(f"[debug] Tras dedupe: {len(combined)} (descartados: {before_dedup - len(combined)})")
 
-    # Filtro remote: LinkedIn ya viene filtrado con is_remote=True.
-    # Indeed puede traer presenciales, filtramos por flag o keywords.
-    # "home office" es el término más común en Chile/LATAM para trabajo remoto.
-    remote_keywords = [
-        "remote", "remoto", "teletrabajo", "full remote",
-        "home office", "trabajo remoto", "desde casa", "desde tu casa",
-        "trabajo en casa", "100% remoto", "100% remote",
+    # Filtro modalidad: queremos PRESENCIAL o HÍBRIDO.
+    # Descartamos jobs que son claramente remotos (100% teletrabajo).
+    # Si no hay señal clara de modalidad, conservamos el job (beneficio de la duda).
+    remote_only_keywords = [
+        "100% remoto", "100% remote", "full remote", "fully remote",
+        "trabajo remoto", "trabajo en casa", "desde casa", "desde tu casa",
+        "teletrabajo", "work from home", "wfh",
+        "remote only", "remote-only", "sólo remoto",
+    ]
+    hybrid_keywords = [
+        "híbrido", "hibrido", "hybrid", "presencial", "on-site",
+        "onsite", "in-office", "oficina",
     ]
 
-    def is_likely_remote(row) -> bool:
-        if row.get("is_remote") in (True, 1, "True", "true"):
-            return True
+    def is_likely_onsite(row) -> bool:
+        """Retorna True si el job es presencial, híbrido, o sin modalidad clara.
+        Descarta los que están marcados como remotos sin evidencia de híbrido."""
         title    = str(row.get("title", "") or "").lower()
         desc     = str(row.get("description", "") or "").lower()
         location = str(row.get("location", "") or "").lower()
-        return any(kw in f"{title} {desc} {location}" for kw in remote_keywords)
+        full_text = f"{title} {desc} {location}"
 
-    mask_remote = combined.apply(is_likely_remote, axis=1)
-    discarded_remote = combined[~mask_remote]
-    combined = combined[mask_remote]
-    print(f"[debug] Tras filtro remote: {len(combined)} (descartados: {len(discarded_remote)})")
+        # 1. Menciona híbrido/presencial explícitamente → aceptar siempre
+        if any(kw in full_text for kw in hybrid_keywords):
+            return True
+        # 2. Menciona remoto puro en texto → descartar
+        if any(kw in full_text for kw in remote_only_keywords):
+            return False
+        # 3. LinkedIn marcó is_remote=True y no hay evidencia de presencial → descartar
+        if row.get("is_remote") in (True, 1, "True", "true"):
+            return False
+        # 4. Sin señal clara → conservar (probablemente presencial no declarado)
+        return True
+
+    mask_onsite = combined.apply(is_likely_onsite, axis=1)
+    discarded_remote = combined[~mask_onsite]
+    combined = combined[mask_onsite]
+    print(f"[debug] Tras filtro presencial/híbrido: {len(combined)} (remotos descartados: {len(discarded_remote)})")
 
     # Excluir títulos incompatibles
     mask_title = combined["title"].astype(str).apply(_matches_excluded_title)
@@ -269,7 +285,7 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
     print(f"[debug] Tras filtro relevancia: {len(combined)} (descartados: {len(discarded_relevance)})")
 
     discard_groups = [
-        ("Filtro remote (no parece remoto)", discarded_remote),
+        ("Filtro modalidad (descartados: solo remoto sin presencial/híbrido)", discarded_remote),
         ("Filtro título (keyword excluida)", discarded_titles),
         ("Filtro empresa (empresa excluida)", discarded_companies),
         ("Filtro LATAM (job no-chileno sin apertura regional)", discarded_latam),
