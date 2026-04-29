@@ -1,0 +1,14 @@
+name: Deploy
+on:
+  push:
+    branches: [master]
+jobs:
+  deploy:
+    runs-on: [self-hosted, mac-mini]
+    env:
+      PATH: /opt/homebrew/opt/node@22/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+    steps:
+      - name: Pull latest code
+        run: cd /Users/freddymhs/apps/job-radar-latam && git pull origin master
+      - name: Update dependencies
+        run: cd /Users/freddymhs/apps/job-radar-latam && /opt/homebrew/bin/pipenv install

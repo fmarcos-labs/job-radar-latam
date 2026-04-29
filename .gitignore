@@ -17,5 +17,9 @@ job2/job2_results/
 # Sentry
 .sentry-native/
 
+# Local deploy (Mac Mini)
+run.sh
+cron.log
+
 # OS
 .DS_Store
