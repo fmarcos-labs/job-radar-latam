@@ -9,6 +9,12 @@ jobs:
       PATH: /opt/homebrew/opt/node@22/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
     steps:
       - uses: actions/checkout@v4
+      - name: Validate local files
+        run: |
+          [ -f "/Users/freddymhs/apps/job-radar-latam/.env" ] || { echo "ERROR: .env not found"; exit 1; }
+          [ -f "/Users/freddymhs/apps/job-radar-latam/run.sh" ] || { echo "ERROR: run.sh not found"; exit 1; }
+          launchctl list | grep -q "com.jobradar.latam" || { echo "ERROR: LaunchAgent com.jobradar.latam not loaded"; exit 1; }
+          echo "OK: .env, run.sh, LaunchAgent all present"
       - name: Sync code to app directory
         run: rsync -a --delete --exclude='.env' --exclude='run.sh' --exclude='cron.log' --exclude='job1/20*' $GITHUB_WORKSPACE/ /Users/freddymhs/apps/job-radar-latam/
       - name: Update dependencies
