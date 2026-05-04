@@ -382,8 +382,12 @@ def send_email_report(run_id: str, results_md_path: Path, total: int) -> None:
         resend.Emails.send({
             "from": "job-radar@resend.dev",
             "to": to_email,
-            "subject": f"[CRON] job-radar-latam — {total} resultados — {run_id}",
+            "subject": f"⭐ Job Radar LATAM — {total} trabajos — {run_id}",
             "text": body,
+            "headers": {
+                "X-Priority": "1",
+                "Importance": "high",
+            },
         })
         print(f"[email] Enviado a {to_email}")
     except Exception as e:

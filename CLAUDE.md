@@ -199,6 +199,7 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 | v7.8    | Fix email en Railway: reemplazado SMTP (bloqueado en Hobby plan) por Resend HTTP API. Variables: `RESEND_API_KEY` + `RESEND_TO_EMAIL`. Dependencia `resend` agregada al Pipfile. |
 | v7.9    | Colombia reemplazada por Uruguay (UTC-3). Agregado Peru (UTC-5). Solo Chile usa FULL (12q), resto LIGHT (6q). Glassdoor descartado: no soporta LATAM excepto Brazil/Mexico. 138 calls totales (vs 105 en v7). URL repo JobSpy actualizada a speedyapply/JobSpy. |
 | v8.0    | Glassdoor integrado junto a Indeed (mismo `scrape_jobs()` call). LinkedIn reducido: solo Chile FULL + Argentina LIGHT (Uruguay/Peru solo Indeed+Glassdoor). Nuevo filtro LATAM en pipeline: jobs no-chilenos solo pasan si descripción menciona apertura regional. 126 calls totales. |
+| v8.1    | Email subject cambiado a `⭐ Job Radar LATAM — {total} trabajos — {run_id}`. Agregados headers `X-Priority: 1` e `Importance: high` para mayor visibilidad en inbox. |
 
 ---
 
