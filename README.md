@@ -1,3 +1,5 @@
+🤖 Proyecto asistido por IA — NO se contabiliza en CV/resume (no es práctica manual real).
+
 # job-radar-latam
 
 Script Python que automatiza la búsqueda de ofertas de trabajo remotas en LATAM

@@ -13,8 +13,10 @@ jobs:
         run: |
           [ -f "/Users/freddymhs/apps/job-radar-latam/.env" ] || { echo "ERROR: .env not found"; exit 1; }
           [ -f "/Users/freddymhs/apps/job-radar-latam/run.sh" ] || { echo "ERROR: run.sh not found"; exit 1; }
-          launchctl list | grep -q "com.jobradar.latam" || { echo "ERROR: LaunchAgent com.jobradar.latam not loaded"; exit 1; }
-          echo "OK: .env, run.sh, LaunchAgent all present"
+          launchctl list | grep -q "com.jobradar.latam" \
+            && echo "OK: LaunchAgent com.jobradar.latam visible" \
+            || echo "WARN: LaunchAgent no visible desde el contexto del runner (agents GUI no aparecen aqui). El scheduler corre igual si llegan los emails — no bloqueamos el deploy."
+          echo "OK: .env y run.sh presentes"
       - name: Sync code to app directory
         run: rsync -a --delete --exclude='.env' --exclude='run.sh' --exclude='cron.log' --exclude='job1/20*' $GITHUB_WORKSPACE/ /Users/freddymhs/apps/job-radar-latam/
       - name: Update dependencies

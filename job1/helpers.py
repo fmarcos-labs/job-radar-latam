@@ -18,6 +18,8 @@ from config import (
     SITES_HOURS,
     CORE_TECH,
     SECONDARY_TECH,
+    AI_TECH,
+    PLATFORM_TECH,
     INCOMPATIBLE_TECH,
     EXCLUDE_TITLE_KEYWORDS,
     EXCLUDE_COMPANIES,
@@ -139,8 +141,12 @@ def _matches_excluded_title(title: str) -> bool:
     t = str(title or "").lower()
     if any(word in t for word in EXCLUDE_TITLE_KEYWORDS):
         return True
-    # "java" se excluye pero sin atrapar "javascript"
-    if re.search(r"\bjava\b(?!script)", t):
+    # RECALL: java/go NO se excluyen por titulo — suman 0 al score, un job puro cae por score_minimo
+    # y "Node OR Java" sobrevive por Node. Solo queda "cto" (C-Level, seniority) sin atrapar contractor/proyecto.
+    if re.search(r"\bcto\b", t):
+        return True
+    # "intern"/"internship" sin atrapar "International/Internacional"
+    if re.search(r"\bintern(ship)?s?\b", t):
         return True
     # "senior" / "Sr" se excluye pero NO "semi senior" ni "semi-senior"
     if _is_absolute_senior(t):
@@ -180,6 +186,16 @@ def _calculate_match_score(row) -> int:
         elif tech in description:
             score += weight
     for tech, weight in SECONDARY_TECH.items():
+        if tech in title:
+            score += weight * 2
+        elif tech in description:
+            score += weight
+    for tech, weight in AI_TECH.items():
+        if tech in title:
+            score += weight * 2
+        elif tech in description:
+            score += weight
+    for tech, weight in PLATFORM_TECH.items():
         if tech in title:
             score += weight * 2
         elif tech in description:
@@ -262,7 +278,7 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
     # Filtro de relevancia
     mask_relevance = (
         (combined["match_score"] >= CONFIG["score_minimo"]) |
-        (combined["title"].str.contains("fullstack|frontend|backend|developer|ingeniero|desarrollador", case=False, na=False))
+        (combined["title"].str.contains(r"full[\s-]?stack|front[\s-]?end|back[\s-]?end|developer|engineer|ingenier|desarrollador|programador", case=False, na=False))
     )
     discarded_relevance = combined[~mask_relevance]
     combined = combined[mask_relevance]
