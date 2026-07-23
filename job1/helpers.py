@@ -235,8 +235,9 @@ def apply_filters(combined: pd.DataFrame) -> tuple:
     ]
 
     def is_likely_remote(row) -> bool:
-        if row.get("is_remote") in (True, 1, "True", "true"):
-            return True
+        # [ANTES] if row.get("is_remote") in (True, 1, "True", "true"): return True
+        # IGNORADO: is_remote flag no es confiable (LinkedIn a veces dice False para remotos)
+        # Ahora: solo keywords en titulo/descripcion
         title    = str(row.get("title", "") or "").lower()
         desc     = str(row.get("description", "") or "").lower()
         location = str(row.get("location", "") or "").lower()
