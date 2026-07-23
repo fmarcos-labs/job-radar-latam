@@ -2,7 +2,7 @@
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v8.0",
+    "version": "v9.0",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
