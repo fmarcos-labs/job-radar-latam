@@ -2,7 +2,7 @@
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v9.0",
+    "version": "v10.0",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
@@ -10,8 +10,15 @@ CONFIG = {
     "hours_old": 168,
     "results_wanted": 50,
     "score_minimo": 2,
-    "nota": "v8.0: Indeed y Glassdoor separados (un fallo de Glassdoor no mata Indeed). LinkedIn solo Chile+AR. Uruguay/Peru solo Indeed+Glassdoor. Filtro LATAM para jobs no-chilenos.",
+    "nota": "v10.0: memoria de vistos (NUEVOS primero), dedupe por titulo+empresa, descripcion de LinkedIn solo para nuevos, remoto de LinkedIn por busqueda (f_WT=2), bypass de titulo solo sin descripcion, sha del commit en email y CSV.",
 }
+
+# Descripción de LinkedIn: JobSpy no la baja; se baja SOLO para avisos nuevos (1 request c/u, con sleep).
+# Tope duro por corrida: lo que supere queda sin descripción (desc_fetched=0) y pasa por el bypass de título.
+MAX_DESC_FETCH = 150
+
+# Memoria de avisos ya mostrados. Vive junto al código en el Mac Mini y el deploy la excluye del rsync.
+SEEN_FILENAME = "seen.json"
 
 # LinkedIn Chile: 18 queries (stack completo + español + AI)
 QUERIES_LINKEDIN_FULL = [

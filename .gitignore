@@ -20,6 +20,8 @@ job2/job2_results/
 # Local deploy (Mac Mini)
 run.sh
 cron.log
+GIT_SHA
+job1/seen.json
 
 # OS
 .DS_Store

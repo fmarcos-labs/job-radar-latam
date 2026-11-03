@@ -26,16 +26,18 @@ Idioma preferido en ofertas: **español**, aunque inglés también es aceptable.
 ## Flujo de trabajo
 
 ```
-1. Editar job1/jobspy_search.py  →  ajustar queries, pesos, filtros, países
-2. pipenv run job1                →  ejecutar el script
-3. Revisar .md generado           →  resumen legible agrupado por site con links
-4. Analizar .csv si se requiere   →  datos completos para iterar con IA
-5. Iterar sobre configuración     →  volver al paso 1
+1. Editar job1/config.py / helpers.py →  ajustar queries, pesos, filtros, países
+2. Test primero (tests/)              →  fixtures de corridas reales, sin red: `python -m pytest tests/ -q`
+3. push a master                      →  el runner del Mac Mini hace rsync a /Users/freddymhs/apps/job-radar-latam/
+4. Esperar la corrida programada      →  LaunchDaemon com.jobradar.latam, 10:30 y 17:30 (cron.log, job1/<ts>/)
+5. Revisar el email / results.md      →  NUEVOS arriba; el asunto trae versión + sha del commit
+6. Comparar corridas por sha          →  results.csv lleva CONFIG_VERSION y GIT_SHA en la cabecera
 ```
 
-> ⚠️ NO ejecutar el script sin autorización del usuario.
-> ⚠️ Esperar al menos 12-24h entre ejecuciones para evitar soft-ban de LinkedIn.
+> ⚠️ NO ejecutar el script a mano sin autorización del usuario: corre solo 2×/día y LinkedIn hace soft-ban.
 > ⚠️ Si se modifica el script, SIEMPRE actualizar este CLAUDE.md (arquitectura, versión, aprendizajes) en el mismo cambio.
+> ⚠️ Un cambio de comportamiento sin bump de versión queda invisible: desde v10.0 el sha del commit va en el email y el CSV.
+> ⚠️ Los tests corren con un venv propio (`python3 -m venv` + `pip install python-jobspy pandas resend pytest`); `pipenv` no hace falta.
 
 ---
 
@@ -47,17 +49,23 @@ job-radar-latam/
 ├── Pipfile                              ← dependencias (pipenv run job1)
 ├── Pipfile.lock                         ← lock file (trackeado, Railway lo necesita)
 ├── README.md                            ← instrucciones de uso
-├── railway.toml                         ← config Railway (Nixpacks, restart policy)
+├── railway.toml                         ← legado (Railway ya no se usa; el deploy es el Mac Mini)
+├── .github/workflows/deploy.yml         ← push a master → rsync al Mac Mini + escribe GIT_SHA
+├── tests/                               ← pytest con fixtures de corridas reales (sin red)
+│   └── fixtures/                        ← results.csv/discarded.md reales + un HTML de job de LinkedIn
 └── job1/
-    ├── jobspy_search.py                 ← entry point: main() orquesta el flujo (~70 líneas)
-    ├── config.py                        ← configuración: queries, pesos, filtros, empresas excluidas
-    ├── helpers.py                       ← funciones: scraping, filtros, scoring, export, email
+    ├── jobspy_search.py                 ← entry point: main() orquesta el flujo
+    ├── config.py                        ← configuración: queries, pesos, filtros, MAX_DESC_FETCH, SEEN_FILENAME
+    ├── helpers.py                       ← scraping, memoria (SeenStore), descripción LinkedIn, filtros, scoring, export, email
     ├── manual_sources.json              ← URLs manuales de portales no soportados
+    ├── seen.json                        ← (solo Mac Mini) memoria entre corridas; el rsync la excluye
     └── YYYYMMDD_HHMM/                  ← carpeta por run
-        ├── results.csv                  ← datos completos para análisis por IA
-        ├── results.md                   ← resumen legible con links (para Freddy)
+        ├── results.csv                  ← datos completos (cabecera: CONFIG_VERSION, GIT_SHA, …)
+        ├── results.md                   ← NUEVOS arriba + tablas por site (es el cuerpo del email)
         └── discarded.md                 ← descartados para revisión manual
 ```
+
+En el Mac Mini además existe `GIT_SHA` en la raíz de la app (lo escribe el deploy; el rsync lo excluye).
 
 ---
 
@@ -80,13 +88,13 @@ Por eso se usan **tres listas de queries independientes**:
 
 | Lista                    | Cantidad | Usado en                              | Razón                                      |
 |--------------------------|----------|---------------------------------------|--------------------------------------------|
-| `QUERIES_LINKEDIN_FULL`  | 12       | Chile                                 | Queries curadas, sin redundancia            |
+| `QUERIES_LINKEDIN_FULL`  | 27       | Chile                                 | Queries curadas + stack específico           |
 | `QUERIES_LINKEDIN_LIGHT` | 6        | Argentina                             | Solo queries genéricas de amplio espectro   |
-| `QUERIES_INDEED`         | 27       | Los 4 países (Indeed + Glassdoor)     | Todas las queries. Each call scrapes both. |
+| `QUERIES_INDEED`         | 28       | Los 4 países × Indeed y Glassdoor     | Una llamada por sitio (un 403 de Glassdoor no mata Indeed) |
 
 **Anti-ban LinkedIn:** sleep aleatorio `[2, 4, 6, 9]` segundos entre cada call LinkedIn.
 
-**Total calls:** 12 + 6 + 27×4 = 126 (vs 105 en v7.7).
+**Total calls (recontado 03-11 desde `config.py`):** 27 + 6 + 28×4×2 = **257** (`TOTAL_CALLS`), ~17 min por corrida; más hasta 150 requests de descripción (solo avisos nunca evaluados, sleep 2–4 s).
 
 **Anti-ban LinkedIn:** sleep aleatorio `[2, 4, 6, 9]` segundos entre cada call LinkedIn.
 
@@ -104,15 +112,23 @@ Estas queries retornaban los mismos jobs que las queries genéricas (57% duplica
 - 🇺🇾 Uruguay — UTC-3 fijo, 0-1h diff, bajo volumen pero remoto-friendly (solo Indeed+Glassdoor)
 - 🇵🇪 Peru — UTC-5 fijo, 1-2h diff, mercado creciente (solo Indeed+Glassdoor)
 
-### Pipeline de filtros (en orden)
+### Pipeline de filtros (en orden, v10.0)
 
-1. **Dedupe por URL** → elimina duplicados entre búsquedas
-2. **Filtro remote** → LinkedIn ya viene filtrado; Indeed/Glassdoor se filtra por keywords
-3. **Excluir títulos (recall-first, v9.0)** → SOLO se excluye lo que "scorea alto pero está mal" y el score no puede filtrar: `React Native` (scorea por "react" pero es mobile), seniority (Lead/Staff/Principal/Director/Trainee/Práctica), role-types no-dev (QA/Designer/Data*/DevOps/SRE/Salesforce/Support). Los **lenguajes backend** que Freddy no hace (.NET/Java/PHP/Go/Ruby/Kotlin/Elixir) YA NO se excluyen: suman 0 al score → un job puro cae por `score_minimo`, y "Node OR .NET" sobrevive por Node. Regex especiales en `_matches_excluded_title`: `\bcto\b` (C-level), `\bintern(ship)?s?\b` (sin atrapar "International").
-4. **Excluir empresas** → ver lista EXCLUDE_COMPANIES
-5. **Filtro LATAM** → jobs de países no-chilenos solo pasan si mencionan apertura regional (LATAM_KEYWORDS)
-6. **Score de match** → puntaje basado en tecnologías encontradas en título y descripción
-7. **Filtro de relevancia** → solo pasan trabajos con score ≥ 2 O título de rol dev genérico. Regex ampliado (v9.0): `full[\s-]?stack|front[\s-]?end|back[\s-]?end|developer|engineer|ingenier|desarrollador|programador` — antes no cubría "Full Stack"/"Back End" (con espacio), "engineer" ni "programador", matando "Software Engineer" con descripción vacía.
+1. **Dedupe por URL y por título+empresa** → el mismo aviso con 3 URLs (por región/re-posteo) es una fila (medido: 53 → 31)
+2. **Excluir títulos** y **excluir empresas** → ANTES del fetch, para no gastar requests en lo que se descarta igual
+3. **Memoria (`SeenStore`, `job1/seen.json`)** → `is_new` = nunca MOSTRADO en un email; lo ya EVALUADO reusa su descripción guardada (solo LinkedIn: Indeed/Glassdoor la traen siempre). Entradas vencen a los 30 días (`first_run`): un aviso republicado meses después vuelve a ser NUEVO y el archivo no crece sin tope. Escritura atómica (tmp + `os.replace`); un archivo corrupto se aparta como `seen.json.corrupt-<ts>` y se arranca vacío. Se construye ANTES de scrapear: si falla, falla a los 0 min
+4. **Descripción de LinkedIn para toda fila de LinkedIn SIN texto** (nunca evaluadas primero) → 1 request por job con sleep 2–4 s, tope `MAX_DESC_FETCH` (150); lo que el tope o un error dejó sin texto se reintenta en la corrida siguiente. 5 fallas seguidas (`MAX_CONSECUTIVE_FETCH_FAILURES`) = bloqueo de LinkedIn → se corta el fetch de esa corrida; 999 y redirect a `/authwall` cuentan como falla. Las descripciones se guardan en la memoria apenas bajan
+5. **Filtro remote** → LinkedIn: confía en la búsqueda (`is_remote=True` = `f_WT=2`) salvo híbrido/presencial/on-site **en título o ubicación** (nunca en la descripción: "hybrid cloud", "apps híbridas" y "no presencial" aparecen en avisos remotos); Indeed/Glassdoor: keywords (`REMOTE_KEYWORDS`) en título+descripción+ubicación. El dedupe entre gemelos (mismo título+empresa) prefiere al que no dice híbrido
+6. **Filtro LATAM** → jobs de países no-chilenos solo pasan si mencionan apertura regional (`LATAM_KEYWORDS`)
+7. **Score de match** → tecnologías en título (×2) y descripción (×1)
+8. **Filtro de relevancia** → score ≥ 2; el bypass por título de rol dev (`DEV_TITLE_REGEX`) aplica SOLO a filas sin descripción
+9. **Email** → `results.md` abre con `## NUEVOS (n)` por score. `send_email_report` devuelve `True` solo si Resend aceptó el envío; **solo entonces** se marcan como mostrados (`mark_shown`). Si el email falla o falta `.env`, la corrida siguiente los vuelve a mostrar como NUEVOS sin re-pedir descripciones
+
+Los detalles de cada exclusión:
+
+- **Excluir títulos (recall-first, v9.0)** → SOLO se excluye lo que "scorea alto pero está mal" y el score no puede filtrar: `React Native` (scorea por "react" pero es mobile), seniority (Lead/Staff/Principal/Director/Trainee/Práctica), role-types no-dev (QA/Designer/Data*/DevOps/SRE/Salesforce/Support). Los **lenguajes backend** que Freddy no hace (.NET/Java/PHP/Go/Ruby/Kotlin/Elixir) YA NO se excluyen: suman 0 al score → un job puro cae por `score_minimo`, y "Node OR .NET" sobrevive por Node. Regex especiales en `_matches_excluded_title`: `\bcto\b` (C-level), `\bintern(ship)?s?\b` (sin atrapar "International").
+- **Excluir empresas** → ver lista EXCLUDE_COMPANIES
+- **Relevancia** → regex `full[\s-]?stack|front[\s-]?end|back[\s-]?end|developer|engineer|ingenier|desarrollador|programador` (v9.0). Desde v10.0 solo rescata filas SIN descripción: con texto disponible manda el score (antes dejaba entrar Elixir/.NET/Perl con score 0 — 13/53 el 03-11).
 
 ### Sistema de scoring
 
@@ -149,17 +165,18 @@ Pesos actuales (v9.0):
 Cada archivo de resultados incluye cabecera de configuración:
 
 ```
-# CONFIG_VERSION=v7.9
+# CONFIG_VERSION=v10.0
+# GIT_SHA=a1b2c3d
 # TIMESTAMP=20260217_1200
 # PAISES=Chile,Argentina,Uruguay,Peru
 # SITES_REMOTE=linkedin
 # SITES_HOURS=indeed,glassdoor
 # HOURS_OLD=168
 # SCORE_MINIMO=2
-# QUERIES_LINKEDIN_FULL=12
+# QUERIES_LINKEDIN_FULL=27
 # QUERIES_LINKEDIN_LIGHT=6
-# QUERIES_INDEED=27
-# TOTAL_CALLS=126
+# QUERIES_INDEED=28
+# TOTAL_CALLS=257
 # TOTAL_RESULTADOS=XX
 ```
 
@@ -201,6 +218,7 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 | v7.9    | Colombia reemplazada por Uruguay (UTC-3). Agregado Peru (UTC-5). Solo Chile usa FULL (12q), resto LIGHT (6q). Glassdoor descartado: no soporta LATAM excepto Brazil/Mexico. 138 calls totales (vs 105 en v7). URL repo JobSpy actualizada a speedyapply/JobSpy. |
 | v8.0    | Glassdoor integrado junto a Indeed (mismo `scrape_jobs()` call). LinkedIn reducido: solo Chile FULL + Argentina LIGHT (Uruguay/Peru solo Indeed+Glassdoor). Nuevo filtro LATAM en pipeline: jobs no-chilenos solo pasan si descripción menciona apertura regional. 126 calls totales. |
 | v8.1    | Email subject cambiado a `⭐ Job Radar LATAM — {total} trabajos — {run_id}`. Agregados headers `X-Priority: 1` e `Importance: high` para mayor visibilidad en inbox. |
+| v10.0   | **Lo nuevo, con texto real, y el score manda.** Medido sobre 349 corridas y el Gmail de Freddy (03-11): 75–87 % de cada email era repetido, 22/53 filas duplicadas, 13/53 con score 0, y **el 100 % de las filas de LinkedIn llegaban sin descripción** (JobSpy solo la baja con `linkedin_fetch_description=True`). Memoria entre corridas (`SeenStore`): NUEVOS arriba del email, descripción guardada. Descripción de LinkedIn solo para lo nunca evaluado (tope 150, sleep). Filtro remoto de LinkedIn por la búsqueda (`f_WT=2`), no por la palabra. Bypass de título solo sin descripción. Dedupe por título+empresa. Versión + sha del commit en asunto y CSV; el deploy escribe `GIT_SHA`. Suite `tests/` con fixtures reales. |
 | v9.0    | **Recall-first + calibración con 117 corridas reales.** Filosofía: mostrar más, el score rankea (EXCLUDE mínimo). Lenguajes backend fuera del EXCLUDE (self-filtran por score 0). +`AI_TECH` (16 kw IA/LLM, peso 3) +`PLATFORM_TECH` (aws 3, serverless/microservicios 2). +javascript, +`node` bare, fastapi 2→3, +mysql/mongodb. **4 bugs de substring fixeados (víctimas reales):** `cto`⊂contractor/proyecto (61), `angular` mató 93 fullstack-Node, `intern`⊂international, `go developer`⊂django. Relevance regex ampliado (engineer/full stack c-espacio/programador). +`americas` en LATAM_KEYWORDS. |
 
 ---
@@ -218,6 +236,10 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 
 ## Aprendizajes clave
 
+- **LinkedIn llega SIN descripción salvo que se pida (causa raíz de v9 y antes, verificada 03-11).** JobSpy 1.1.82 solo baja la descripción de LinkedIn con `linkedin_fetch_description=True` (`jobspy/__init__.py:45`, `model.py:315`, `linkedin/__init__.py:156`: un request por job, para TODOS). El script nunca lo pasó: 38/38 filas de LinkedIn sin texto en 20261103_1030 (Indeed trae ~3.500 chars). Consecuencias medidas: el filtro «remoto» solo veía el título → 608 de 685 descartes por corrida eran LinkedIn ya devueltos por la búsqueda remota; el score de LinkedIn solo veía el título → scores 0 pasando por el bypass. Los commits «recall-first» (c3b974f) e «ignore is_remote» (485643b) pelearon contra el síntoma.
+- **`is_remote=True` en la búsqueda de LinkedIn es `f_WT=2` (`linkedin/__init__.py:98`); el campo `is_remote` que vuelve lo deduce JobSpy de palabras en título+descripción+location (`linkedin/util.py:95`).** Con descripción vacía es título-solo, por eso «no era confiable». La señal buena es la búsqueda: Kraken «Fullstack Engineer» tiene 5.658 chars de descripción y no dice «remote» en ninguno.
+- **La memoria guarda la descripción, no solo la clave.** Un aviso evaluado y descartado en la corrida 1 que vuelva en la 2 sin su texto entraría por el bypass de título y gastaría otro request. `remember()` corre apenas se bajan las descripciones; `mark_shown()` recién después del email: si el email falla, la corrida siguiente los muestra como NUEVOS sin volver a pedir nada.
+- **Cada job llegaba 28 veces por email** (15.950 filas en 6 meses para 572 avisos únicos). Sin «nuevos desde la última corrida» el email no se lee.
 - **El mercado chileno es pequeño** (~9-10 trabajos únicos/día). Sin Argentina y Colombia el volumen es insuficiente.
 - **LinkedIn hace soft-ban** si se ejecuta muchas veces seguidas (~2-3 veces en el mismo día). Esperar 12-24h entre ejecuciones.
 - **Indeed da mejor calidad** (solo 19% del volumen pero los mejores scores históricos vinieron de ahí).

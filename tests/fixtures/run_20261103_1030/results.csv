@@ -1,0 +1,1102 @@
+# CONFIG_VERSION=v9.0
+# TIMESTAMP=20261103_1030
+# PAISES=Chile,Argentina,Uruguay,Peru
+# SITES_REMOTE=linkedin
+# SITES_HOURS=indeed,glassdoor
+# HOURS_OLD=168
+# SCORE_MINIMO=2
+# QUERIES_LINKEDIN_FULL=27
+# QUERIES_LINKEDIN_LIGHT=6
+# QUERIES_INDEED=28
+# TOTAL_CALLS=257
+# NOTA=v8.0: Indeed y Glassdoor separados (un fallo de Glassdoor no mata Indeed). LinkedIn solo Chile+AR. Uruguay/Peru solo Indeed+Glassdoor. Filtro LATAM para jobs no-chilenos.
+# TOTAL_RESULTADOS=53
+#
+"id","site","job_url","job_url_direct","title","company","location","date_posted","job_type","salary_source","interval","min_amount","max_amount","currency","is_remote","job_level","job_function","listing_type","emails","description","company_industry","company_url","company_logo","company_url_direct","company_addresses","company_num_employees","company_revenue","company_description","skills","experience_range","company_rating","company_reviews_count","vacancy_count","work_from_home_type","search_query","pais","match_score"
+"in-1c52d11c703b1d28","indeed","https://ar.indeed.com/viewjob?jk=1c52d11c703b1d28","https://ultahost.keka.com/careers/jobdetails/8888?source=indeed%20job%20posts","Full-Stack JavaScript Developer (AI-Native)","Ultahost, inc","Buenos Aires, B, AR","2026-10-28","","","","","","",True,"","","","","**About UltaHost**
+UltaHost is a rapidly growing global web hosting and cloud infrastructure provider delivering high\\-performance hosting, VPS, dedicated servers, and cloud solutions to customers worldwide. Our mission is to provide reliable, scalable, and innovative infrastructure services while maintaining exceptional customer satisfaction. As our global operations continue to expand, we are looking for talented professionals to join our international team and contribute to our long\\-term growth. **Job Overview**
+UltaHost is looking for a highly skilled **Full\\-Stack JavaScript Developer (AI\\-Native)** to join our Engineering team. This role is ideal for an experienced software engineer who enjoys building modern web applications across the entire technology stack while leveraging AI\\-assisted development workflows to deliver high\\-quality software efficiently. You will be responsible for designing, developing, and maintaining scalable backend services and modern frontend applications using JavaScript and TypeScript technologies. Working closely with product managers, designers, and fellow engineers, you will take ownership of features from specification through production while maintaining high standards for code quality, security, and performance. **Key Responsibilities*** Design, develop, and maintain scalable full\\-stack applications using **Node.js, NestJS, React, Next.js, and TypeScript**
+* Build secure and maintainable REST APIs, authentication systems, and backend services
+* Design and maintain database schemas using Prisma ORM with PostgreSQL,
+* MySQL, MongoDB, and Redis where appropriate
+* Use AI coding tools such as Claude Code, Cursor, GitHub Copilot, or similar as part of your daily development workflow
+* Collaborate closely with Product, Design, QA, and Engineering teams throughout the software development lifecycle
+* Contribute to CI/CD pipelines, Docker\\-based development environments, and deployment processes
+
+ **Qualifications*** Bachelor's degree in Computer Science, Software Engineering, Information Technology, or a related field (or equivalent professional experience)
+* 4\\+ years of professional Full\\-Stack JavaScript development experience
+* Strong expertise in JavaScript and TypeScript
+* Production experience with Node.js and NestJS
+* Strong experience with React and Next.js
+* Hands\\-on experience with Prisma ORM, PostgresSQL/MySQL, MongoDB/Redis
+* Experience with Git, Docker, and CI/CD pipelines
+* Experience writing unit and integration tests using Jest, Vitest, Supertest, or similar frameworks
+* Daily experience using AI coding tools such as Claude Code, Cursor, GitHub Copilot, Codex CLI, or similar
+* Strong understanding of software architecture, scalability, security, and modern engineering best practices
+* Excellent written and verbal communication skills in English
+
+ **Preferred Qualifications*** Experience building AI\\-powered applications using LLM APIs
+* Familiarity with Model Context Protocol (MCP), AI agent frameworks, or AI automation
+* Experience working on SaaS, hosting, cloud, or infrastructure platforms
+* Experience with GitHub Actions or similar CI/CD platforms
+* Experience optimizing application performance and large\\-scale systems
+* Passion for AI\\-assisted software engineering and continuous improvement
+
+ **What We Offer*** Opportunity to work in a fast\\-growing international technology company
+* Professional and collaborative engineering environment
+* Remote\\-first work culture
+* Career growth and professional development opportunities
+* Opportunity to work with modern AI\\-native development workflows
+* Exposure to large\\-scale cloud infrastructure and global software products
+* Dynamic and innovation\\-driven company culture","","https://ar.indeed.com/cmp/Ultahost,-Inc","https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/f084fbe58b4ddb2150c1c7d4251e3554","https://ultahost.com","Middletown, Delaware","51 to 200","","UltaHost - is a leader in fast Hosting solutions for mission critical websites & apps. UltaHost provides shared, reseller, virtual private server, and dedicated web hosting with an additional presence","","","","","","","react developer","Argentina",39
+"in-a38be0903804dfa6","indeed","https://pe.indeed.com/viewjob?jk=a38be0903804dfa6","https://www.ravn.com/jobs/95b136ba-bfea-4ade-8678-1848d0777b43","Machine Learning Engineer","Raven Development","Remote, PE","2026-10-30","fulltime","","","","","",True,"","","","","LocationRemote
+Job typeFull\\-time
+LevelL4, L5
+TeamEngineering
+  
+**Role Overview**
+=================
+
+
+Ravn is a digital product development agency that partners with companies to build exceptional software. We specialize in building and designing world\\-class mobile and web applications and seek exceptional engineers to join our company.
+
+
+At Ravn, we do quality work at lightning speed. The only way to consistently meet requirements with confidence is to hire people who share a passion for technology and are focused on building software the right way. We deliver digital solutions \\- done right, on time, every time.
+
+
+We’re looking for an ML Engineer to own how machine learning models get from experiment to production. You’ll build the pipelines, infrastructure, and practices that let our teams ship and operate models, including LLM\\-based and GenAI features, reliably, quickly, and cost\\-effectively in the cloud.
+
+
+**Responsibilities**
+--------------------
+
+
+* Design, build, and maintain automated pipelines to deploy, monitor, and iterate on ML models in the cloud, including classical ML and LLM/GenAI workloads
+* Build and own CI/CD for ML (training, testing, validation, release, rollback) using modern tooling
+* Implement MLOps best practices: experiment tracking, model versioning and registries, reproducibility, and observability (drift, performance, data quality)
+* Manage dependency and environment standards (Python packaging, containers) across ML projects
+* Provision and manage cloud infrastructure for training and inference workloads, using infrastructure\\-as\\-code
+* Develop and apply strategies to optimize cloud and compute costs (right\\-sizing, autoscaling, spot/serverless, GPU utilization)
+* Partner with data scientists, backend engineers, and product teams to integrate models into production services and APIs
+
+**Qualifications**
+------------------
+
+
+* Bachelor’s degree in computer science, mathematics, computational linguistics, or a similar field (or equivalent practical experience)
+* 5\\+ years of experience in ML engineering, MLOps, or a closely related role
+* Demonstrated experience deploying and operating ML systems at scale
+* Strong Python skills, and solid experience with SQL and NoSQL databases
+* Strong backend engineering background in at least one modern language or framework (Python, Node.js, Go, .NET, Java, or similar). We care more about engineering fundamentals than a specific stack
+* Hands\\-on experience with CI/CD tooling (e.g., GitHub Actions, GitLab CI, Jenkins) and containerization (Docker, Kubernetes)
+* Experience working in a microservices or distributed\\-systems environment
+* Strong written and verbal communication skills in English
+* Ability to adapt to changing business and project priorities
+
+**Nice to Have**
+----------------
+
+
+* Experience with LLM/GenAI systems (RAG, vector databases, prompt/eval pipelines, model serving)
+* Experience with ML platforms and tooling (e.g., MLflow, SageMaker, Vertex AI, Kubeflow, Airflow)
+* Experience with serverless technologies
+* Infrastructure\\-as\\-code experience (Terraform, CloudFormation, or similar)
+* Cloud certification (e.g., AWS Solutions Architect or equivalent)
+
+**Location:**
+=============
+
+
+This position is open to candidates based anywhere in Latin America and is fully remote. Candidates located near our offices in Arequipa, Peru or San Salvador, El Salvador have the option to work in a hybrid in\\-office/remote arrangement. While office attendance is not mandatory, regular or occasional visits to the office are valued.","","https://pe.indeed.com/cmp/Raven-Development","","","","","","","","","","","","","ai engineer","Peru",26
+"in-e6a0e39b48c8a4ae","indeed","https://cl.indeed.com/viewjob?jk=e6a0e39b48c8a4ae","https://www.getonbrd.com/jobs/machine-learning-ai/ai-engineer-rag-intelligent-agents-dynamic-devs-santiago-61bd","AI Engineer (RAG & Intelligent Agents) Full time","Dynamic Devs","Santiago de Chile, RM, CL","2026-10-28","fulltime","","","","","",True,"","","","","En Dynamic Devs somos una consultora boutique de software enfocada en calidad, relaciones de largo plazo y excelencia en ejecución.
+
+
+**Estamos buscando** a un **AI Engineer** con experiencia en el desarrollo de agentes inteligentes basados en LLMs, RAG y automatización de procesos. Serás responsable de diseñar, construir e implementar soluciones que transformen requerimientos de negocio en agentes accionables, confiables y escalables.
+
+
+This job offer is on Get on Board.
+
+
+### **Funciones del cargo**
+
+
+* Desarrollar agentes inteligentes basados en **LLMs** para casos de uso corporativos.
+* Implementar **RAG (Retrieval\\-Augmented Generation)** para acceso controlado a conocimiento y datos internos.
+* Diseñar y estructurar **prompts, roles, límites operativos y flujos de interacción** entre agentes y usuarios.
+* Realizar **ajustes de modelos (fine\\-tuning ligero, prompt tuning o adapters)**, evaluación y optimización según el caso de uso.
+* Automatizar procesos mediante agentes orientados a análisis, validación, generación de contenido y mejora continua.
+* Optimizar **costo, tiempos de respuesta y performance** en pipelines de IA.
+* Construir y mantener pipelines **CI/CD** para modelos y agentes.
+* Realizar **pruebas funcionales y de seguridad** orientadas a soluciones de IA.
+* Trabajar con equipos de producto, seguridad, arquitectura y DevOps para asegurar integraciones estables y seguras.
+* Traducir requerimientos de negocio en **especificaciones técnicas** y prototipos funcionales.
+### **Requerimientos del cargo**
+
+
+* \\+3 años de experiencia en roles de desarrollo de software (Python, Node.js, Go, Java o similar). **y al menos 1 año trabajando con sistemas de IA/LLMs en entornos productivos o experimentales avanzados**.
+* Experiencia construyendo soluciones con **LLMs, embeddings y vector stores**.
+* Conocimiento en **RAG**, diseño de prompts y agentes estructurados.
+* Experiencia con **CI/CD** y buenas prácticas de despliegue en entornos productivos.
+* Conocimiento en prácticas de calidad: testing, documentación, seguridad y control de versiones.
+
+**Tecnologías con las que trabajarás:**
+
+
+* **LLMs:** OpenAI, Anthropic, Cohere, Mistral, Llama
+* **RAG:** Embeddings, pipelines de recuperación y bases vectoriales
+* **Frameworks:** LangChain, LlamaIndex, Semantic Kernel
+* **Infraestructura:** Docker, Kubernetes, CI/CD
+* **Metodologías:** Git, Jira/YouTrack, metodologías ágiles
+### **Opcionales**
+
+
+* Experiencia con **LangChain, LlamaIndex o Semantic Kernel**.
+* Experiencia en bases vectoriales (Pinecone, Weaviate, ChromaDB, Qdrant).
+* Experiencia en **MLOps o LLMOps** (monitorización, métricas, ajustes en producción).
+* Familiaridad con arquitectura de microservicios y APIs REST.
+* Comprensión de **NLP, embeddings y métricas de evaluación de modelo**
+### **Condiciones**
+
+
+* Horario flexible
+
+Haz un impacto. Trabaja en proyectos desafiantes
+  
+
+IT Training: acceso a más de 500 cursos actualizados cada semana
+  
+
+Dev Talks: conferencias exclusivas con expertos del sector
+  
+
+Día especial: ¡Día libre por cumpleaños!
+  
+
+Trabaja en un equipo talentoso y multicultural usando tecnología increíble
+  
+
+️ Escucha nuestro podcast aquí: Escuchar Podcast
+  
+
+Visítanos en nuestra web: Dynamic Devs
+GETONBRD Job ID: 64618
+
+
+**Internal talks** Dynamic Devs offers space for internal talks or presentations during working hours.
+**Life insurance** Dynamic Devs pays or copays life insurance for employees.
+**Partially remote** You can work from your home some days a week.
+**Digital library** Access to digital books or subscriptions.
+**Education stipend** Dynamic Devs covers some educational expenses related to the position.
+**Vacation on birthday** Your birthday counts as an extra day of vacation.
+**Remote work policy**
+----------------------
+
+
+**Hybrid**
+
+This job is performed partly from home and partly at the office in Santiago (Chile).","","https://cl.indeed.com/cmp/Dynamic-Devs","","","","","","","","","","","","","ai engineer","Chile",25
+"in-bfad3ae8da4b7b02","indeed","https://ar.indeed.com/viewjob?jk=bfad3ae8da4b7b02","https://grnh.se/ykmka0vw9us","Full Stack Developer","Enumerate","B, AR","2026-11-02","","","","","","",True,"","","","","Enumerate is hiring a Full Stack Engineer to join our team! This is a highly hands\\-on role for engineers who thrive in product\\-driven environments, move quickly, and are comfortable working alongside APIs, and data\\-rich systems. This is a remote opportunity. We are seeking contractors located in LATAM who are comfortable working in an English\\-speaking professional environment.
+
+
+**Key Responsibilities**
+
+
+
+End\\-to\\-End Feature Development
+
+
+* Design and implement user\\-facing features across frontend and backend systems
+* Build and evolve APIs and services that integrate data pipelines and product workflows
+* Translate product requirements and UX designs into high\\-quality, maintainable code
+* Rapidly prototype and iterate based on user feedback and experimentation results
+
+
+Frontend \\& UX Integration
+
+
+* Implement intuitive user interfaces
+* Handle edge cases, fallbacks, and user feedback
+* Ensure UI performance, accessibility, and responsiveness.
+
+
+Backend \\& Integration
+
+
+* Develop backend services that orchestrate business logic, and data access.
+* Integrate with internal APIs, data services, and third\\-party AI platforms.
+* Implement secure, scalable request handling, including latency and cost considerations
+* Support feature flags, configuration, and experimentation frameworks.
+
+
+Quality, Reliability \\& Observability
+
+
+* Write automated tests across frontend and backend components.
+* Implement logging, monitoring, and basic performance tracking
+* Participate in code reviews and adhere to team engineering standards
+* Help diagnose and resolve production issues
+
+  
+
+
+**Required Qualifications**
+
+
+* BS or equivalent experience in Computer Science, Engineering, or related field.
+* 4\\+ years of experience building full stack web applications.
+* Proficiency in modern frontend frameworks (e.g., React, Vue, or similar).
+* Strong backend experience with at least one language such as Python, Node.js, Java, or Go.
+* Experience building and consuming REST or GraphQL APIs.
+* Familiarity with cloud environments (AWS, GCP, or Azure).
+  
+
+
+**Preferred Qualifications**
+
+
+* Experience working with experimentation platforms, feature flags, or A/B testing.
+* Exposure to data pipelines or analytics tooling.
+* Comfort working in fast\\-moving, iterative product teams.","","https://ar.indeed.com/cmp/Enumerate-1","https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/ea4250618e9c6ec32cab1f598831f126","https://goenumerate.com/","","51 to 200","","","","","","","","","react developer","Argentina",17
+"in-27c627381e8f4647","indeed","https://cl.indeed.com/viewjob?jk=27c627381e8f4647","https://jobs.soho.lat/jobs/lider-tecnico-chile-09541251-c84b-44f7-9d1d-2dca12243453?utm_source=Indeed","Líder Técnico | Chile","SoHo","Santiago de Chile, RM, CL","2026-10-28","","","","","","",False,"","","","","Somos **SOHO,** una compañía con más de 30 años de trayectoria, experta en diseño, innovación y desarrollo de experiencias digitales. Nos apasiona crear experiencias memorables centradas en el cliente, buscando impactar positivamente en negocios, organizaciones y sociedad.
+
+
+En esta oportunidad nos encontramos en búsqueda de un **Líder Técnico en Chile, 1 día presencial x 4 remotos en Las Condes.**
+
+**Principales Responsabilidades**
+
+* Liderar, mentorizar y gestionar uno o varios equipos de desarrolladores, fomentando un ambiente de colaboración y crecimiento profesional.
+* Definir y supervisar la arquitectura de aplicaciones, asegurando la escalabilidad, el rendimiento y la seguridad de las soluciones.
+* Establecer y hacer cumplir estándares de codificación, mejores prácticas (principios SOLID, patrones de diseño) y procesos rigurosos de revisión de código.
+* Colaborar estrechamente con Product Owners, Arquitectos y otros stakeholders para traducir los requerimientos de negocio en soluciones técnicas viables y eficientes.
+* Supervisar los aspectos técnicos de la entrega de proyectos dentro de un marco de trabajo Ágil (Scrum/Kanban), asegurando el cumplimiento de plazos y objetivos.
+* Diagnosticar y resolver problemas técnicos complejos, proporcionando orientación experta al equipo.
+* Contribuir a la creación y mantenimiento de documentación técnica y facilitar el intercambio de conocimientos dentro del equipo y la organización.
+
+**Habilidades y Conocimientos requeridos**
+
+
+Proactividad y autonomía, así como buenas habilidades comunicacionales y de coordinación de equipos, contando con gestión del tiempo.
+
+**Requisitos:**
+
+* Más de 5 años de experiencia en desarrollo de software, con sólida experiencia en Java y NodeJs y React
+* Mínimo 2 años de experiencia en un rol de liderazgo técnico.
+* Experiencia demostrable entregando proyectos de software complejos y a gran escala.
+* Experiencia con conceptos y servicios de computación en la nube (cualquier plataforma principal es valorada).
+* Sólida comprensión de arquitectura de software, bases de datos y diseño de APIs.
+* Experiencia trabajando con metodologías de desarrollo Ágil.
+* Excelentes habilidades de resolución de problemas, comunicación efectiva y liderazgo.
+* Experiencia específica con plataformas cloud como AWS.
+* Experiencia con microservicios, Docker, Kubernetes.
+* 
+
+**¿Qué podemos ofrecerte?**
+
+
+Queremos que vivas una experiencia única por eso te proponemos:
+
+* **Integrar un equipo multidisciplinario** de alta calidad humana, construimos nuestra cultura en un ambiente cercano, cálido, innovador y dinámico
+* **Expandir tu desarrollo profesional,** ofrecemos formaciones in\\-house, coaching y mentoring para que te continúes especializando.
+* **Asegurar tu bienestar Laboral:** Promovemos el equilibro entre la vida personal y profesional, los viernes trabajamos jornada reducida
+* **Ser parte de una empresa reconocida y valorada regionalment**e, ofrecemos nuestros servicios a nivel global y contamos con colaboradores en toda la región.
+* **Ser tu mismo!** Somos una compañía multicultural, que garantiza la inclusión, equidad y valora las diferencias.
+
+
+Promovemos nuestros valores día a día lo que hace que nuestra cultura organizacional se viva a piel, **¡queremos que seas parte de nuestro equipo y construyamos juntos tu camino profesional!**
+
+**¡Te esperamos!**","","https://cl.indeed.com/cmp/Soho","https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/b1cd626c64cf68e04d0246dd5bcefd5c","http://www.sohohair.com.br","","","","","","","","","","","desarrollador react","Chile",14
+"in-15c10b2c458ef68b","indeed","https://ar.indeed.com/viewjob?jk=15c10b2c458ef68b","https://talent.latinolegends.com/jobs/8646995-full-stack-software-engineer-net-c-react","Full Stack Software Engineer (.NET / C# & React)","Latino Legends","Buenos Aires, B, AR","2026-11-01","","","","","","",True,"","","","","**Full Stack Software Engineer**
+--------------------------------
+
+**(.NET / C\\# \\& React)**
+-------------------------
+
+**Remote \\| LATAM \\| Independent Contractor**
+
+**Compensation:** USD $23–26/hour (approximately $3,680–$4,160/month)
+
+### **About the Role**
+
+
+We are looking for an experienced Full Stack Software Engineer with strong expertise in **.NET (C\\#) and React/JavaScript** to join an innovative engineering team building scalable, high\\-quality web applications.
+
+
+The ideal candidate is comfortable working across both front\\-end and back\\-end development, takes ownership of their work, and enjoys solving complex technical challenges.
+
+
+This is an **AI\\-first engineering environment** where AI\\-assisted and agentic development are integral to the software development process. You should have hands\\-on experience leveraging AI coding assistants and autonomous agents to accelerate development, improve efficiency, and deliver reliable solutions.
+
+
+Beyond using AI tools, you must be able to critically evaluate, test, and take ownership of AI\\-generated code, ensuring it meets production standards.
+
+### **Key Responsibilities**
+
+* Design, develop, and maintain scalable web applications using .NET (C\\#) and React/JavaScript.
+* Build responsive front\\-end experiences and reliable back\\-end services.
+* Develop and integrate RESTful APIs and third\\-party services.
+* Leverage AI coding assistants and agentic workflows throughout the development lifecycle.
+* Review, debug, test, and validate AI\\-generated code to ensure quality, security, and maintainability.
+* Collaborate with engineering and cross\\-functional teams to design and deliver new features.
+* Participate in code reviews and follow established development standards.
+* Troubleshoot technical issues and optimize application performance.
+* Maintain technical documentation and contribute to continuous improvement initiatives.
+* Stay current with emerging technologies, development practices, and AI\\-powered engineering tools.
+
+### **Requirements**
+
+* 5\\+ years of professional experience in full\\-stack software development.
+* Strong proficiency in **.NET (C\\#)** and experience developing back\\-end applications.
+* Solid front\\-end development skills with React, JavaScript, HTML, and CSS.
+* Hands\\-on professional experience using AI coding assistants and/or agentic development tools to build, debug, and improve software.
+* Experience designing and integrating RESTful APIs.
+* Familiarity with SQL and NoSQL databases and data modeling.
+* Proficiency with Git and version control workflows.
+* Understanding of web application security best practices.
+* Strong problem\\-solving skills and the ability to work independently.
+* Excellent communication and collaboration skills.
+* Ability to adapt to new technologies and continuously develop technical skills.
+
+### **Nice to Have**
+
+* Bachelor's degree in Computer Science, Software Engineering, or a related field (or equivalent professional experience).
+* Experience customizing AI development workflows, including custom prompts, tool integrations, or multi\\-agent systems.
+* Experience with cloud platforms such as AWS, Azure, or Google Cloud.
+* Familiarity with Docker, Kubernetes, or other containerization technologies.
+* Understanding of CI/CD pipelines and DevOps practices.
+
+### **Compensation \\& Engagement Details**
+
+* **Engagement:** International Independent contractor
+* **Compensation:** USD $23–26/hour (approximately $3,680–$4,160/month).
+* **Timesheets:** Hours worked must be documented and submitted through timesheets.
+* **Time Off:** Days off, sick days, and local public holidays are unpaid and non\\-billable. There may be opportunities to work on certain holidays.
+* **Equipment:** The company will provide and ship the required hardware.
+* **Expected Start Date:** Approximately four weeks after signing the offer to allow for equipment shipment and setup.
+
+### **Recruitment Process**
+
+
+Candidates can expect the following steps:
+
+* **Latino Legends Application:** Complete our application for through our website.
+* **Recorded Screening Questionnaire:** Short recorded responses to help us assess your experience and communication skills. Successful candidates will be submitted to the client's ATS.
+* **Initial Technical Challenge:** A one\\-hour technical exercise. Candidates are not expected to complete the entire task; the goal is to demonstrate their approach and problem\\-solving skills.
+* **Hiring Manager Interview:** Discuss your technical challenge, approach, and implementation decisions.
+* **Peer Interview:** Meet with members of the engineering team.
+* **Final Interview:** Conversation with the SVP of Engineering.
+* **Reference Checks:** Successful finalists will be asked to provide 2–3 professional references from previous supervisors, managers, or team leaders before the formal offer is issued.
+
+**Ready to take the next step in your engineering career? Apply through Latino Legends!**","","https://ar.indeed.com/cmp/Latino-Legends","","","","","","","","","","","","","react remote latam","Argentina",12
+"in-73db1011063830c5","indeed","https://ar.indeed.com/viewjob?jk=73db1011063830c5","https://darwoft.careers-page.com/jobs/4b6b27eb-4fed-49d1-afc3-2c314cd02705?utm_medium=free_job_board&utm_source=indeed","1041 - Mobile Engineer · SemiSenior · Remoto · ARG","DARWOFT","Córdoba, X, AR","2026-10-27","fulltime","","","","","",False,"","","","","*Disclaimer – Lectura obligatoria: Compromiso y dedicaciónEste rol requiere dedicación full\\-time, con prioridad clara sobre los proyectos de Darwoft durante el horario laboral establecido. No es compatible con otros compromisos profesionales full\\-time. Cualquier actividad profesional adicional deberá ser informada previamente y no deberá interferir con las responsabilidades del rol.*
+
+**Sobre Darwoft**
+-----------------
+
+
+Darwoft es una software factory que desarrolla soluciones de software a medida y provee servicios de staff augmentation IT para clientes internacionales, principalmente en Estados Unidos y Latinoamérica. Trabajamos con startups y compañías en crecimiento, desarrollando productos digitales de alto impacto. Nuestra cultura es people\\-first, orientada a la calidad técnica, relaciones de largo plazo y mentalidad colaborativa. Combinamos excelencia técnica con cercanía humana.
+
+**Mobile Engineer SSR (Android / Cross\\-Skilling iOS) \\| Relación de Dependencia \\| Argentina**
+-----------------------------------------------------------------------------------------------
+
+### **Información General**
+
+* **Ubicación:** Argentina (Preferencia Buenos Aires o Córdoba para facilitar instancias presenciales o híbridas)
+* **Tipo de contrato:** Relación de Dependencia
+* **Industria / Proyecto:** Fintech / Soluciones financieras digitales de alto impacto
+* **Zona Horaria:** ART (GMT\\-3\\)
+* **Nivel de Inglés:** Intermedio (B1/B2\\)
+
+### **Sobre el Rol / About the Role**
+
+
+Buscamos un Mobile Software Engineer Semi\\-Senior con foco principal en desarrollo nativo Android y una mentalidad proactiva para expandir sus capacidades técnicas mediante cross\\-skilling hacia iOS (Swift/SwiftUI). En este rol, serás parte de un equipo multidisciplinario enfocado en la evolución de productos financieros masivos, asegurando altos estándares de calidad, arquitecturas modernas y adoptando herramientas de Inteligencia Artificial para optimizar el ciclo de delivery.
+
+### **Responsabilidades / Responsibilities**
+
+* Desarrollar y mantener funcionalidades complejas en aplicaciones nativas Android utilizando Kotlin y Jetpack Compose.
+* Diseñar e implementar componentes desacoplados y testeables basados en arquitectura MVVM y Clean Architecture.
+* Participar activamente en iniciativas de cross\\-skilling para colaborar en el ecosistema mobile con tecnologías iOS (Swift y SwiftUI).
+* Consumir e integrar servicios backend a través de APIs RESTful asegurando un manejo óptimo de datos y estados de red.
+* Implementar herramientas y asistentes de Inteligencia Artificial en el flujo diario de trabajo para acelerar la generación de código, testing y refactorización.
+* Colaborar estrechamente con diseñadores de Producto/UX y desarrolladores backend dentro de un marco de metodologías ágiles (Scrum/Kanban).
+* Mantener la calidad del repositorio mediante buenas prácticas de versionado en Git y revisiones de código exhaustivas.
+
+### **Requisitos / Requirements**
+
+**Must\\-Have:**
+
+* \\+3 años de experiencia comprobable en desarrollo de aplicaciones mobile nativas.
+* Fuerte dominio de **Android Nativo** utilizando **Kotlin**, **Jetpack Compose** y patrones de arquitectura **MVVM**.
+* Apertura, motivación y flexibilidad para capacitarse e implementar soluciones en **iOS Nativo (Swift y SwiftUI)**.
+* Experiencia sólida en consumo de **APIs REST** y manejo de estados asincrónicos.
+* Manejo fluido de herramientas de control de versiones (**Git**) y flujos de trabajo colaborativos.
+* Experiencia trabajando bajo **metodologías ágiles** (Scrum o Kanban).
+* Interés activo y familiaridad en la integración de herramientas de **IA generativa** (Copilot, Cursor, LLMs) aplicadas al desarrollo de software.
+* Residencia en Argentina (con preferencia en Córdoba o Buenos Aires).
+
+**Nice\\-to\\-Have:**
+
+* Experiencia previa básica o intermedia trabajando con Swift y/o SwiftUI.
+* Familiaridad con pipelines de CI/CD aplicados a despliegues mobile (Fastlane, GitHub Actions, Bitrise).
+* Conocimientos en pruebas automatizadas (tests unitarios e instrumentados en mobile).
+
+### **Qué ofrecemos / What We Offer**
+
+* Remuneración competitiva bajo contrato en relación de dependencia.
+* Esquema de trabajo flexible con acceso a oficinas de primer nivel en Córdoba y Buenos Aires.
+* Plan concreto de cross\\-skilling técnico hacia desarrollo iOS.
+* Oportunidad de impactar en productos financieros utilizados por millones de usuarios.
+* Cultura colaborativa orientada al bienestar de las personas y el aprendizaje continuo.
+* Acceso a programas de capacitación técnica y beneficios internos.
+
+
+Explore este y otros desafíos en:**www.darwoft.com/careers**","","https://ar.indeed.com/cmp/Darwoft","","https://www.darwoft.com","Cordoba","51 to 200","","","","","","","","","desarrollador backend","Argentina",8
+"in-f252afe6dd9a290c","indeed","https://cl.indeed.com/viewjob?jk=f252afe6dd9a290c","https://jobs.lever.co/cxtsoftware/3a7171c1-a785-468d-9360-67dda4795a59?lever-source=Indeed","SaaSOps Engineer ($80,000/year USD), CXT Software","CXT SOFTWARE","Remote, CL","2026-10-30","fulltime","","","","","",True,"","","","","Are you a cloud engineer who runs production SaaS on Azure and AWS and owns it end\\-to\\-end, from the Terraform code to the RCA?
+
+
+
+CXT Software provides the technology backbone for delivery processes, empowering courier, route delivery, and healthcare companies to maximize operational potential. Our customers run their daily delivery operations on our platform, so uptime is what they buy from us.
+
+
+
+We are looking for a SaaSOps Engineer to own a production SaaS platform across several product lines and two clouds, Azure first and AWS second. You will write the infrastructure code, build the pipelines, run the Windows and SQL Server estate, own the alerts, and lead the response when something breaks, from provisioning a customer environment to writing the RCA after an incident. You will work daily with Engineering, Support, and Security, in Terraform, GitHub Actions, Grafana Cloud, Azure Monitor, Application Insights, CloudWatch, incident.io, Jira, and Confluence. Reporting to the Director of SaaSOps, you will shape how the platform is built, changed, and monitored.
+
+
+
+If you want whole\\-platform ownership, hold a high bar on every change, and are ready to carry on\\-call for the systems you run, we would love to hear from you.
+
+  
+
+
+**Responsibilities**
+
+
+* Build and change Azure and AWS infrastructure in Terraform.
+
+
+* Build and maintain GitHub Actions pipelines for application and infrastructure deployments.
+
+
+* Provision, upgrade, and tear down customer environments.
+
+
+* Operate Windows Server (Remote Desktop Services, IIS, Active Directory, Group Policy) and SQL Server / Azure SQL: patching, backups, restores, and performance.
+
+
+* Automate repeat operational work in PowerShell.
+
+
+* Carry on\\-call: keep alerts paging on customer impact, respond to incidents, fix the cause, and write the RCA.
+
+
+* Enforce least\\-privilege access, collect SOC 2 evidence, and keep runbooks current.
+
+  
+
+
+**Requirements**
+
+
+* 5\\+ years as a cloud engineer running production workloads (compute, managed databases, identity, networking) on Azure or AWS.
+
+
+* You have deployed and changed production infrastructure with Terraform through CI/CD pipelines you built or maintained.
+
+
+* You write PowerShell automation used in production.
+
+
+* You have run SQL Server or Azure SQL in production: backups, restores, and performance troubleshooting.
+
+
+* You have carried production on\\-call and taken incidents from evidence to a single root cause and a written RCA a teammate can act on without follow\\-up questions.
+
+
+* You work 08:00–17:00 ET, Monday to Friday, and join the after\\-hours on\\-call rotation.
+
+
+* Professional English at C1 level or above, spoken and written.
+
+
+* You can be engaged as an independent contractor and can start within one month of an offer and no later than December 31, 2026\\.
+
+  
+
+
+**Nice to have**
+
+
+* Production experience on Azure.
+
+
+* Windows Server administration in production (Remote Desktop Services, IIS, Active Directory, Group Policy).
+
+
+* AZ\\-104, AZ\\-305 or AZ\\-400, or AWS Solutions Architect Associate or SysOps Administrator Associate.
+
+
+* Experience preparing SOC 2 audit evidence.
+
+
+* Uses AI\\-assisted coding and operations tools at work.
+
+  
+
+
+**Benefits**
+
+
+
+More than just perks, they're the essential components of a rewarding career at CXT Software.
+
+
+* 100% Remote and Global: Enjoy the freedom to live your best life from anywhere in the world.
+
+
+* Flexible Work Environment: Work at times that suit you best. We prioritize results and customer satisfaction over rigid schedules.
+
+
+* Dedicated Growth Path: Receive consistent, meaningful feedback and support tailored to help you achieve your personal career goals.
+
+
+* Access to Leading Tools and Technology: Enhance your skills with the latest tools, playbooks, and technology.
+
+
+* Engaging Community Activities: Participate in coffee chats, happy hours, cooking classes, book clubs, and more!
+
+
+
+CXT Software is an equal opportunity employer. This is a fully remote independent contractor engagement and is not eligible for company\\-sponsored employee benefit programs. We welcome applications from any country where we can lawfully engage you. If you need an accommodation during the application process, you can request it once you apply.
+
+We may use artificial intelligence (AI) tools to support parts of the hiring process, such as reviewing applications, analyzing resumes, or assessing responses and identifying potential inconsistencies or verification signals in application materials based on available information. These tools assist our recruitment team but do not replace human judgment. Final hiring decisions are ultimately made by humans. If you would like more information about how your data is processed, please contact us.","","https://cl.indeed.com/cmp/Cxt-Software","https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/b48a4c54b826c33801556a41bcf656dd","https://www.cxtsoftware.com"," Phoenix, Arizona","11 to 50","$5M to $25M (USD)","CXT Software is the industry-leading shipment management platform for logistics needs throughout North America.","","","","","","","ai engineer","Chile",7
+"in-630bb1fdbf5fb0fe","indeed","https://cl.indeed.com/viewjob?jk=630bb1fdbf5fb0fe","https://jobs.lever.co/coderio/98d31890-2036-44ab-9175-f0d90b7c830a?lever-source=Indeed","Desarrollador Backend (Perl / PostgreSQL)","_coderio","Remote, CL","2026-11-03","contract","","","","","",True,"","","","","**Sobre Coderio**
+
+
+
+Coderio diseña y entrega soluciones digitales escalables para empresas globales. Con una base técnica sólida y una mentalidad orientada al producto, nuestros equipos lideran proyectos de software complejos desde la arquitectura hasta la ejecución. Valoramos la autonomía, la comunicación clara y la excelencia técnica. Colaboramos estrechamente con equipos y socios internacionales, construyendo tecnología que genera impacto.
+ 
+
+Más información: http://coderio.com
+
+
+
+En este puesto, te incorporarás a un proyecto de corta duración y alto impacto para una entidad líder del rubro Banca / Seguros. Formarás parte de un equipo enfocado en la implementación y ajuste de reglas de negocio críticas vinculadas al recálculo automático de primas y parametrización de seguros asistidos.
+
+
+
+Tu función principal será el desarrollo y mantenimiento backend sobre plataformas core en Perl y bases de datos PostgreSQL, garantizando la correcta ejecución de las lógicas financieras y de cálculo para los productos de salud y cobertura senior.
+
+
+**Lo que puedes esperar de este rol (Responsabilidades)**
+
+
+* Desarrollar e implementar los ajustes para el recálculo automático de primas por cambio de edad y aplicación de esquemas de cobertura senior (\\+70\\).
+* Configurar e integrar los cálculos de primas para soluciones de Seguro Catastrófico de Salud (Web Asistido).
+* Diseñar y optimizar consultas complejas y estructuras de datos en PostgreSQL para soportar las reglas de tarificación y cálculos de negocio.
+* Colaborar estrechamente con el equipo de QA en la resolución de incidencias y ajustes post\\-testing.
+
+**Requisitos**
+
+
+* Residencia actual en Chile (Excluyente).
+* Disponibilidad inmediata
+* Experiencia avanzada comprobable en desarrollo con lenguaje **Perl** (Excluyente).
+* Dominio avanzado de bases de datos relacionales **PostgreSQL** (Excluyente).
+* Experiencia previa implementando lógica de negocio o motores de cálculo en sectores regulados (Banca, Seguros o Fintech).
+
+**Beneficios**
+
+
+* Compromiso a largo plazo, con autonomía e impacto
+* Rol estratégico y de alta visibilidad en una cultura de ingeniería moderna
+* Equipo internacional colaborativo y liderazgo técnico sólido
+* Plan de carrera crecimiento y liderazgo dentro de Coderio
+
+
+**¿Por qué unirte a Coderio?**
+
+En Coderio valoramos el talento sin importar la ubicación.
+
+
+
+Somos una empresa remote\\-first, apasionada por la tecnología, el trabajo colaborativo y la compensación justa.
+
+
+
+Ofrecemos un entorno inclusivo, desafiante y con oportunidades reales de crecimiento.
+
+
+
+Si te motiva construir soluciones con impacto, te estamos esperando. Postula ahora.
+
+
+
+We may use artificial intelligence (AI) tools to support parts of the hiring process, such as reviewing applications, analyzing resumes, or assessing responses and identifying potential inconsistencies or verification signals in application materials based on available information. These tools assist our recruitment team but do not replace human judgment. Final hiring decisions are ultimately made by humans. If you would like more information about how your data is processed, please contact us.","","https://cl.indeed.com/cmp/Coderio-1","","https://coderio.com.ar","Buenos Aires","11 to 50","","","","","","","","","ingeniero backend","Chile",5
+"in-ebb9aa2800f7d4f6","indeed","https://cl.indeed.com/viewjob?jk=ebb9aa2800f7d4f6","https://jobs.lever.co/coderio/98d31890-2036-44ab-9175-f0d90b7c830a?lever-source=Indeed","Desarrollador Backend (Perl / PostgreSQL)","_coderio","Remote, CL","2026-11-03","contract","","","","","",True,"","","","","**Sobre Coderio**
+
+
+
+Coderio diseña y entrega soluciones digitales escalables para empresas globales. Con una base técnica sólida y una mentalidad orientada al producto, nuestros equipos lideran proyectos de software complejos desde la arquitectura hasta la ejecución. Valoramos la autonomía, la comunicación clara y la excelencia técnica. Colaboramos estrechamente con equipos y socios internacionales, construyendo tecnología que genera impacto.
+ 
+
+Más información: http://coderio.com
+
+
+
+En este puesto, te incorporarás a un proyecto de corta duración y alto impacto para una entidad líder del rubro Banca / Seguros. Formarás parte de un equipo enfocado en la implementación y ajuste de reglas de negocio críticas vinculadas al recálculo automático de primas y parametrización de seguros asistidos.
+
+
+
+Tu función principal será el desarrollo y mantenimiento backend sobre plataformas core en Perl y bases de datos PostgreSQL, garantizando la correcta ejecución de las lógicas financieras y de cálculo para los productos de salud y cobertura senior.
+
+
+**Lo que puedes esperar de este rol (Responsabilidades)**
+
+
+* Desarrollar e implementar los ajustes para el recálculo automático de primas por cambio de edad y aplicación de esquemas de cobertura senior (\\+70\\).
+* Configurar e integrar los cálculos de primas para soluciones de Seguro Catastrófico de Salud (Web Asistido).
+* Diseñar y optimizar consultas complejas y estructuras de datos en PostgreSQL para soportar las reglas de tarificación y cálculos de negocio.
+* Colaborar estrechamente con el equipo de QA en la resolución de incidencias y ajustes post\\-testing.
+
+**Requisitos**
+
+
+* Residencia actual en Chile (Excluyente).
+* Disponibilidad inmediata
+* Experiencia avanzada comprobable en desarrollo con lenguaje **Perl** (Excluyente).
+* Dominio avanzado de bases de datos relacionales **PostgreSQL** (Excluyente).
+* Experiencia previa implementando lógica de negocio o motores de cálculo en sectores regulados (Banca, Seguros o Fintech).
+
+**Beneficios**
+
+
+* Compromiso a largo plazo, con autonomía e impacto
+* Rol estratégico y de alta visibilidad en una cultura de ingeniería moderna
+* Equipo internacional colaborativo y liderazgo técnico sólido
+* Plan de carrera crecimiento y liderazgo dentro de Coderio
+
+
+**¿Por qué unirte a Coderio?**
+
+En Coderio valoramos el talento sin importar la ubicación.
+
+
+
+Somos una empresa remote\\-first, apasionada por la tecnología, el trabajo colaborativo y la compensación justa.
+
+
+
+Ofrecemos un entorno inclusivo, desafiante y con oportunidades reales de crecimiento.
+
+
+
+Si te motiva construir soluciones con impacto, te estamos esperando. Postula ahora.
+
+
+
+We may use artificial intelligence (AI) tools to support parts of the hiring process, such as reviewing applications, analyzing resumes, or assessing responses and identifying potential inconsistencies or verification signals in application materials based on available information. These tools assist our recruitment team but do not replace human judgment. Final hiring decisions are ultimately made by humans. If you would like more information about how your data is processed, please contact us.","","https://cl.indeed.com/cmp/Coderio-1","","https://coderio.com.ar","Buenos Aires","11 to 50","","","","","","","","","ingeniero backend","Chile",5
+"in-bd4d56042511fd58","indeed","https://cl.indeed.com/viewjob?jk=bd4d56042511fd58","https://jobs.lever.co/coderio/98d31890-2036-44ab-9175-f0d90b7c830a?lever-source=Indeed","Desarrollador Backend (Perl / PostgreSQL)","_coderio","Remote, CL","2026-11-03","contract","","","","","",True,"","","","","**Sobre Coderio**
+
+
+
+Coderio diseña y entrega soluciones digitales escalables para empresas globales. Con una base técnica sólida y una mentalidad orientada al producto, nuestros equipos lideran proyectos de software complejos desde la arquitectura hasta la ejecución. Valoramos la autonomía, la comunicación clara y la excelencia técnica. Colaboramos estrechamente con equipos y socios internacionales, construyendo tecnología que genera impacto.
+ 
+
+Más información: http://coderio.com
+
+
+
+En este puesto, te incorporarás a un proyecto de corta duración y alto impacto para una entidad líder del rubro Banca / Seguros. Formarás parte de un equipo enfocado en la implementación y ajuste de reglas de negocio críticas vinculadas al recálculo automático de primas y parametrización de seguros asistidos.
+
+
+
+Tu función principal será el desarrollo y mantenimiento backend sobre plataformas core en Perl y bases de datos PostgreSQL, garantizando la correcta ejecución de las lógicas financieras y de cálculo para los productos de salud y cobertura senior.
+
+
+**Lo que puedes esperar de este rol (Responsabilidades)**
+
+
+* Desarrollar e implementar los ajustes para el recálculo automático de primas por cambio de edad y aplicación de esquemas de cobertura senior (\\+70\\).
+* Configurar e integrar los cálculos de primas para soluciones de Seguro Catastrófico de Salud (Web Asistido).
+* Diseñar y optimizar consultas complejas y estructuras de datos en PostgreSQL para soportar las reglas de tarificación y cálculos de negocio.
+* Colaborar estrechamente con el equipo de QA en la resolución de incidencias y ajustes post\\-testing.
+
+**Requisitos**
+
+
+* Residencia actual en Chile (Excluyente).
+* Disponibilidad inmediata
+* Experiencia avanzada comprobable en desarrollo con lenguaje **Perl** (Excluyente).
+* Dominio avanzado de bases de datos relacionales **PostgreSQL** (Excluyente).
+* Experiencia previa implementando lógica de negocio o motores de cálculo en sectores regulados (Banca, Seguros o Fintech).
+
+**Beneficios**
+
+
+* Compromiso a largo plazo, con autonomía e impacto
+* Rol estratégico y de alta visibilidad en una cultura de ingeniería moderna
+* Equipo internacional colaborativo y liderazgo técnico sólido
+* Plan de carrera crecimiento y liderazgo dentro de Coderio
+
+
+**¿Por qué unirte a Coderio?**
+
+En Coderio valoramos el talento sin importar la ubicación.
+
+
+
+Somos una empresa remote\\-first, apasionada por la tecnología, el trabajo colaborativo y la compensación justa.
+
+
+
+Ofrecemos un entorno inclusivo, desafiante y con oportunidades reales de crecimiento.
+
+
+
+Si te motiva construir soluciones con impacto, te estamos esperando. Postula ahora.
+
+
+
+We may use artificial intelligence (AI) tools to support parts of the hiring process, such as reviewing applications, analyzing resumes, or assessing responses and identifying potential inconsistencies or verification signals in application materials based on available information. These tools assist our recruitment team but do not replace human judgment. Final hiring decisions are ultimately made by humans. If you would like more information about how your data is processed, please contact us.","","https://cl.indeed.com/cmp/Coderio-1","","https://coderio.com.ar","Buenos Aires","11 to 50","","","","","","","","","desarrollador backend","Chile",5
+"in-862f2a322bec4668","indeed","https://cl.indeed.com/viewjob?jk=862f2a322bec4668","https://grnh.se/873ros9x3us","Manager, Tier 2 Support","Sezzle","Santiago de Chile, RM, CL","2026-11-02","","","","","","",True,"","","","","**Manager, Tier 2 Support**
+
+**About Sezzle:**
+
+
+
+With a mission to financially empower the next generation, Sezzle is revolutionizing the shopping experience beyond payments, blending cutting\\-edge tech with seamless, interest\\-free installment plans that make shopping smarter and more accessible. We're not just transforming payments; we're redefining how people discover, interact with, and purchase the things they love while driving real impact on merchant sales through increased conversions and higher order values. As we continue to shape the future of fintech and retail, we're building an innovative, dynamic team passionate about creating more than just a transaction but a truly unique shopping journey. If you're excited about pushing boundaries in tech and delivering a game\\-changing experience for consumers and merchants alike, come join us at Sezzle and help create the future of shopping!
+
+
+**About the Role:**
+
+
+
+We are seeking a talented and motivated **Manager, Tier 2 Support** who is best in class with a high IQ plus a high EQ. You will lead Sezzle's Tier 2 (T2\\) Support team, the escalation layer that investigates and resolves the shopper issues frontline Support cannot: account access and identity verification, payment method and multiple\\-charge investigations, Payment Streaks tier reinstatements, and Sezzle Send reversals. This role reports to the Director of Insights in the Customer Experience department.
+
+
+
+You will be accountable for three things: fast, accurate resolution of every escalation; T2 decisions that are documented and defensible to auditors, regulators, and our bank partner; and fewer escalations over time, achieved by finding root causes and getting them fixed with Product, Risk, Payments, and Trust \\& Safety. This role sits in a fast\\-paced, rapidly growing team with abundant prospects for career advancement.
+
+
+**What You'll Do:**
+
+
+* Lead, hire, coach, and develop the T2 Operations team; set schedules and coverage so escalations are worked within SLA.
+* Own the T2 escalation queue end to end: intake standards from frontline, triage, prioritization, and the routing paths to Risk, Payments, Trust \\& Safety, and other escalation teams.
+* Own T2's operating procedures and keep every SOP current, consistent, and audit\\-ready.
+* Make sure T2 work meets consumer\\-protection obligations: recognizing when an investigation needs to be rerouted for proper handling, no disclosure of other shoppers' account details, and strict PII handling in tickets, Slack, and AI tools.
+* Find patterns in escalation volume and drive fixes with Product, Engineering, and Payments; file and track defects until they are resolved.
+* Provide feedback to support training and managers to enhance agent knowledge and avoid future mis\\-escalations
+* Report weekly and monthly on T2 volume, resolution time, escalation drivers, and quality, and support complaint, audit, and regulatory responses with case\\-level evidence.
+
+**What We Look For:**
+
+
+* 3\\+ years in a people\\-leadership role (manager, supervisor, or team lead with direct reports) in a customer support or operations environment.
+* 3\\+ years in technical support or escalations at a fintech company, such as payments, BNPL, lending, banking, or cards.
+* Familiarity with payment rails (ACH, card networks, wire transfers), ledger systems, API integrations, and webhook monitoring.
+* Hands\\-on experience investigating account, payment, and transaction issues in internal admin tools and a ticketing platform (Zendesk or similar).
+* Working knowledge of consumer\\-financial regulations that affect support, such as Reg E, Reg Z/TILA, FCRA, and UDAAP.
+* Demonstrated experience working with Claude or equivalent large language model tools is required; candidates must be comfortable leveraging AI to enhance productivity, research, and communication.
+
+
+**Preferred Qualifications:**
+
+
+* Experience with BNPL or installment\\-lending products, virtual cards, or P2P money movement.
+* Comfort with SQL or self\\-serve data tools to pull account and transaction data for investigations.
+* Experience with fraud, account\\-takeover, and identity\\-verification workflows.
+* A record of writing SOPs and knowledge\\-base content that frontline teams actually use.
+* Experience supporting regulatory exams, bank\\-partner audits, or complaint responses (CFPB, state AGs, BBB).
+* Clear, calm communicator who can explain technical root causes to agents, partners, and leadership.
+
+
+**About You:**
+
+
+* **You have relentlessly high standards** \\- many people may think your standards are unreasonably high. You are continually raising the bar and driving those around you to deliver great results. You make sure that defects do not get sent down the line and that problems are fixed so they stay fixed.
+* **You're not bound by convention** \\- your success—and much of the fun—lies in developing new ways to do things
+* **You need action** \\- speed matters in business. Many decisions and actions are reversible and do not need extensive study. We value calculated risk\\-taking.
+* **You earn trust** \\- you listen attentively, speak candidly, and treat others respectfully.
+* **You have backbone; disagree, then commit** \\- you can respectfully challenge decisions when you disagree, even when doing so is uncomfortable or exhausting. You have conviction and are tenacious. You do not compromise for the sake of social cohesion. Once a decision is determined, you commit wholly.
+* **You deliver results** \\- you focus on the key inputs and deliver them with the right quality and in a timely fashion. Despite setbacks, you rise to the occasion and never settle.
+
+
+**What Makes Working at Sezzle Awesome:**
+
+
+
+At Sezzle, we are more than just brilliant engineers, passionate data enthusiasts, out\\-of\\-the\\-box thinkers, and determined innovators. We believe in surrounding ourselves with only the best and the brightest individuals. Our culture is not defined by a certain set of perks designed to give the illusion of the traditional startup culture, but rather, it is the visible example living in every employee that we hire.
+
+
+
+\\#Li\\-remote \\#full\\-time","","https://cl.indeed.com/cmp/Sezzle","https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/79b41d12c8d0bdfaede192c8060ae7fb","","","","","","","","","","","","ai engineer","Chile",5
+"in-ff38fc3465993e4f","indeed","https://cl.indeed.com/viewjob?jk=ff38fc3465993e4f","https://login.airavirtual.com/postula/JnJUiNhfTebf2IOFi9Va","Consultor Maker Fullstack","Entel","Las Condes, RM, CL","2026-11-02","fulltime","","","","","",False,"","","","","**Descripción Oferta**
+----------------------
+
+
+¡Te estamos buscando!
+
+
+¿Cuál será tu misión?
+  
+
+Transformar problemas relevantes de la VP Personas Corporativa y del negocio en soluciones funcionales de alto impacto, actuando como un Maker Fullstack que conecta descubrimiento, diseño y construcción. Levantar necesidades directamente con usuarios, idear alternativas y desarrollar personalmente prototipos, automatizaciones y productos mínimos viables (MVP) mediante ciclos cortos de prueba y aprendizaje, utilizando código, plataformas corporativas, integraciones e inteligencia artificial según la solución más adecuada. Asegurar una implementación segura, adoptable y medible, liderando técnicamente el paso de la idea al piloto y definiendo qué vale la pena escalar.
+  
+
+  
+
+Algunas de tus funciones:
+  
+
+* Explorar desafíos de negocio e identificar oportunidades y casos de uso.
+* Diseñar y desarrollar prototipos y MVP fullstack, desde interfaces y APIs hasta datos y automatizaciones.
+* Crear soluciones de IA aplicada, incluyendo asistentes, agentes, búsqueda contextual y automatización.
+* Evaluar tecnologías de desarrollo, low\\-code/no\\-code, plataformas e integraciones según cada necesidad.
+* Integrar soluciones con servicios, bases de datos y sistemas corporativos, considerando seguridad y privacidad.
+* Validar soluciones con usuarios mediante pruebas, demos y experimentación, incorporando feedback de manera iterativa.
+* Gestionar el desarrollo, despliegue y evolución de MVP, coordinando dependencias técnicas y monitoreando métricas de impacto.
+* Promover buenas prácticas, reutilización de componentes y acompañamiento técnico a otros equipos.
+
+  
+
+Requisitos:
+  
+
+* Formación: Ingeniería de Software, Programación, Sistemas o disciplina afín con experiencia equivalente demostrable. Deseable formación aplicada en cloud, automatización e IA generativa.
+* Al menos 5 años de experiencia construyendo e implementando soluciones digitales
+* Experiencia en al menos una solución o automatización con IA para un problema real
+**Requisitos Candidato/a**
+--------------------------
+
+* Experiencia creando aplicaciones, integraciones, automatizaciones o productos internos
+* Ingeniería de Software, Programación, Sistemas o disciplina afín
+* APIs REST, webhooks, JSON, SQL
+* Power Automate, Power Apps y Copilot Studio
+* Implementación de IA generativa
+* Deseable Azure, Power BI/Fabric, CI/CD, contenedores y UX para prototipos.
+
+
+Esta oferta es apta para personas en situación de discapacidad.
+
+**Proceso de Selección**
+------------------------
+
+
+El proceso de selección se realiza a través de Aira \\- plataforma de reclutamiento diseñado para mejorar tu experiencia de postulación.
+  
+
+  
+
+Para postular solo necesitas:
+  
+
+1\\. Postular a la oferta
+  
+
+2\\. Revisar tu email
+  
+
+3\\. Ingresar a Aira y contestar las preguntas y/o pruebas solicitadas
+  
+
+  
+
+Luego, si vemos que tu perfil se ajusta a lo que estamos buscando, te contactaremos por email (a través de Aira) para seguir a la etapa presencial.
+
+**Sobre Nosotros**
+------------------
+
+
+Somos una compañía líder en tecnología y telecomunicaciones, con operaciones en Chile y Perú.
+  
+
+  
+
+La compañía entrega servicios de telefonía móvil y operaciones de redes fijas (incluye datos, integración TI, internet, telefonía local, larga distancia y servicios relacionados), para los segmentos de personas, empresas, corporaciones y mayoristas.
+  
+
+  
+
+Existimos para acercar las infinitas posibilidades que da la tecnología y así transformar responsablemente la sociedad.
+
+**Nuestros Beneficios**
+-----------------------
+
+* Trabajo remoto
+* Seguro médico
+* Seguro dental
+* Capacitaciones y cursos
+* Subsidio educativo
+* Descuentos en productos
+* Bono de desempeño","","https://cl.indeed.com/cmp/Entel","","http://enteleng.com.br","Santiago, Chile","","","","","","","","","","ingeniero fullstack","Chile",5
+"in-3f78a9c95febb25e","indeed","https://cl.indeed.com/viewjob?jk=3f78a9c95febb25e","https://careers.andespath.com/postings/557783d0-5d8b-4644-87ce-fa4762ef7888?utm_medium=job_board&utm_source=indeed","Software Engineer","Andes Path","Santiago de Chile, RM, CL","2026-10-30","fulltime","","","","","",True,"","","","","### **Description**
+
+  
+
+We’re looking for a versatile Software Engineer to join our Santiago team, helping build tools that make next\\-gen robotics systems debuggable, understandable, and reliable.
+You’ll work closely with a high\\-caliber US\\-based robotics and AI company, designing developer interfaces, visualization plugins, and backend systems that make massive telemetry and sensor data usable. This is a hands\\-on role for someone who thrives on solving complex problems from first principles and owning solutions end\\-to\\-end.
+Over time, your scope could grow into data pipelines, infrastructure, or deeper backend tooling — wherever your strengths meet the team’s evolving challenges.
+Robotics experience isn’t required. We’re looking for strong software fundamentals, product thinking, and a drive to build great tools.### **What You’ll Do**
+
+  
+
+* Build visualizations, dashboards, and plugins that expose what robots are doing and why
+* Design backend services and data flows to handle high\\-rate telemetry
+* Collaborate with US\\-based engineering teams solving real\\-world autonomy problems
+* Learn new domains like robotics, AI, cloud systems, and infrastructure
+* Be part of a mentorship\\-focused pod that values learning and coaching
+
+  
+
+
+### **What We’re Looking For**
+
+  
+
+* Fluent English communication skills, with the ability to lead technical discussions and collaborate with US\\-based teams.
+* 4\\+ years of professional software engineering experience, with strong computer science fundamentals (algorithms, data structures, system design).
+* Experience building and operating backend systems — you’ve designed APIs, worked with cloud infrastructure, and built services that are performant, reliable, and maintainable.
+* Comfort working across the stack — you can build applications end\\-to\\-end, and you’re productive in TypeScript, even if it’s not your primary language.
+* Track record of owning projects from initial design through implementation, launch, and ongoing support.
+* Pragmatic and product\\-minded — you care about solving real problems with clean, well\\-engineered solutions.
+
+### **Benefits**
+
+  
+
+* Fun team activities every month to build strong bonds.
+* We're located in a great area, with plenty to enjoy nearby (El Golf, Las Condes).
+* Snacks and drinks are always stocked in the office.
+* Weekly team lunches to recharge and connect.
+* You’ll work closely with high\\-caliber US\\-based companies.
+* Comprehensive health and dental insurance to keep you covered.
+* Wellness activities reimbursement.
+
+### **About Andes Path**
+
+
+Andes Path is a Chilean–US engineering and design studio building for the frontier. We work with cutting\\-edge US startups and F500 innovation teams tackling real\\-world problems in robotics, AI, simulation, and infrastructure. Our clients are fast\\-moving, technically ambitious, and building things that haven’t quite been built before.
+We operate like product teams, not outsourcing shops — with high\\-trust relationships, sharp execution, and a deep respect for craft. Our team is small, low\\-ego, and serious about building exceptional products. While we have a core office in Santiago, we’re remote\\-friendly across the Americas. Our culture is fast\\-paced, collaborative, and grounded in mentorship, clarity, and ownership.","","https://cl.indeed.com/cmp/Andes-Path","","","","","","","","","","","","","backend developer","Chile",5
+"in-d9402ceee03dcb3d","indeed","https://cl.indeed.com/viewjob?jk=d9402ceee03dcb3d","https://improvado.applytojob.com/apply/C79A7lUXKp/SEO-Website-Optimization-Specialist-SEO-GEO-Technical-Analytics?source=INDE&~","SEO & Website Optimization Specialist (SEO / GEO · Technical · Analytics)","Improvado","Remote, CL","2026-10-30","fulltime","","","","","",True,"","","","","**About Improvado**
+-------------------
+
+
+Improvado is an AI\\-powered marketing data platform built for mid\\-market and enterprise teams. We help companies automate complex marketing data workflows, unify data at scale, and surface insights through BI and AI. Brands like Genentech, T\\-Mobile, Activision, and H\\&R Block rely on us to simplify analytics and improve marketing performance.
+
+
+We’re a fast\\-growing Series A startup backed by $34M in funding and driven by a team that moves fast, stays curious, and cares about high\\-quality execution.
+
+### **About the Role**
+
+
+We are looking for a technical specialist who owns the performance of the Improvado website end to end: how it is found (SEO and GEO), how fast and healthy it is, and how well it converts visitors into pipeline. This is an analytics\\-driven, hands\\-on role for someone who is as comfortable in Google Search Console, GA4, and the browser dev tools as in a keyword report. Because the website is our main product\\-facing marketing surface, you will also shape how the product is presented on it. In practice, the role covers part of what product marketing would otherwise do.
+
+### **What You Will Do**
+
+
+Technical SEO and GEO
+
+* Own the technical health of the site: crawlability, indexation, Core Web Vitals, page speed, structured data and schema, rendering, redirects, internal linking, and site architecture.
+* Optimize the site for AI search (generative engine optimization): make Improvado understandable, citable, and recommended in ChatGPT, Perplexity, Google AI Overviews, and similar engines.
+* Monitor visibility in both classic and AI search, and turn the findings into prioritized fixes.
+
+
+Website optimization and conversion
+
+* Continuously improve page performance, UX, templates, and key conversion paths (demo requests, sign\\-ups, high\\-intent pages).
+* Plan and run experiments (A/B tests, template and layout changes, messaging tests) and measure their impact on conversions and pipeline.
+* Work with engineering, design, and external contractors to ship improvements to the website stack (CMS, CDN, caching, tracking).
+
+
+Analytics and measurement
+
+* Build and maintain dashboards that connect organic and on\\-site behavior to leads, pipeline, and revenue.
+* Own tracking quality: events, attribution, and data accuracy across GA4, Search Console, and related tools.
+* Analyze data to find growth opportunities, and report findings in clear, decision\\-ready form.
+
+
+Product and messaging input
+
+* Use search demand, AI\\-visibility, and on\\-site behavior data to guide positioning, messaging, and landing page strategy.
+* Work with stakeholders so website content reflects ICP needs and the product’s value propositions.
+
+### **What We Are Looking For**
+
+
+Must have
+
+* 3\\+ years in SEO and/or website optimization, with measurable results in organic growth or conversion.
+* Strong technical SEO skills and a good understanding of how websites are built, served, and rendered.
+* Ability and willingness to work in the Eastern Time (EST) time zone, with working hours aligned to the US East Coast.
+* Hands\\-on experience with GEO or AI search optimization, or a clear, demonstrable track record of working on it.
+* Strong analytics experience: GA4, Google Search Console, and BI or dashboard tools (Looker Studio, Superset, or similar). You build your own reports and draw conclusions from the data.
+* Proficiency with SEO tooling (Ahrefs, Semrush, Screaming Frog, or equivalents).
+* Ability to work effectively with developers, designers, and marketers in a distributed team.
+
+
+Nice to have
+
+* B2B SaaS or marketing technology background.
+* Experience with Webflow or a similar CMS, plus basic HTML/CSS and JavaScript.
+* SQL or advanced spreadsheet skills; experience with AI\\-assisted or automated workflows.
+* Experience with CRO and experimentation platforms.
+* Exposure to product marketing, positioning, or messaging.
+
+
+You are
+
+* Analytical, curious, and driven by measurable outcomes.
+* Self\\-directed and comfortable owning a channel without heavy supervision.
+* A clear communicator across time zones.
+
+### **What We Offer**
+
+* Remote\\-first environment
+* Strong product/market fit: marketing data product for US\\-based enterprises
+* 20 working days of PTO per year
+* US holidays and additional days off
+* Professional development reimbursement
+
+
+
+
+C79A7lUXKp","","https://cl.indeed.com/cmp/Improvado","","","","","","","","","","","","","ai developer","Chile",4
+"li-4476391586","linkedin","https://www.linkedin.com/jobs/view/4476391586","","Full Stack Engineer (Java + React) - Remote - Latin America","FullStack","Salta, Salta, Argentina","2026-10-28","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","ingeniero fullstack","Argentina",8
+"li-4482176708","linkedin","https://www.linkedin.com/jobs/view/4482176708","","Forward Deployed Engineer (TypeScript + AI) - Remote - Latin America","FullStack","Concepcion, Biobío Region, Chile","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","fullstack developer typescript","Chile",8
+"li-4482187080","linkedin","https://www.linkedin.com/jobs/view/4482187080","","Forward Deployed Engineer (TypeScript + AI) - Remote - Latin America","FullStack","","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","fullstack developer typescript","Chile",8
+"li-4482171855","linkedin","https://www.linkedin.com/jobs/view/4482171855","","Forward Deployed Engineer (TypeScript + AI) - Remote - Latin America","FullStack","","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","desarrollador typescript","Chile",8
+"li-4482180616","linkedin","https://www.linkedin.com/jobs/view/4482180616","","Forward Deployed Engineer (TypeScript + AI) - Remote - Latin America","FullStack","Valparaíso, Valparaiso Region, Chile","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","desarrollador backend node","Chile",8
+"li-4482167886","linkedin","https://www.linkedin.com/jobs/view/4482167886","","Forward Deployed Engineer (TypeScript + AI) - Remote - Latin America","FullStack","Salta, Salta, Argentina","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","fullstack developer typescript","Argentina",8
+"li-4482166940","linkedin","https://www.linkedin.com/jobs/view/4482166940","","Forward Deployed Engineer (TypeScript + AI) - Remote - Latin America","FullStack","Rosario, Santa Fe, Argentina","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","fullstack developer typescript","Argentina",8
+"li-4481764493","linkedin","https://www.linkedin.com/jobs/view/4481764493","","Desarrollador Full Stack Java / React - Remoto","Imagemaker","Santiago, Santiago Metropolitan Region, Chile","2026-10-20","","","","","","",False,"","","","","","","https://cl.linkedin.com/company/imagemaker","","","","","","","","","","","","","ingeniero fullstack","Chile",8
+"li-4485996529","linkedin","https://www.linkedin.com/jobs/view/4485996529","","React Engineer - Remote, Latin America","Bluelight","Concepcion, Biobío Region, Chile","2026-10-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bluelightco","","","","","","","","","","","","","react developer","Chile",8
+"li-4486100332","linkedin","https://www.linkedin.com/jobs/view/4486100332","","React Engineer - Remote, Latin America","Bluelight","Santiago, Santiago Metropolitan Region, Chile","2026-10-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bluelightco","","","","","","","","","","","","","react developer","Chile",8
+"li-4485988913","linkedin","https://www.linkedin.com/jobs/view/4485988913","","Laravel Developer + React - Remote, Latin America","Bluelight","Valparaíso, Valparaiso Region, Chile","2026-10-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bluelightco","","","","","","","","","","","","","remote developer latam","Chile",8
+"li-4485999329","linkedin","https://www.linkedin.com/jobs/view/4485999329","","React Engineer - Remote, Latin America","Bluelight","Antofagasta, Antofagasta Region, Chile","2026-10-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bluelightco","","","","","","","","","","","","","frontend developer","Chile",8
+"li-4485990983","linkedin","https://www.linkedin.com/jobs/view/4485990983","","React Engineer - Remote, Latin America","Bluelight","Valparaíso, Valparaiso Region, Chile","2026-10-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bluelightco","","","","","","","","","","","","","desarrollador freelance","Chile",8
+"li-4485990989","linkedin","https://www.linkedin.com/jobs/view/4485990989","","React Engineer - Remote, Latin America","Bluelight","Mendoza, Mendoza, Argentina","2026-10-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bluelightco","","","","","","","","","","","","","react developer","Argentina",8
+"li-4486105148","linkedin","https://www.linkedin.com/jobs/view/4486105148","","React Engineer - Remote, Latin America","Bluelight","Rosario, Santa Fe, Argentina","2026-10-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/bluelightco","","","","","","","","","","","","","react developer","Argentina",8
+"li-4483708833","linkedin","https://www.linkedin.com/jobs/view/4483708833","","LLM Engineer (Remote, Santiago)","Blacksmith Agency","","2026-10-26","","","","","","",True,"","","","","","","https://www.linkedin.com/company/blacksmith-agency","","","","","","","","","","","","","python developer","Chile",6
+"li-4486424674","linkedin","https://www.linkedin.com/jobs/view/4486424674","","AI Developer (Remote, La Serena)","Blacksmith Agency","","","","","","","","",True,"","","","","","","https://www.linkedin.com/company/blacksmith-agency","","","","","","","","","","","","","remote developer latam","Chile",6
+"li-4484472694","linkedin","https://www.linkedin.com/jobs/view/4484472694","","Python Developer (Junior) - Remote Work","INDI Staffing Services","","2026-10-28","","","","","","",True,"","","","","","","https://www.linkedin.com/company/indi-staffing-services","","","","","","","","","","","","","python developer","Chile",4
+"li-4475042405","linkedin","https://www.linkedin.com/jobs/view/4475042405","","AI Machine Learning Engineer - Remote - Latin America","FullStack","Valparaíso, Valparaiso Region, Chile","2026-10-24","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","ai developer","Chile",4
+"li-4475027957","linkedin","https://www.linkedin.com/jobs/view/4475027957","","AI Machine Learning Engineer - Remote - Latin America","FullStack","","2026-10-24","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","ai developer","Chile",4
+"li-4481798068","linkedin","https://www.linkedin.com/jobs/view/4481798068","","Python Full Stack Engineer (3 month-long) - Remote - Latin America","FullStack","Valparaíso, Valparaiso Region, Chile","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","desarrollador freelance","Chile",4
+"li-4481786756","linkedin","https://www.linkedin.com/jobs/view/4481786756","","Python Full Stack Engineer (3 month-long) - Remote - Latin America","FullStack","Concepcion, Biobío Region, Chile","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","desarrollador freelance","Chile",4
+"li-4480170562","linkedin","https://www.linkedin.com/jobs/view/4480170562","","Forward Deployed Engineer (Python + AI) - Remote - Latin America","FullStack","Valparaíso, Valparaiso Region, Chile","2026-10-15","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","python developer","Chile",4
+"li-4480167729","linkedin","https://www.linkedin.com/jobs/view/4480167729","","Forward Deployed Engineer (Python + AI) - Remote - Latin America","FullStack","","2026-10-15","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","python developer","Chile",4
+"li-4342348631","linkedin","https://www.linkedin.com/jobs/view/4342348631","","Ruby Engineer - Web Scraping (Remote)","SearchApi","","2025-12-07","","","","","","",True,"","","","","","","https://www.linkedin.com/company/searchapi","","","","","","","","","","","","","backend developer","Chile",4
+"li-4388213003","linkedin","https://www.linkedin.com/jobs/view/4388213003","","Agentic Elixir Engineer - Remote - Latin America","FullStack","La Plata, Buenos Aires Province, Argentina","2026-10-24","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","remote developer latam","Argentina",0
+"li-4387998615","linkedin","https://www.linkedin.com/jobs/view/4387998615","","Agentic Elixir Engineer - Remote - Latin America","FullStack","Valparaíso, Valparaiso Region, Chile","2026-10-23","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","remote developer latam","Chile",0
+"li-4387996618","linkedin","https://www.linkedin.com/jobs/view/4387996618","","Agentic Elixir Engineer - Remote - Latin America","FullStack","Cordoba, Córdoba, Argentina","2026-10-23","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","remote developer latam","Argentina",0
+"li-4482427973","linkedin","https://www.linkedin.com/jobs/view/4482427973","","Kernel Developer - KernelCare ELS Team (remote work, LATAM)","TuxCare","Buenos Aires, Buenos Aires Province, Argentina","2026-10-22","","","","","","",True,"","","","","","","https://www.linkedin.com/company/tuxcare","","","","","","","","","","","","","remote developer latam","Argentina",0
+"li-4473555349","linkedin","https://www.linkedin.com/jobs/view/4473555349","","Full Stack .NET Engineer (Angular) - Remote - Latin America","FullStack","","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","ingeniero fullstack","Chile",0
+"li-4473557325","linkedin","https://www.linkedin.com/jobs/view/4473557325","","Full Stack .NET Engineer (Angular) - Remote - Latin America","FullStack","Valparaíso, Valparaiso Region, Chile","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","desarrollador fullstack","Chile",0
+"li-4473556341","linkedin","https://www.linkedin.com/jobs/view/4473556341","","Full Stack .NET Engineer (Angular) - Remote - Latin America","FullStack","Salta, Salta, Argentina","2026-10-21","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","desarrollador fullstack","Argentina",0
+"li-4472210257","linkedin","https://www.linkedin.com/jobs/view/4472210257","","Frontend Developer (.NET + Blazor) - Remote - Latin America","FullStack","Concepcion, Biobío Region, Chile","2026-10-17","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","react developer","Chile",0
+"li-4472211243","linkedin","https://www.linkedin.com/jobs/view/4472211243","","Frontend Developer (.NET + Blazor) - Remote - Latin America","FullStack","","2026-10-17","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","react developer","Chile",0
+"li-4472206325","linkedin","https://www.linkedin.com/jobs/view/4472206325","","Frontend Developer (.NET + Blazor) - Remote - Latin America","FullStack","Salta, Salta, Argentina","2026-10-17","","","","","","",True,"","","","","","","https://www.linkedin.com/company/fullstack-labs","","","","","","","","","","","","","react developer","Argentina",0
+"li-4476133108","linkedin","https://www.linkedin.com/jobs/view/4476133108","","Full-Stack Engineer (LATAM Remote) - FR speakers","Pragmatike","","2026-10-06","","","","","","",True,"","","","","","","https://fr.linkedin.com/company/pragmatikee","","","","","","","","","","","","","python developer","Chile",0
+"li-4476132226","linkedin","https://www.linkedin.com/jobs/view/4476132226","","Full-Stack Engineer (LATAM Remote) - FR speakers","Pragmatike","","2026-10-06","","","","","","",True,"","","","","","","https://fr.linkedin.com/company/pragmatikee","","","","","","","","","","","","","remote developer latam","Argentina",0
+"li-4484375935","linkedin","https://www.linkedin.com/jobs/view/4484375935","","Software Engineer (EdTech-AI-Remote-Full Time)","Umáximo","","","","","","","","",True,"","","","","","","https://cl.linkedin.com/company/umaximo","","","","","","","","","","","","","remote developer latam","Chile",0

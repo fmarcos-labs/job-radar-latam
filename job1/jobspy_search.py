@@ -4,10 +4,13 @@ import time
 
 import pandas as pd
 
+from config import CONFIG, MAX_DESC_FETCH, SEEN_FILENAME
 from helpers import (
-    scrape_all_countries,
+    SeenStore,
     apply_filters,
     export_results,
+    read_git_sha,
+    scrape_all_countries,
     send_email_report,
 )
 
@@ -15,6 +18,11 @@ from helpers import (
 def main() -> None:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")
     t_start_total = time.time()
+
+    # 0. Memoria y sha ANTES de scrapear: si fallan, que fallen a los 0 min y no a los 17
+    app_dir = Path(__file__).parent.parent
+    sha = read_git_sha(app_dir)
+    seen = SeenStore(Path(__file__).parent / SEEN_FILENAME)
 
     # 1. Scraping — LinkedIn + Indeed × 3 países
     all_jobs = scrape_all_countries()
@@ -26,18 +34,19 @@ def main() -> None:
     combined = pd.concat(all_jobs, ignore_index=True)
     print(f"\n[debug] Registros combinados (bruto): {len(combined)}")
 
-    # 2. Pipeline de filtros — dedupe, remote, títulos, empresas, score, relevancia
-    combined, discard_groups = apply_filters(combined)
+    # 2. Pipeline de filtros — dedupe, títulos, empresas, memoria, descripción (LinkedIn sin texto), remoto, LATAM, score, relevancia
+    combined, discard_groups = apply_filters(combined, seen_store=seen, max_desc_fetch=MAX_DESC_FETCH, run_id=timestamp)
+    new_count = int(combined["is_new"].sum())
 
     print(f"\n{'='*80}")
-    print(f"TOTAL trabajos relevantes: {len(combined)}")
+    print(f"TOTAL trabajos relevantes: {len(combined)} · NUEVOS: {new_count} · {CONFIG['version']} ({sha})")
     print(f"{'='*80}\n")
 
     # 3. Preview en consola
     columns_to_show = [
         "title", "company", "location", "pais", "date_posted",
         "job_type", "min_amount", "max_amount",
-        "job_url", "site", "search_query", "match_score",
+        "job_url", "site", "search_query", "match_score", "is_new", "desc_fetched",
     ]
     existing_cols = [c for c in columns_to_show if c in combined.columns]
     print(combined[existing_cols].head(100).to_string(index=False))
@@ -46,7 +55,7 @@ def main() -> None:
     run_dir = Path(__file__).parent / timestamp
     run_dir.mkdir(exist_ok=True)
 
-    results_md_path = export_results(combined, discard_groups, run_dir, timestamp)
+    results_md_path = export_results(combined, discard_groups, run_dir, timestamp, version=CONFIG["version"], sha=sha)
 
     elapsed_total = time.time() - t_start_total
     mins, secs = divmod(int(elapsed_total), 60)
@@ -57,8 +66,13 @@ def main() -> None:
     print(f"Resumen legible en: {results_md_path}")
     print(f"Tiempo total: {mins}m {secs}s")
 
-    # 5. Email con results.md
-    send_email_report(timestamp, results_md_path, len(combined))
+    # 5. Email con results.md (NUEVOS arriba). Solo si SALIÓ se marcan como mostrados: si el email falla,
+    #    la corrida siguiente los vuelve a mostrar como NUEVOS (sin re-pedir descripciones: ya están en la memoria).
+    sent = send_email_report(timestamp, results_md_path, len(combined), new_count=new_count, version=CONFIG["version"], sha=sha)
+    if sent:
+        seen.mark_shown(combined, run_id=timestamp)
+    else:
+        print("[seen] email no enviado: nada se marca como mostrado")
 
 
 if __name__ == "__main__":

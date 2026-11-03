@@ -3,8 +3,9 @@
 # job-radar-latam
 
 Script Python que automatiza la búsqueda de ofertas de trabajo remotas en LATAM
-usando [python-jobspy](https://github.com/cullenwatson/JobSpy). Se ejecuta como
-cron job en Railway (lunes y jueves 9am CLT) y envía los resultados por email vía Resend.
+usando [python-jobspy](https://github.com/speedyapply/JobSpy). Corre en el Mac Mini como
+LaunchDaemon (`com.jobradar.latam`, 10:30 y 17:30) y envía los resultados por email vía Resend:
+los avisos NUEVOS arriba, y el asunto con la versión y el sha del commit que los produjo.
 
 ---
 
@@ -45,9 +46,27 @@ Genera una carpeta `job1/YYYYMMDD_HHMM/` con:
 
 ---
 
-## Deploy (Railway)
+## Tests (sin red, con corridas reales)
 
-El proyecto se despliega automáticamente desde GitHub.
-Railway detecta Python + Pipfile vía Nixpacks, sin Dockerfile.
+```bash
+python3 -m venv ~/.local/share/virtualenvs/job-radar-latam-local
+~/.local/share/virtualenvs/job-radar-latam-local/bin/pip install python-jobspy pandas resend pytest
+~/.local/share/virtualenvs/job-radar-latam-local/bin/python -m pytest tests/ -q
+```
 
-El cron está configurado en el dashboard de Railway (no en `railway.toml`).
+Los fixtures en `tests/fixtures/` son un `results.csv`/`discarded.md` reales y un HTML de un job de
+LinkedIn; el HTTP se inyecta, nunca se toca LinkedIn desde los tests.
+
+---
+
+## Deploy (Mac Mini)
+
+`push` a `master` → `.github/workflows/deploy.yml` (runner self-hosted en el Mac Mini) hace
+`rsync` a `/Users/freddymhs/apps/job-radar-latam/`, excluyendo `.env`, `run.sh`, `cron.log`,
+las corridas `job1/20*`, la memoria `job1/seen.json` y `GIT_SHA`; después escribe `GIT_SHA`
+con el commit desplegado (es lo que va al asunto del email y al CSV).
+
+El scheduler es el LaunchDaemon `/Library/LaunchDaemons/com.jobradar.latam.plist` (10:30 y 17:30,
+log en `cron.log`). No se corre a mano: LinkedIn hace soft-ban.
+
+`railway.toml` es legado de cuando corría en Railway; no se usa.
