@@ -58,9 +58,11 @@ def test_rows_with_description_never_pass_with_a_low_score(tmp_path):
     elixir = df[df["site"] == "linkedin"].index[0]
     df.loc[elixir, "title"] = "Agentic Elixir Engineer - Remote"
     df.loc[elixir, "company"] = "Solo Elixir SpA"
+    df.loc[elixir, "pais"] = "Chile"  # que ningún otro filtro lo esconda: solo la relevancia decide
 
     def fetch(job_id):
-        return "<div class='show-more-less-html__markup'>Elixir, Phoenix, OTP, Erlang. Nada de JavaScript.</div>" \
+        # sin ninguna palabra del stack (ni "javascript" ni "api"): el score tiene que quedar en 0
+        return "<div class='show-more-less-html__markup'>Elixir, Phoenix, OTP, Erlang, GenServer.</div>" \
             if job_id in df.loc[elixir, "job_url"] else HTML
 
     out, _, _, _ = run(tmp_path, df=df, fetch=fetch)
