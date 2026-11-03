@@ -2,7 +2,7 @@
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v10.0",
+    "version": "v10.1",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
@@ -10,6 +10,8 @@ CONFIG = {
     "hours_old": 168,
     "results_wanted": 50,
     "score_minimo": 2,
+    "score_fuerte": 20,   # correo HTML: título en negrita y score grande en verde
+    "score_medio": 10,    # correo HTML: normal; debajo, gris
     "nota": "v10.0: memoria de vistos (NUEVOS primero), dedupe por titulo+empresa, descripcion de LinkedIn solo para nuevos, remoto de LinkedIn por busqueda (f_WT=2), bypass de titulo solo sin descripcion, sha del commit en email y CSV.",
 }
 

@@ -61,7 +61,7 @@ job-radar-latam/
     ├── seen.json                        ← (solo Mac Mini) memoria entre corridas; el rsync la excluye
     └── YYYYMMDD_HHMM/                  ← carpeta por run
         ├── results.csv                  ← datos completos (cabecera: CONFIG_VERSION, GIT_SHA, …)
-        ├── results.md                   ← NUEVOS arriba + tablas por site (es el cuerpo del email)
+        ├── results.md / results.html    ← NUEVOS arriba + tablas por site (md) · el HTML es el cuerpo del email, con el score pesado
         └── discarded.md                 ← descartados para revisión manual
 ```
 
@@ -219,6 +219,7 @@ Portales que JobSpy no soporta pero Freddy revisa manualmente:
 | v8.0    | Glassdoor integrado junto a Indeed (mismo `scrape_jobs()` call). LinkedIn reducido: solo Chile FULL + Argentina LIGHT (Uruguay/Peru solo Indeed+Glassdoor). Nuevo filtro LATAM en pipeline: jobs no-chilenos solo pasan si descripción menciona apertura regional. 126 calls totales. |
 | v8.1    | Email subject cambiado a `⭐ Job Radar LATAM — {total} trabajos — {run_id}`. Agregados headers `X-Priority: 1` e `Importance: high` para mayor visibilidad en inbox. |
 | v10.0   | **Lo nuevo, con texto real, y el score manda.** Medido sobre 349 corridas y el Gmail de Freddy (03-11): 75–87 % de cada email era repetido, 22/53 filas duplicadas, 13/53 con score 0, y **el 100 % de las filas de LinkedIn llegaban sin descripción** (JobSpy solo la baja con `linkedin_fetch_description=True`). Memoria entre corridas (`SeenStore`): NUEVOS arriba del email, descripción guardada. Descripción de LinkedIn solo para lo nunca evaluado (tope 150, sleep). Filtro remoto de LinkedIn por la búsqueda (`f_WT=2`), no por la palabra. Bypass de título solo sin descripción. Dedupe por título+empresa. Versión + sha del commit en asunto y CSV; el deploy escribe `GIT_SHA`. Suite `tests/` con fixtures reales. |
+| v10.1   | **El correo pesa el score a la vista.** El cuerpo iba como texto plano: la tabla markdown llegaba con `\|` y 267 filas iguales, carga cognitiva alta (Freddy, 03-11). Ahora `export_results` escribe también `results.html` y `send_email_report` lo manda como `html` (el `text` sigue de fallback): solo los NUEVOS, en orden de score, fila densa de 13 px sin botones; score ≥ `score_fuerte` (20) en negrita grande verde con el título en negrita, ≥ `score_medio` (10) normal, debajo gris; un 0 sin descripción se marca `s/d` (LinkedIn no dio el texto) para no leerse como mal match. **Ninguna fila se oculta** ni se filtra: cambia el peso, no el contenido. Umbrales en `config.py`. Tests en `test_export.py` (todas las filas, orden, tiers, `s/d`, sin `<button>`). |
 | v9.0    | **Recall-first + calibración con 117 corridas reales.** Filosofía: mostrar más, el score rankea (EXCLUDE mínimo). Lenguajes backend fuera del EXCLUDE (self-filtran por score 0). +`AI_TECH` (16 kw IA/LLM, peso 3) +`PLATFORM_TECH` (aws 3, serverless/microservicios 2). +javascript, +`node` bare, fastapi 2→3, +mysql/mongodb. **4 bugs de substring fixeados (víctimas reales):** `cto`⊂contractor/proyecto (61), `angular` mató 93 fullstack-Node, `intern`⊂international, `go developer`⊂django. Relevance regex ampliado (engineer/full stack c-espacio/programador). +`americas` en LATAM_KEYWORDS. |
 
 ---

@@ -13,6 +13,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from jobspy import scrape_jobs
+import html as html_mod
 import resend
 
 from config import (
@@ -640,6 +641,9 @@ def export_results(combined: pd.DataFrame, discard_groups: list, run_dir: Path, 
                 f.write(f"| {score} | {title_cell} | {company} | {pais} | {date} |\n")
             f.write("\n")
 
+    # --- results.html (cuerpo HTML del email: NUEVOS con el score pesado) ---
+    (run_dir / "results.html").write_text(render_results_html(combined, timestamp, version, sha), encoding="utf-8")
+
     # --- discarded.md (descartados para revisión manual) ---
     discarded_path = run_dir / "discarded.md"
     with open(discarded_path, "w", encoding="utf-8") as f:
@@ -663,6 +667,72 @@ def export_results(combined: pd.DataFrame, discard_groups: list, run_dir: Path, 
 
     return md_path
 
+
+
+# =============================================================================
+# CORREO HTML — el score pesa visualmente; ninguna fila se oculta, nada ocupa espacio de más
+# =============================================================================
+
+def _tier(score: int, fuerte: int, medio: int) -> str:
+    if score >= fuerte:
+        return "fuerte"
+    if score >= medio:
+        return "medio"
+    return "flojo"
+
+
+def _celda(valor) -> str:
+    """Texto de una celda: NaN/None es vacío, nunca «nan»."""
+    if valor is None or (isinstance(valor, float) and pd.isna(valor)):
+        return ""
+    return html_mod.escape(str(valor))
+
+
+def render_results_html(combined: pd.DataFrame, timestamp: str, version: str, sha: str,
+                        fuerte: int = None, medio: int = None) -> str:
+    """Solo los NUEVOS, por score: fila densa (13px, sin botones), el score en negrita y color
+    según tier, el título en negrita si es fuerte y gris si es flojo. Un 0 sin descripción se
+    marca «s/d»: no es mal match, es que LinkedIn no dio el texto."""
+    fuerte = CONFIG["score_fuerte"] if fuerte is None else fuerte
+    medio = CONFIG["score_medio"] if medio is None else medio
+    is_new = combined["is_new"].astype(bool) if "is_new" in combined.columns else pd.Series(True, index=combined.index)
+    nuevos = combined[is_new].sort_values("match_score", ascending=False) if "match_score" in combined.columns else combined[is_new]
+    vistos = int((~is_new).sum())
+    color = {"fuerte": "#1a7f37", "medio": "#1f2328", "flojo": "#8b949e"}
+    filas = []
+    for _, row in nuevos.iterrows():
+        score = int(row.get("match_score", 0) or 0)
+        tier = _tier(score, fuerte, medio)
+        sin_texto = score == 0 and not str(row.get("description", "") or "").strip()
+        url = str(row.get("job_url", "") or "")
+        titulo = html_mod.escape(str(row.get("title", "") or ""))
+        titulo = f"<b>{titulo}</b>" if tier == "fuerte" else titulo
+        enlace = f'<a href="{html_mod.escape(url)}" style="color:{color[tier]};text-decoration:none">{titulo}</a>' if url else titulo
+        score_txt = f"{score}&nbsp;<span style=\"font-weight:normal;font-size:11px\">s/d</span>" if sin_texto else str(score)
+        peso = "font-weight:700;font-size:15px" if tier == "fuerte" else ("font-weight:600" if tier == "medio" else "font-weight:400")
+        filas.append(
+            f'<tr class="fila {tier}" style="color:{color[tier]}">'
+            f'<td style="text-align:right;padding:1px 6px;{peso}">{score_txt}</td>'
+            f'<td style="padding:1px 6px">{enlace}</td>'
+            f'<td style="padding:1px 6px">{_celda(row.get("company"))}</td>'
+            f'<td style="padding:1px 6px">{_celda(row.get("pais"))}</td>'
+            f'<td style="padding:1px 6px">{_celda(row.get("site"))}</td>'
+            f'<td style="padding:1px 6px;white-space:nowrap">{_celda(row.get("date_posted"))}</td>'
+            "</tr>"
+        )
+    cabecera = (
+        f'<p style="margin:0 0 6px 0"><b>NUEVOS ({len(nuevos)})</b> · ya vistos: {vistos} · '
+        f'score ≥{fuerte} fuerte · ≥{medio} medio · s/d = sin descripción · {html_mod.escape(version)} ({html_mod.escape(sha)}) · {timestamp}</p>'
+    )
+    tabla = (
+        '<table style="border-collapse:collapse;font:13px/1.35 -apple-system,Segoe UI,Roboto,sans-serif;width:100%">'
+        '<thead><tr style="color:#57606a;font-size:11px"><th style="text-align:right;padding:1px 6px">score</th>'
+        '<th style="text-align:left;padding:1px 6px">título</th><th style="text-align:left;padding:1px 6px">empresa</th>'
+        '<th style="text-align:left;padding:1px 6px">país</th><th style="text-align:left;padding:1px 6px">sitio</th>'
+        '<th style="text-align:left;padding:1px 6px">fecha</th></tr></thead><tbody>\n'
+        + "\n".join(filas) + "\n</tbody></table>"
+    )
+    return f'<!doctype html><html><body style="margin:8px;color:#1f2328">{cabecera}{tabla}</body></html>\n'
 
 # =============================================================================
 # EMAIL
@@ -698,6 +768,8 @@ def send_email_report(run_id: str, results_md_path: Path, total: int, new_count:
 
     with open(results_md_path) as f:
         body = f.read()
+    html_path = results_md_path.with_name("results.html")
+    html_body = html_path.read_text(encoding="utf-8") if html_path.exists() else None
 
     resend.api_key = api_key
 
@@ -707,6 +779,7 @@ def send_email_report(run_id: str, results_md_path: Path, total: int, new_count:
             "to": to_email,
             "subject": build_email_subject(new_count, total, version, sha, run_id),
             "text": body,
+            **({"html": html_body} if html_body else {}),
             "headers": {
                 "X-Priority": "1",
                 "Importance": "high",
