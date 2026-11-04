@@ -705,6 +705,20 @@ def _tier(score: int, fuerte: int, medio: int) -> str:
     return "flojo"
 
 
+def fecha_visible(row) -> str:
+    """La fecha como se muestra: GetOnBoard no trae el año en la tarjeta (Sonda de mayo-2025 salía como 2026),
+    así que la suya va sin año («20-may»); las demás, tal cual."""
+    fecha = row.get("date_posted")
+    if fecha is None or (isinstance(fecha, float) and pd.isna(fecha)):
+        return ""
+    if row.get("site") == "getonbrd":
+        try:
+            return pd.Timestamp(fecha).strftime("%d-%b").lower()
+        except (ValueError, TypeError):
+            return str(fecha)
+    return str(fecha)
+
+
 def _celda(valor) -> str:
     """Texto de una celda: NaN/None es vacío, nunca «nan»."""
     if valor is None or (isinstance(valor, float) and pd.isna(valor)):
@@ -742,7 +756,7 @@ def render_results_html(combined: pd.DataFrame, timestamp: str, version: str, sh
             f'<td style="padding:1px 6px">{_celda(row.get("company"))}</td>'
             f'<td style="padding:1px 6px">{_celda(row.get("pais"))}</td>'
             f'<td style="padding:1px 6px">{_celda(row.get("site"))}</td>'
-            f'<td style="padding:1px 6px;white-space:nowrap">{_celda(row.get("date_posted"))}</td>'
+            f'<td style="padding:1px 6px;white-space:nowrap">{_celda(fecha_visible(row))}</td>'
             "</tr>"
         )
     cabecera = (

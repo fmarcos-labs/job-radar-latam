@@ -8,7 +8,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "job1"))
 from getonbrd import fecha_de_tarjeta, parse_listing, scrape_getonbrd  # noqa: E402
-from helpers import SeenStore, apply_filters, dedupe_jobs, is_likely_remote  # noqa: E402
+from helpers import SeenStore, apply_filters, dedupe_jobs, fecha_visible, is_likely_remote  # noqa: E402
 
 FIX = Path(__file__).parent / "fixtures" / "getonbrd"
 PROG = (FIX / "listado-programacion-CL-20261103.html").read_text(encoding="utf-8", errors="ignore")
@@ -122,3 +122,9 @@ def test_dedupe_keeps_one_row_when_linkedin_and_getonbrd_bring_the_same_job():
         ]
     )
     assert len(dedupe_jobs(df)) == 1
+
+
+def test_getonbrd_date_is_shown_without_a_year_because_the_card_has_none():
+    assert fecha_visible({"site": "getonbrd", "date_posted": "2026-05-20"}) == "20-may"
+    assert fecha_visible({"site": "linkedin", "date_posted": "2026-05-20"}) == "2026-05-20"
+    assert fecha_visible({"site": "getonbrd", "date_posted": None}) == ""
