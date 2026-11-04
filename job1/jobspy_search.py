@@ -5,6 +5,7 @@ import time
 import pandas as pd
 
 from config import CONFIG, MAX_DESC_FETCH, SEEN_FILENAME
+from getonbrd import scrape_getonbrd
 from helpers import (
     SeenStore,
     apply_filters,
@@ -26,6 +27,10 @@ def main() -> None:
 
     # 1. Scraping — LinkedIn + Indeed × 3 países
     all_jobs = scrape_all_countries()
+    # GetOnBoard: el portal tech chileno, por su HTML público; misma forma que JobSpy, mismos filtros
+    getonbrd_jobs = scrape_getonbrd()
+    if len(getonbrd_jobs):
+        all_jobs.append(getonbrd_jobs)
 
     if not all_jobs:
         print("\nNo se encontraron trabajos.")

@@ -159,6 +159,8 @@ def is_likely_remote(row) -> bool:
     texto dice híbrido/presencial. Indeed y Glassdoor no se consultan con ese filtro → keywords."""
     if row.get("site") == "linkedin":
         return not _hybrid_signal(row)
+    if row.get("site") == "getonbrd":   # la modalidad viene explícita en la tarjeta (Remote / Hybrid / In-office)
+        return bool(row.get("is_remote"))
     text = f"{_clean(row.get('title'))} {_clean(row.get('description'))} {_clean(row.get('location'))}".lower()
     return any(kw in text for kw in REMOTE_KEYWORDS)
 
@@ -263,6 +265,8 @@ def _is_latam_open(row) -> bool:
     o descripción menciona apertura a LATAM, la región, o Chile explícitamente."""
     if str(row.get("pais", "")).lower() == "chile":
         return True
+    if row.get("site") == "getonbrd":   # la tarjeta dice en qué países admite residir: eso manda, no una keyword del texto
+        return False
     text = (str(row.get("title", "") or "") + " " + str(row.get("description", "") or "")).lower()
     return any(kw in text for kw in LATAM_KEYWORDS)
 

@@ -2,7 +2,7 @@
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v10.1",
+    "version": "v10.2",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
@@ -204,7 +204,11 @@ EXCLUDE_TITLE_KEYWORDS = [
 EXCLUDE_COMPANIES = [
     "bairesdev",        # Outsourcing masivo, salarios bajos, no contrata
     "core code io",     # Spam de anuncios genéricos, score siempre 0
-    # Ex-empleadores (no volver a postular sin saberlo)
+    # Ex-empleadores (no volver a postular sin saberlo). Fuente: resume.json work[] (api.resume), 03-11-2026
+    "siigsa",
+    "tipddy",
+    "jl ltda",
+    "j.l. ltda",
     "klog",
     "depot group",
     "depotgroup",
