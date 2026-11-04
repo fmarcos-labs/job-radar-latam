@@ -1,8 +1,10 @@
+from pathlib import Path
+import os
 # =============================================================================
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v10.2",
+    "version": "v10.3",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
@@ -21,6 +23,7 @@ MAX_DESC_FETCH = 150
 
 # Memoria de avisos ya mostrados. Vive junto al código en el Mac Mini y el deploy la excluye del rsync.
 SEEN_FILENAME = "seen.json"
+CLICKS_FILE = os.environ.get("RADAR_CLICKS_FILE", str(Path(__file__).parent / "clicks.json"))   # lo escribe job1/redirector.py
 
 # LinkedIn Chile: 18 queries (stack completo + español + AI)
 QUERIES_LINKEDIN_FULL = [

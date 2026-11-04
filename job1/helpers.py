@@ -6,6 +6,7 @@ import random
 import re
 import subprocess
 import time
+import urllib.parse
 
 from urllib.parse import urlparse
 
@@ -15,6 +16,8 @@ from bs4 import BeautifulSoup
 from jobspy import scrape_jobs
 import html as html_mod
 import resend
+
+from redirector import leer_clicks
 
 from config import (
     CONFIG,
@@ -280,6 +283,23 @@ def _clean(value) -> str:
 
 def _job_key(title, company) -> str:
     return f"{_clean(title).strip().lower()}|{_clean(company).strip().lower()}"
+
+
+def enlace_rastreado(url: str, clave: str) -> str:
+    """El link del correo pasa por el redirector (job1/redirector.py) solo si RADAR_CLICK_BASE está puesto
+    (`https://radar.fmarcos.dev/r/<token>`); sin la variable, la URL real, como siempre."""
+    base = os.environ.get("RADAR_CLICK_BASE", "").strip()
+    if not base or not url:
+        return url
+    return f"{base}?{urllib.parse.urlencode({'k': clave, 'u': url})}"
+
+
+def marcar_abiertos(combined: pd.DataFrame, clicks_file) -> pd.DataFrame:
+    """Columna `abierto`: hora de la primera apertura según clicks.json (misma clave que la memoria), o vacío."""
+    out = combined.copy()
+    clicks = leer_clicks(clicks_file)
+    out["abierto"] = [clicks.get(_job_key(r.get("title"), r.get("company")), "") for _, r in out.iterrows()] if len(out) else []
+    return out
 
 
 def _hybrid_signal(row) -> bool:
@@ -711,7 +731,8 @@ def render_results_html(combined: pd.DataFrame, timestamp: str, version: str, sh
         url = str(row.get("job_url", "") or "")
         titulo = html_mod.escape(str(row.get("title", "") or ""))
         titulo = f"<b>{titulo}</b>" if tier == "fuerte" else titulo
-        enlace = f'<a href="{html_mod.escape(url)}" style="color:{color[tier]};text-decoration:none">{titulo}</a>' if url else titulo
+        href = enlace_rastreado(url, _job_key(row.get("title"), row.get("company")))
+        enlace = f'<a href="{html_mod.escape(href)}" style="color:{color[tier]};text-decoration:none">{titulo}</a>' if url else titulo
         score_txt = f"{score}&nbsp;<span style=\"font-weight:normal;font-size:11px\">s/d</span>" if sin_texto else str(score)
         peso = "font-weight:700;font-size:15px" if tier == "fuerte" else ("font-weight:600" if tier == "medio" else "font-weight:400")
         filas.append(

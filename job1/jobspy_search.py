@@ -4,9 +4,10 @@ import time
 
 import pandas as pd
 
-from config import CONFIG, MAX_DESC_FETCH, SEEN_FILENAME
+from config import CLICKS_FILE, CONFIG, MAX_DESC_FETCH, SEEN_FILENAME
 from getonbrd import scrape_getonbrd
 from helpers import (
+    marcar_abiertos,
     SeenStore,
     apply_filters,
     export_results,
@@ -41,6 +42,7 @@ def main() -> None:
 
     # 2. Pipeline de filtros — dedupe, títulos, empresas, memoria, descripción (LinkedIn sin texto), remoto, LATAM, score, relevancia
     combined, discard_groups = apply_filters(combined, seen_store=seen, max_desc_fetch=MAX_DESC_FETCH, run_id=timestamp)
+    combined = marcar_abiertos(combined, CLICKS_FILE)   # qué se abrió desde correos anteriores (job1/redirector.py)
     new_count = int(combined["is_new"].sum())
 
     print(f"\n{'='*80}")

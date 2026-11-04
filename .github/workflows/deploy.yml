@@ -18,7 +18,7 @@ jobs:
             || echo "WARN: LaunchAgent no visible desde el contexto del runner (agents GUI no aparecen aqui). El scheduler corre igual si llegan los emails — no bloqueamos el deploy."
           echo "OK: .env y run.sh presentes"
       - name: Sync code to app directory
-        run: rsync -a --delete --exclude='.env' --exclude='run.sh' --exclude='cron.log' --exclude='job1/20*' --exclude='job1/seen.json' --exclude='GIT_SHA' $GITHUB_WORKSPACE/ /Users/freddymhs/apps/job-radar-latam/
+        run: rsync -a --delete --exclude='.env' --exclude='run.sh' --exclude='cron.log' --exclude='job1/20*' --exclude='job1/seen.json' --exclude='job1/clicks.json' --exclude='GIT_SHA' $GITHUB_WORKSPACE/ /Users/freddymhs/apps/job-radar-latam/
       - name: Update dependencies
         run: cd /Users/freddymhs/apps/job-radar-latam && /opt/homebrew/bin/pipenv install
       - name: Record deployed commit
