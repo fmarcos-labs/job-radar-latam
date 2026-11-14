@@ -22,6 +22,8 @@ run.sh
 cron.log
 GIT_SHA
 job1/seen.json
+job1/clicks.json
+redirector.log
 
 # OS
 .DS_Store
