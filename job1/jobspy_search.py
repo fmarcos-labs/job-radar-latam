@@ -13,8 +13,12 @@ from helpers import (
     export_results,
     read_git_sha,
     scrape_all_countries,
+    send_alert_email,
     send_email_report,
 )
+from salud import evaluar_salud
+
+JOB_DIR = Path(__file__).parent   # carpetas de corrida y memoria
 
 
 def main() -> None:
@@ -24,7 +28,7 @@ def main() -> None:
     # 0. Memoria y sha ANTES de scrapear: si fallan, que fallen a los 0 min y no a los 17
     app_dir = Path(__file__).parent.parent
     sha = read_git_sha(app_dir)
-    seen = SeenStore(Path(__file__).parent / SEEN_FILENAME)
+    seen = SeenStore(JOB_DIR / SEEN_FILENAME)
 
     # 1. Scraping — LinkedIn + Indeed × 3 países
     all_jobs = scrape_all_countries()
@@ -33,8 +37,11 @@ def main() -> None:
     if len(getonbrd_jobs):
         all_jobs.append(getonbrd_jobs)
 
-    if not all_jobs:
-        print("\nNo se encontraron trabajos.")
+    # Salud ANTES de filtrar: filas crudas por fuente y horas desde la última corrida con datos
+    salud = evaluar_salud(all_jobs, JOB_DIR, timestamp)
+    if salud.sin_datos:
+        print(f"\nNo se encontraron trabajos: {'; '.join(salud.avisos)}")
+        send_alert_email(timestamp, salud, version=CONFIG["version"], sha=sha)
         return
 
     combined = pd.concat(all_jobs, ignore_index=True)
@@ -59,10 +66,10 @@ def main() -> None:
     print(combined[existing_cols].head(100).to_string(index=False))
 
     # 4. Exportar resultados — CSV, Markdown, descartados
-    run_dir = Path(__file__).parent / timestamp
+    run_dir = JOB_DIR / timestamp
     run_dir.mkdir(exist_ok=True)
 
-    results_md_path = export_results(combined, discard_groups, run_dir, timestamp, version=CONFIG["version"], sha=sha)
+    results_md_path = export_results(combined, discard_groups, run_dir, timestamp, version=CONFIG["version"], sha=sha, salud=salud)
 
     elapsed_total = time.time() - t_start_total
     mins, secs = divmod(int(elapsed_total), 60)
@@ -75,7 +82,7 @@ def main() -> None:
 
     # 5. Email con results.md (NUEVOS arriba). Solo si SALIÓ se marcan como mostrados: si el email falla,
     #    la corrida siguiente los vuelve a mostrar como NUEVOS (sin re-pedir descripciones: ya están en la memoria).
-    sent = send_email_report(timestamp, results_md_path, len(combined), new_count=new_count, version=CONFIG["version"], sha=sha)
+    sent = send_email_report(timestamp, results_md_path, len(combined), new_count=new_count, version=CONFIG["version"], sha=sha, salud=salud)
     if sent:
         seen.mark_shown(combined, run_id=timestamp)
     else:

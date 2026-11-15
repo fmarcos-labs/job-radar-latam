@@ -4,7 +4,7 @@ import os
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v10.5",
+    "version": "v10.6",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
@@ -23,6 +23,7 @@ MAX_DESC_FETCH = 150
 
 # Memoria de avisos ya mostrados. Vive junto al código en el Mac Mini y el deploy la excluye del rsync.
 SEEN_FILENAME = "seen.json"
+EMAIL_SUBJECT_PREFIX = "⭐ Job Radar LATAM"
 CLICKS_FILE = os.environ.get("RADAR_CLICKS_FILE", str(Path(__file__).parent / "clicks.json"))   # lo escribe job1/redirector.py
 
 # LinkedIn Chile: 18 queries (stack completo + español + AI)
@@ -102,6 +103,14 @@ QUERIES_INDEED = [
 # Solo Indeed y LinkedIn (Google y ZipRecruiter no funcionan para LATAM)
 SITES_REMOTE = ["linkedin"]               # soportan is_remote sin conflicto
 SITES_HOURS  = ["indeed", "glassdoor"]    # requieren hours_old, incompatible con is_remote
+
+# Salud de la corrida (job1/salud.py): el correo muestra las filas crudas de cada fuente esperada.
+# Solo las esenciales avisan al quedar en 0. Glassdoor no: 0 filas aprobadas en 708 corridas (medido 15-11),
+# y un aviso que sale siempre deja de leerse.
+FUENTES_ESPERADAS = [*SITES_REMOTE, *SITES_HOURS, "getonbrd"]
+FUENTES_ESENCIALES = ["linkedin", "indeed", "getonbrd"]
+# Corre 2 veces al día y el hueco normal más largo es de ~17 h; pasado este tope el correo dice desde cuándo no hay datos.
+MAX_HORAS_ENTRE_CORRIDAS = 26
 
 CORE_TECH = {
     # JavaScript/TypeScript - stack principal

@@ -18,6 +18,7 @@ import html as html_mod
 import resend
 
 from redirector import leer_clicks
+from salud import MARCA_AVISO, SaludCorrida, linea_de_fuentes
 
 from config import (
     CONFIG,
@@ -36,6 +37,7 @@ from config import (
     LATAM_KEYWORDS,
     TOTAL_CALLS,
     MAX_DESC_FETCH,
+    EMAIL_SUBJECT_PREFIX,
 )
 
 
@@ -634,9 +636,10 @@ def apply_filters(combined: pd.DataFrame, seen_store=None, fetch=_http_get_linke
 # =============================================================================
 
 def export_results(combined: pd.DataFrame, discard_groups: list, run_dir: Path, timestamp: str,
-                   version: str = CONFIG["version"], sha: str = "sin-sha") -> Path:
-    """Exporta los 3 archivos del run: results.csv, results.md, discarded.md.
+                   version: str = CONFIG["version"], sha: str = "sin-sha", salud: SaludCorrida | None = None) -> Path:
+    """Exporta los archivos del run: results.csv, results.md, results.html, discarded.md.
     results.md abre con los NUEVOS (columna is_new) ordenados por score; sin la columna, todo es nuevo.
+    Con `salud`, el .md y el .html dicen cuántas filas crudas trajo cada fuente y los avisos de la corrida.
     Retorna la ruta al archivo results.md (usado para el email).
     """
     is_new = combined["is_new"].astype(bool) if "is_new" in combined.columns else pd.Series(True, index=combined.index)
@@ -678,6 +681,10 @@ def export_results(combined: pd.DataFrame, discard_groups: list, run_dir: Path, 
         f.write(f" | **Score minimo:** {CONFIG['score_minimo']}")
         f.write(f" | **Paises:** {', '.join(CONFIG['paises'])}")
         f.write(f" | **Version:** {version} ({sha})\n\n")
+        if salud is not None:
+            for aviso in salud.avisos:
+                f.write(f"**{MARCA_AVISO} {aviso}**\n\n")
+            f.write(f"{linea_de_fuentes(salud)}\n\n")
         f.write("---\n\n")
         f.write(f"## NUEVOS ({len(nuevos)})\n\n")
         f.write("| Score | Titulo | Empresa | Pais | Sitio | Fecha |\n")
@@ -704,7 +711,7 @@ def export_results(combined: pd.DataFrame, discard_groups: list, run_dir: Path, 
             f.write("\n")
 
     # --- results.html (cuerpo HTML del email: NUEVOS con el score pesado) ---
-    (run_dir / "results.html").write_text(render_results_html(combined, timestamp, version, sha), encoding="utf-8")
+    (run_dir / "results.html").write_text(render_results_html(combined, timestamp, version, sha, salud=salud), encoding="utf-8")
 
     # --- discarded.md (descartados para revisión manual) ---
     discarded_path = run_dir / "discarded.md"
@@ -764,8 +771,20 @@ def _celda(valor) -> str:
     return html_mod.escape(str(valor))
 
 
+def _salud_html(salud: SaludCorrida | None) -> tuple:
+    """(avisos, fuentes): los avisos van ARRIBA de la cabecera, en rojo; las filas por fuente, debajo y en gris."""
+    if salud is None:
+        return "", ""
+    avisos = "".join(
+        f'<p style="margin:0 0 6px 0;color:#cf222e;font-weight:700">{MARCA_AVISO} {html_mod.escape(aviso)}</p>'
+        for aviso in salud.avisos
+    )
+    fuentes = f'<p style="margin:0 0 6px 0;color:#57606a;font-size:11px">{html_mod.escape(linea_de_fuentes(salud))}</p>'
+    return avisos, fuentes
+
+
 def render_results_html(combined: pd.DataFrame, timestamp: str, version: str, sha: str,
-                        fuerte: int = None, medio: int = None) -> str:
+                        fuerte: int = None, medio: int = None, salud: SaludCorrida | None = None) -> str:
     """Solo los NUEVOS, por score: fila densa (13px, sin botones), el score en negrita y color
     según tier, el título en negrita si es fuerte y gris si es flojo. Un 0 sin descripción se
     marca «s/d»: no es mal match, es que LinkedIn no dio el texto."""
@@ -809,16 +828,22 @@ def render_results_html(combined: pd.DataFrame, timestamp: str, version: str, sh
         '<th style="text-align:left;padding:1px 6px">fecha</th></tr></thead><tbody>\n'
         + "\n".join(filas) + "\n</tbody></table>"
     )
-    return f'<!doctype html><html><body style="margin:8px;color:#1f2328">{cabecera}{tabla}</body></html>\n'
+    avisos_html, fuentes_html = _salud_html(salud)
+    return f'<!doctype html><html><body style="margin:8px;color:#1f2328">{avisos_html}{cabecera}{fuentes_html}{tabla}</body></html>\n'
 
 # =============================================================================
 # EMAIL
 # =============================================================================
 
-def build_email_subject(new_count: int, total: int, version: str, sha: str, run_id: str) -> str:
+def build_email_subject(new_count: int, total: int, version: str, sha: str, run_id: str, avisos: tuple = ()) -> str:
     """Nuevos primero, y la iteración (versión + commit) a la vista: dos emails de épocas distintas se
-    distinguen sin abrir el repo."""
-    return f"⭐ Job Radar LATAM — {new_count} nuevos / {total} — {version} ({sha}) — {run_id}"
+    distinguen sin abrir el repo. Con avisos de salud, la marca va adelante: se ve sin abrir el correo."""
+    subject = f"{EMAIL_SUBJECT_PREFIX} — {new_count} nuevos / {total} — {version} ({sha}) — {run_id}"
+    return f"{MARCA_AVISO} {subject}" if avisos else subject
+
+
+def build_alert_subject(version: str, sha: str, run_id: str) -> str:
+    return f"{MARCA_AVISO} {EMAIL_SUBJECT_PREFIX} — corrida sin datos — {version} ({sha}) — {run_id}"
 
 
 def read_git_sha(app_dir) -> str:
@@ -834,19 +859,13 @@ def read_git_sha(app_dir) -> str:
         return "sin-sha"
 
 
-def send_email_report(run_id: str, results_md_path: Path, total: int, new_count: int = 0,
-                      version: str = CONFIG["version"], sha: str = "sin-sha") -> bool:
-    """True solo si el email salió: de eso depende marcar los avisos como mostrados."""
+def _send_email(subject: str, text: str, html: str | None = None) -> bool:
+    """True solo si Resend aceptó el envío."""
     api_key = os.environ.get("RESEND_API_KEY")
     to_email = os.environ.get("RESEND_TO_EMAIL")
     if not api_key or not to_email:
         print("[email] Variables RESEND_API_KEY / RESEND_TO_EMAIL no configuradas, saltando.")
         return False
-
-    with open(results_md_path) as f:
-        body = f.read()
-    html_path = results_md_path.with_name("results.html")
-    html_body = html_path.read_text(encoding="utf-8") if html_path.exists() else None
 
     resend.api_key = api_key
 
@@ -854,9 +873,9 @@ def send_email_report(run_id: str, results_md_path: Path, total: int, new_count:
         resend.Emails.send({
             "from": "job-radar@resend.dev",
             "to": to_email,
-            "subject": build_email_subject(new_count, total, version, sha, run_id),
-            "text": body,
-            **({"html": html_body} if html_body else {}),
+            "subject": subject,
+            "text": text,
+            **({"html": html} if html else {}),
             "headers": {
                 "X-Priority": "1",
                 "Importance": "high",
@@ -867,3 +886,23 @@ def send_email_report(run_id: str, results_md_path: Path, total: int, new_count:
     except Exception as e:
         print(f"[email] Error al enviar: {e}")
         return False
+
+
+def send_email_report(run_id: str, results_md_path: Path, total: int, new_count: int = 0,
+                      version: str = CONFIG["version"], sha: str = "sin-sha", salud: SaludCorrida | None = None) -> bool:
+    """True solo si el email salió: de eso depende marcar los avisos como mostrados."""
+    with open(results_md_path) as f:
+        body = f.read()
+    html_path = results_md_path.with_name("results.html")
+    html_body = html_path.read_text(encoding="utf-8") if html_path.exists() else None
+    avisos = salud.avisos if salud is not None else ()
+    return _send_email(build_email_subject(new_count, total, version, sha, run_id, avisos=avisos), body, html_body)
+
+
+def send_alert_email(run_id: str, salud: SaludCorrida, version: str = CONFIG["version"], sha: str = "sin-sha") -> bool:
+    """Ninguna fuente trajo filas: no hay resultados que mandar, pero el silencio no se distingue de «no hubo
+    avisos nuevos». Sin red este correo tampoco sale; la corrida siguiente lo dice con el aviso de hueco."""
+    lineas = [f"Corrida {run_id} sin datos: ninguna fuente devolvió filas.", ""]
+    lineas += [f"{MARCA_AVISO} {aviso}" for aviso in salud.avisos]
+    lineas += ["", linea_de_fuentes(salud), "", f"{version} ({sha})"]
+    return _send_email(build_alert_subject(version, sha, run_id), "\n".join(lineas))
