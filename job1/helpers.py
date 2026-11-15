@@ -154,30 +154,43 @@ REMOTE_KEYWORDS = [
     "trabajo en casa", "100% remoto", "100% remote",
 ]
 NOT_REMOTE_SIGNAL = re.compile(r"h[ií]brid|hybrid|presencial|on-?site|in-office", re.IGNORECASE)
+# Frases explícitas de modalidad EN LA DESCRIPCIÓN de LinkedIn (14-11: 73 de 269 "remotos" decían híbrido).
+# Deliberadamente no usa NOT_REMOTE_SIGNAL: "hybrid cloud", "apps híbridas" y "no presencial" son de avisos remotos.
+DESCRIPTION_NOT_REMOTE_REGEX = re.compile(
+    r"modalidad[^.\n]{0,40}(h[ií]brid|presencial)"
+    r"|(trabajo|jornada|esquema|modelo|modo|formato)\s+(de trabajo\s+)?h[ií]brid"
+    r"|h[ií]brid[oa]\s+(\d|en\b|con\b)"
+    r"|\d\s*d[ií]as?\s+(a la semana\s+)?(de forma\s+)?(en (la )?oficina|presencial)"
+    r"|asistencia presencial"
+    r"|de forma presencial en",
+    re.IGNORECASE,
+)
 
 
 def is_likely_remote(row) -> bool:
     """LinkedIn se consulta con is_remote=True (f_WT=2): lo que devuelve es remoto según LinkedIn, y su
     descripción casi nunca repite la palabra (Kraken: 5.658 chars sin "remote"). Solo se descarta si el
-    texto dice híbrido/presencial. Indeed y Glassdoor no se consultan con ese filtro → keywords."""
+    texto dice híbrido/presencial en título/ubicación, o lo dice con una frase explícita de modalidad en la
+    descripción (DESCRIPTION_NOT_REMOTE_REGEX). Indeed y Glassdoor no se consultan con ese filtro → keywords."""
     if row.get("site") == "linkedin":
-        return not _hybrid_signal(row)
+        return not _hybrid_signal(row) and not _description_says_not_remote(row)
     if row.get("site") == "getonbrd":   # la modalidad viene explícita en la tarjeta (Remote / Hybrid / In-office)
         return bool(row.get("is_remote"))
     text = f"{_clean(row.get('title'))} {_clean(row.get('description'))} {_clean(row.get('location'))}".lower()
     return any(kw in text for kw in REMOTE_KEYWORDS)
 
 
+SEMI_SENIOR_REGEX = re.compile(r"semi[\s-]+(senior|sr\.?)")
+# `\bsenior` sin cierre: atrapa "SeniorNode.js" (título pegado). `\bsr\b\.?` atrapa "Sr", "Sr.", "Sr/Dev"
+# sin exigir espacio después. III/IV = nivel de escalafón (Software Engineer IV); I y II se conservan.
+SENIOR_TITLE_REGEX = re.compile(r"\bsenior|\bsr\b\.?|\b(iii|iv)\b")
+
+
 def _is_absolute_senior(t: str) -> bool:
-    """Excluye 'senior' y 'Sr' absolutos pero conserva 'semi senior' y 'semi-senior'."""
-    if re.search(r"semi[\s-]+(senior|sr\.?)", t):
+    """Excluye 'senior', 'Sr' y niveles III/IV absolutos pero conserva 'semi senior' y 'semi-senior'."""
+    if SEMI_SENIOR_REGEX.search(t):
         return False
-    if re.search(r"\bsenior\b", t):
-        return True
-    # "Sr Backend", "Sr. Developer", etc. (abreviatura de Senior)
-    if re.search(r"\bsr\.?\s", t):
-        return True
-    return False
+    return SENIOR_TITLE_REGEX.search(t) is not None
 
 
 DEV_TITLE_REGEX = re.compile(r"full[\s-]?stack|front[\s-]?end|back[\s-]?end|developer|engineer|ingenier|desarrollador|programador", re.IGNORECASE)
@@ -302,9 +315,14 @@ def marcar_abiertos(combined: pd.DataFrame, clicks_file) -> pd.DataFrame:
     return out
 
 
+def _description_says_not_remote(row) -> bool:
+    return DESCRIPTION_NOT_REMOTE_REGEX.search(_clean(row.get("description"))) is not None
+
+
 def _hybrid_signal(row) -> bool:
-    """Señal de no-remoto en título + ubicación (NO en la descripción: 'hybrid cloud', 'no presencial'
-    y 'apps híbridas' aparecen en avisos remotos; medido: la señal real estaba en 11 títulos de 608)."""
+    """Señal de no-remoto en título + ubicación (NO palabras sueltas de la descripción: 'hybrid cloud', 'no presencial'
+    y 'apps híbridas' aparecen en avisos remotos; medido: la señal real estaba en 11 títulos de 608).
+    Las frases explícitas de modalidad en la descripción se miran aparte: `_description_says_not_remote`."""
     return NOT_REMOTE_SIGNAL.search(f"{_clean(row.get('title'))} {_clean(row.get('location'))}") is not None
 
 

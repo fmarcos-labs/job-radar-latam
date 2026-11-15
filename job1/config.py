@@ -4,7 +4,7 @@ import os
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v10.3",
+    "version": "v10.4",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
@@ -178,7 +178,8 @@ INCOMPATIBLE_TECH = [
 
 EXCLUDE_TITLE_KEYWORDS = [
     # Roles fuera de alcance (seniority / gestión)
-    "principal", "staff engineer", "director",
+    "principal", "staff", "director", "chief",
+    "architect", "arquitect", "manager", "experto",
     "head of", "vp of", "lead",  # "cto" removido: substring mataba Contractor/Proyecto/Sector/Arquitecto (ver regex \bcto\b en helpers)
     "práctica", "practica", "practicante", "trainee",  # "intern"/"internship" movidos a regex \bintern\b en helpers (mataban "International")
     # Tecnologías / dominios fuera del stack
@@ -191,7 +192,6 @@ EXCLUDE_TITLE_KEYWORDS = [
     "salesforce", "apex",
     "support engineer", "technical support",
     "observability", "migration consultant", "upgrade consultant",
-    "engineering manager",
     # Tecnologías incompatibles (individual, no frases compuestas)
     # RECALL: lenguajes backend (.net/java/php/go/ruby/kotlin/elixir/rust) NO se excluyen aca:
     # suman 0 puntos -> job puro de esos cae solo por score_minimo, y "Node OR .NET" sobrevive por Node.
