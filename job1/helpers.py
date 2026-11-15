@@ -219,6 +219,9 @@ def _matches_excluded_title(title: str) -> bool:
     # "intern"/"internship" sin atrapar "International/Internacional"
     if re.search(r"\bintern(ship)?s?\b", t):
         return True
+    # "staff" como palabra: el substring mataba "Remote Staffing" (oferta real, 14-11)
+    if re.search(r"\bstaff\b", t):
+        return True
     # "senior" / "Sr" se excluye pero NO "semi senior" ni "semi-senior"
     if _is_absolute_senior(t):
         return True
@@ -315,8 +318,25 @@ def marcar_abiertos(combined: pd.DataFrame, clicks_file) -> pd.DataFrame:
     return out
 
 
+NEGATION_WINDOW_CHARS = 15
+NEGATION_REGEX = re.compile(r"\b(no|sin|ni)\b", re.IGNORECASE)
+SENTENCE_BREAK_REGEX = re.compile(r"[.\n]")
+MODALITY_WORD_REGEX = re.compile(r"h[ií]brid|presencial|oficina")
+
+
+def _is_negated(text: str, match: re.Match) -> bool:
+    """'no presencial', 'sin asistencia presencial': no|sin|ni en los ~15 caracteres previos a la frase
+    (o entre su inicio y la palabra de modalidad), dentro de la misma oración, la niegan."""
+    modality = MODALITY_WORD_REGEX.search(match.group())
+    modality_start = match.start() + modality.start() if modality else match.start()
+    window = text[max(0, match.start() - NEGATION_WINDOW_CHARS):modality_start]
+    same_sentence = SENTENCE_BREAK_REGEX.split(window)[-1]
+    return NEGATION_REGEX.search(same_sentence) is not None
+
+
 def _description_says_not_remote(row) -> bool:
-    return DESCRIPTION_NOT_REMOTE_REGEX.search(_clean(row.get("description"))) is not None
+    text = _clean(row.get("description"))
+    return any(not _is_negated(text, m) for m in DESCRIPTION_NOT_REMOTE_REGEX.finditer(text))
 
 
 def _hybrid_signal(row) -> bool:

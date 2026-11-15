@@ -39,3 +39,8 @@ def test_senior_and_above_titles_are_excluded(title):
 ])
 def test_semi_senior_and_regular_titles_are_kept(title):
     assert _matches_excluded_title(title) is False
+
+
+def test_staff_as_a_word_is_excluded_but_not_as_a_substring_of_staffing():
+    assert _matches_excluded_title("Staff Engineer") is True
+    assert _matches_excluded_title("Software Developer – Remote Staffing") is False

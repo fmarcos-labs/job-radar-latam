@@ -52,6 +52,22 @@ def test_linkedin_description_saying_hybrid_or_onsite_is_not_remote(text):
     assert is_likely_remote(row("linkedin", description=text)) is False
 
 
+@pytest.mark.parametrize("text", [
+    "100% remota, no presencial",
+    "Trabajo sin asistencia presencial",
+    "No requiere asistencia presencial",
+    "Modalidad no presencial",
+    "Modalidad: ni híbrida ni presencial",
+])
+def test_linkedin_description_negating_presencial_stays_remote(text):
+    assert is_likely_remote(row("linkedin", description=text)) is True, text
+
+
+def test_linkedin_negation_does_not_cancel_a_later_onsite_phrase():
+    text = "Equipo no grande. Modalidad presencial en Las Condes"
+    assert is_likely_remote(row("linkedin", description=text)) is False
+
+
 def test_linkedin_job_with_on_site_in_location_is_not_remote():
     assert is_likely_remote(row("linkedin", location="Santiago · On-site")) is False
 

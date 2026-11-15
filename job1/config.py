@@ -4,7 +4,7 @@ import os
 # CONFIGURACIÓN ACTIVA - se guarda en cada CSV para poder iterar
 # =============================================================================
 CONFIG = {
-    "version": "v10.4",
+    "version": "v10.5",
     "paises": ["Chile", "Argentina", "Uruguay", "Peru"],
     "sites_con_remote_flag": ["linkedin"],               # usan is_remote=True
     "sites_con_hours_old": ["indeed", "glassdoor"],      # usan hours_old, incompatible con is_remote
@@ -178,7 +178,7 @@ INCOMPATIBLE_TECH = [
 
 EXCLUDE_TITLE_KEYWORDS = [
     # Roles fuera de alcance (seniority / gestión)
-    "principal", "staff", "director", "chief",
+    "principal", "director", "chief",
     "architect", "arquitect", "manager", "experto",
     "head of", "vp of", "lead",  # "cto" removido: substring mataba Contractor/Proyecto/Sector/Arquitecto (ver regex \bcto\b en helpers)
     "práctica", "practica", "practicante", "trainee",  # "intern"/"internship" movidos a regex \bintern\b en helpers (mataban "International")
