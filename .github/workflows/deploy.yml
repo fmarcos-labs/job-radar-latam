@@ -13,9 +13,9 @@ jobs:
         run: |
           [ -f "/Users/freddymhs/apps/job-radar-latam/.env" ] || { echo "ERROR: .env not found"; exit 1; }
           [ -f "/Users/freddymhs/apps/job-radar-latam/run.sh" ] || { echo "ERROR: run.sh not found"; exit 1; }
-          launchctl list | grep -q "com.jobradar.latam" \
-            && echo "OK: LaunchAgent com.jobradar.latam visible" \
-            || echo "WARN: LaunchAgent no visible desde el contexto del runner (agents GUI no aparecen aqui). El scheduler corre igual si llegan los emails — no bloqueamos el deploy."
+          [ -f "/Library/LaunchDaemons/com.jobradar.latam.plist" ] \
+            && echo "OK: LaunchDaemon com.jobradar.latam.plist presente" \
+            || echo "WARN: LaunchDaemon /Library/LaunchDaemons/com.jobradar.latam.plist no encontrado. El scheduler no va a correr hasta que exista; no bloqueamos el deploy."
           echo "OK: .env y run.sh presentes"
       - name: Sync code to app directory
         run: rsync -a --delete --exclude='.env' --exclude='run.sh' --exclude='cron.log' --exclude='job1/20*' --exclude='job1/seen.json' --exclude='job1/clicks.json' --exclude='GIT_SHA' $GITHUB_WORKSPACE/ /Users/freddymhs/apps/job-radar-latam/
