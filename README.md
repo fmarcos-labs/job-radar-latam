@@ -52,11 +52,6 @@ Genera una carpeta `job1/YYYYMMDD_HHMM/` con:
 ## Tests (sin red, con corridas reales)
 
 ```bash
-```
-
-Alternativa con venv local:
-
-```bash
 python3 -m venv ~/.local/share/virtualenvs/job-radar-latam-local
 ~/.local/share/virtualenvs/job-radar-latam-local/bin/pip install python-jobspy pandas resend pytest
 ~/.local/share/virtualenvs/job-radar-latam-local/bin/python -m pytest tests/ -q
