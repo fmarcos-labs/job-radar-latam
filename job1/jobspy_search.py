@@ -15,6 +15,7 @@ from helpers import (
     scrape_all_countries,
     send_alert_email,
     send_email_report,
+    should_send_report,
 )
 from salud import evaluar_salud
 
@@ -80,8 +81,12 @@ def main() -> None:
     print(f"Resumen legible en: {results_md_path}")
     print(f"Tiempo total: {mins}m {secs}s")
 
-    # 5. Email con results.md (NUEVOS arriba). Solo si SALIÓ se marcan como mostrados: si el email falla,
-    #    la corrida siguiente los vuelve a mostrar como NUEVOS (sin re-pedir descripciones: ya están en la memoria).
+    # 5. Email con results.md (NUEVOS arriba). Con 0 nuevas y sin aviso de salud no se envía: la corrida queda en el log.
+    #    Solo si SALIÓ se marcan como mostrados: si el email falla, la corrida siguiente los vuelve a mostrar
+    #    como NUEVOS (sin re-pedir descripciones: ya están en la memoria).
+    if not should_send_report(new_count, salud):
+        print(f"[email] 0 nuevas: no se envía correo (corrida {timestamp}, {len(combined)} relevantes ya vistos)")
+        return
     sent = send_email_report(timestamp, results_md_path, len(combined), new_count=new_count, version=CONFIG["version"], sha=sha, salud=salud)
     if sent:
         seen.mark_shown(combined, run_id=timestamp)

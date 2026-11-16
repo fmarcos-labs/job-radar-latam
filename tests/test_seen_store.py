@@ -9,7 +9,9 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "job1"))
-from helpers import SeenStore  # noqa: E402
+from helpers import SeenStore, apply_filters  # noqa: E402
+
+LINKEDIN_HTML = (Path(__file__).parent / "fixtures" / "linkedin_job_4485431710.html").read_text(encoding="utf-8")
 
 
 def jobs(*pairs) -> pd.DataFrame:
@@ -77,3 +79,61 @@ def test_mark_shown_makes_the_job_not_new_anymore(tmp_path):
     data = json.loads(path.read_text())
     assert data["backend dev|acme"]["shown_run"] == "20261103_1030"
     assert "shown_run" not in data["fullstack|kraken"]
+
+
+def with_description(df: pd.DataFrame, text: str) -> pd.DataFrame:
+    return df.assign(description=text)
+
+
+def test_job_shown_without_description_comes_back_once_when_it_arrives_with_text(tmp_path):
+    """Una oferta de NTT salió sin descripción, quedó como vista y nunca volvió con ella."""
+    path = tmp_path / "seen.json"
+    df = jobs(("Backend Dev", "NTT"))
+    store = SeenStore(path)
+    store.remember(with_description(df, ""), run_id="20261110_1030")
+    store.mark_shown(with_description(df, ""), run_id="20261110_1030")
+    assert json.loads(path.read_text())["backend dev|ntt"]["shown_no_desc"] is True
+
+    later = SeenStore(path)
+    assert later.was_shown(with_description(df, "")).tolist() == [True]                 # sigue sin texto: no vuelve
+    assert later.was_shown(with_description(df, "React y Node")).tolist() == [False]    # llegó con texto: se reevalúa
+
+    later.mark_shown(with_description(df, "React y Node"), run_id="20261111_1030")
+    again = SeenStore(path)
+    assert again.was_shown(with_description(df, "React y Node")).tolist() == [True]     # una sola vez
+    assert json.loads(path.read_text())["backend dev|ntt"]["shown_run"] == "20261110_1030"
+
+
+def test_job_shown_with_description_never_comes_back(tmp_path):
+    path = tmp_path / "seen.json"
+    df = with_description(jobs(("Backend Dev", "Acme")), "React y Node")
+    store = SeenStore(path)
+    store.mark_shown(df, run_id="20261110_1030")
+    assert SeenStore(path).was_shown(df).tolist() == [True]
+
+
+def test_legacy_seen_records_without_the_new_field_keep_working(tmp_path):
+    path = tmp_path / "seen.json"
+    path.write_text(json.dumps({"backend dev|acme": {"first_run": "20261110_1030", "shown_run": "20261110_1030"}}))
+    df = with_description(jobs(("Backend Dev", "Acme")), "React y Node")
+    assert SeenStore(path).was_shown(df).tolist() == [True]
+
+
+def test_pipeline_shows_again_a_job_whose_description_arrives_in_a_later_run(tmp_path):
+    path = tmp_path / "seen.json"
+    row = {"site": "linkedin", "title": "Fullstack Developer", "company": "NTT", "pais": "Chile", "location": "Chile",
+           "job_url": "https://www.linkedin.com/jobs/view/777", "description": ""}
+
+    def blocked(job_id):
+        raise RuntimeError("LinkedIn respondió 429")
+
+    first, _ = apply_filters(pd.DataFrame([row]), seen_store=SeenStore(path), fetch=blocked, sleep=lambda: None, run_id="20261110_1030")
+    assert first["is_new"].tolist() == [True]
+    SeenStore(path).mark_shown(first, run_id="20261110_1030")
+
+    second, _ = apply_filters(pd.DataFrame([row]), seen_store=SeenStore(path), fetch=lambda job_id: LINKEDIN_HTML, sleep=lambda: None, run_id="20261111_1030")
+    assert second["is_new"].tolist() == [True]
+    SeenStore(path).mark_shown(second, run_id="20261111_1030")
+
+    third, _ = apply_filters(pd.DataFrame([row]), seen_store=SeenStore(path), fetch=lambda job_id: LINKEDIN_HTML, sleep=lambda: None, run_id="20261112_1030")
+    assert third["is_new"].tolist() == [False]

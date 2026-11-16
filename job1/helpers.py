@@ -164,8 +164,14 @@ DESCRIPTION_NOT_REMOTE_REGEX = re.compile(
     r"|h[ií]brid[oa]\s+(\d|en\b|con\b)"
     r"|\d\s*d[ií]as?\s+(a la semana\s+)?(de forma\s+)?(en (la )?oficina|presencial)"
     r"|asistencia presencial"
-    r"|de forma presencial en",
-    re.IGNORECASE,
+    r"|de forma presencial en"
+    # Inglés: "hybrid cloud/apps/environment" siguen sin descartar; solo frases de modalidad de trabajo.
+    r"|\bhybrid\s+(work(ing)?|model|schedule|role|position|policy|arrangement|basis)\b"
+    r"|\bhybrid[\s(:\-–]*\d\s*(days?|d[ií]as?)"
+    r"|\b(role|position|job|team)\s+is\s+hybrid\b"
+    r"|(location|modality|work(ing)?\s+(model|mode|arrangement|schedule)|workplace(\s+type)?)\s*[:\-–]\s*hybrid\b"
+    r"|^\s*hybrid\s*[.,;]?\s*$",
+    re.IGNORECASE | re.MULTILINE,
 )
 
 
@@ -321,13 +327,13 @@ def marcar_abiertos(combined: pd.DataFrame, clicks_file) -> pd.DataFrame:
 
 
 NEGATION_WINDOW_CHARS = 15
-NEGATION_REGEX = re.compile(r"\b(no|sin|ni)\b", re.IGNORECASE)
+NEGATION_REGEX = re.compile(r"\b(no|sin|ni|not|non|without|nor)\b", re.IGNORECASE)
 SENTENCE_BREAK_REGEX = re.compile(r"[.\n]")
 MODALITY_WORD_REGEX = re.compile(r"h[ií]brid|presencial|oficina")
 
 
 def _is_negated(text: str, match: re.Match) -> bool:
-    """'no presencial', 'sin asistencia presencial': no|sin|ni en los ~15 caracteres previos a la frase
+    """'no presencial', 'sin asistencia presencial', 'not a hybrid role': no|sin|ni|not|non|without|nor en los ~15 caracteres previos a la frase
     (o entre su inicio y la palabra de modalidad), dentro de la misma oración, la niegan."""
     modality = MODALITY_WORD_REGEX.search(match.group())
     modality_start = match.start() + modality.start() if modality else match.start()
@@ -431,10 +437,19 @@ def fetch_linkedin_descriptions(jobs: pd.DataFrame, fetch=_http_get_linkedin_job
     return out
 
 
+SHOWN_WITHOUT_DESCRIPTION = "shown_no_desc"   # True: salió en un email sin texto; los registros viejos no lo traen
+
+
+def _has_text(row) -> bool:
+    return bool(_clean(row.get("description")).strip())
+
+
 class SeenStore:
     """Memoria entre corridas, persistida fuera del rsync del deploy. Clave: título|empresa normalizados.
     Dos marcas por aviso: EVALUADO (`first_run`, con su descripción, para no volver a pedirla ni dejarlo
     entrar vacío por el bypass) y MOSTRADO (`shown_run`, lo que define qué es NUEVO en el email).
+    Un aviso mostrado SIN descripción (`shown_no_desc`) vuelve a ser NUEVO una vez, cuando aparece con texto:
+    el título solo no alcanza para decidir (se perdió una oferta de NTT así).
     Medido: sin esto el 75-87 % de cada email era repetido."""
 
     def __init__(self, path, today: str | None = None, max_age_days: int = 30):
@@ -477,9 +492,16 @@ class SeenStore:
         return jobs[is_new], jobs[~is_new]
 
     def was_shown(self, jobs: pd.DataFrame) -> pd.Series:
+        """Mostrado, salvo que saliera sin descripción y ahora la traiga: ese vuelve a evaluarse."""
         if jobs.empty:
             return pd.Series(False, index=jobs.index, dtype=bool)
-        return self._keys(jobs).map(lambda k: "shown_run" in self.data.get(k, {})).astype(bool)
+        keys = self._keys(jobs)
+        shown = [
+            "shown_run" in self.data.get(key, {})
+            and not (self.data[key].get(SHOWN_WITHOUT_DESCRIPTION) and _has_text(row))
+            for key, (_, row) in zip(keys, jobs.iterrows())
+        ]
+        return pd.Series(shown, index=jobs.index, dtype=bool)
 
     def fill_descriptions(self, jobs: pd.DataFrame) -> pd.DataFrame:
         """Completa `description` vacía con la guardada en una corrida anterior (0 requests)."""
@@ -503,10 +525,15 @@ class SeenStore:
         self._save()
 
     def mark_shown(self, jobs: pd.DataFrame, run_id: str) -> None:
-        """Registra lo MOSTRADO (lo que fue al email); se llama después de enviarlo."""
+        """Registra lo MOSTRADO (lo que fue al email); se llama después de enviarlo. Anota si salió sin texto;
+        un aviso que salió sin texto y ahora lo trae ya fue reevaluado: la marca se baja y no vuelve a repetirse."""
         for _, row in jobs.iterrows():
             entry = self.data.setdefault(_job_key(row.get("title"), row.get("company")), {"first_run": run_id})
-            entry.setdefault("shown_run", run_id)
+            if "shown_run" not in entry:
+                entry["shown_run"] = run_id
+                entry[SHOWN_WITHOUT_DESCRIPTION] = not _has_text(row)
+            elif entry.get(SHOWN_WITHOUT_DESCRIPTION) and _has_text(row):
+                entry[SHOWN_WITHOUT_DESCRIPTION] = False
         self._save()
 
     def _save(self) -> None:
@@ -572,15 +599,13 @@ def apply_filters(combined: pd.DataFrame, seen_store=None, fetch=_http_get_linke
     combined["description"] = combined["description"].fillna("")
     if seen_store is not None:
         never_evaluated, _ = seen_store.split_new(combined)
-        combined["is_new"] = ~seen_store.was_shown(combined)
         combined = seen_store.fill_descriptions(combined)
     else:
         never_evaluated = combined
-        combined["is_new"] = True
     # Candidatos: LinkedIn SIN texto (lo que el tope o un 429 dejó afuera se reintenta), nunca evaluados primero
     sin_texto = combined[(combined["site"] == "linkedin") & (combined["description"].str.strip() == "")]
     to_fetch = pd.concat([sin_texto[sin_texto.index.isin(never_evaluated.index)], sin_texto[~sin_texto.index.isin(never_evaluated.index)]])
-    print(f"[debug] Nuevos (nunca mostrados): {int(combined['is_new'].sum())} · LinkedIn sin descripción: {len(to_fetch)}")
+    print(f"[debug] LinkedIn sin descripción: {len(to_fetch)}")
 
     # Descripción de LinkedIn solo para lo que no tiene texto (tope + sleep; Indeed/Glassdoor ya la traen)
     combined["desc_fetched"] = False
@@ -588,6 +613,9 @@ def apply_filters(combined: pd.DataFrame, seen_store=None, fetch=_http_get_linke
     combined.loc[fetched.index, "description"] = fetched["description"]
     combined.loc[fetched.index, "desc_fetched"] = fetched["desc_fetched"]
     print(f"[debug] Descripciones de LinkedIn bajadas: {int(fetched['desc_fetched'].sum())} (tope {max_desc_fetch})")
+    # NUEVO se decide con el texto ya completo: un aviso mostrado sin descripción vuelve si ahora la trae
+    combined["is_new"] = ~seen_store.was_shown(combined) if seen_store is not None else True
+    print(f"[debug] Nuevos (nunca mostrados): {int(combined['is_new'].sum())}")
     if seen_store is not None:
         seen_store.remember(combined, run_id=run_id)   # ya evaluado, con texto: aunque la corrida muera después
 
@@ -886,6 +914,13 @@ def _send_email(subject: str, text: str, html: str | None = None) -> bool:
     except Exception as e:
         print(f"[email] Error al enviar: {e}")
         return False
+
+
+def should_send_report(new_count: int, salud: SaludCorrida | None) -> bool:
+    """Sin avisos NUEVOS no hay nada que leer. Excepción: un aviso de salud (fuente en 0, hueco entre corridas)
+    viaja en este correo y es el único detector de v10.6; esa corrida sí se manda."""
+    has_health_warning = salud is not None and len(salud.avisos) > 0
+    return new_count > 0 or has_health_warning
 
 
 def send_email_report(run_id: str, results_md_path: Path, total: int, new_count: int = 0,

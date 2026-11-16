@@ -82,3 +82,33 @@ def test_indeed_job_with_home_office_is_remote():
 
 def test_glassdoor_job_with_remote_in_location_is_remote():
     assert is_likely_remote(row("glassdoor", location="Remote")) is True
+
+
+@pytest.mark.parametrize("text", [
+    "This is a hybrid role based in Santiago",
+    "We offer a hybrid work model with an office in Bogota",
+    "Hybrid model: 3 days in the office",
+    "Hybrid working, two days at home",
+    "Hybrid schedule, Tuesday to Thursday on site",
+    "Hybrid position in Buenos Aires",
+    "Hybrid (3 days in the office)",
+    "Hybrid 2 days a week",
+    "Work model: Hybrid",
+    "Location: Hybrid",
+    "The team is hybrid",
+    "Location: Chile\nHybrid\nSalary: competitive",
+])
+def test_linkedin_description_saying_hybrid_in_english_is_not_remote(text):
+    assert is_likely_remote(row("linkedin", description=text)) is False, text
+
+
+@pytest.mark.parametrize("text", [
+    "This is not a hybrid role, 100% remote",
+    "No hybrid work required",
+    "Non-hybrid work model",
+    "Fully remote, without hybrid work arrangements",
+    "Experience with hybrid cloud environments",
+    "We build hybrid apps with Ionic",
+])
+def test_linkedin_description_with_negated_or_unrelated_hybrid_stays_remote(text):
+    assert is_likely_remote(row("linkedin", description=text)) is True, text
